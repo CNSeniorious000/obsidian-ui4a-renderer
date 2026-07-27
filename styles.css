@@ -1,0 +1,70 @@
+/* UI4A widget host — wraps each rendered codeblock.
+   (vendor/base.css uses @apply/@layer UnoCSS build directives we can't import
+    verbatim, so the shadcn HSL tokens the vendored CSS expects are redefined
+    below in plain CSS. These are light-mode baseline values only — we do NOT
+    remap for dark mode, because the vendored components hard-code light
+    surfaces (e.g. Card's bg-white/82), so flipping the text tokens to light
+    would create white-on-white. Leave the components' own light palette.) */
+.ui4a-host {
+  margin: 0.75em 0;
+  /* shadcn HSL token baselines (light). The vendored components reference these. */
+  --radius: 0.5rem;
+  --background: 0 0% 100%;
+  --foreground: 222.2 47.4% 11.2%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 47.4% 11.2%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 47.4% 11.2%;
+  --primary: 24 95% 53%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 24 95% 53%;
+  /* chart palette */
+  --chart-1: 24 95% 53%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+}
+
+.ui4a-status,
+.ui4a-error {
+  padding: 0.75em 1em;
+  border-radius: var(--radius);
+  font-size: 0.85em;
+}
+.ui4a-status {
+  color: var(--text-muted);
+}
+.ui4a-error {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--background-modifier-error);
+  color: var(--text-error);
+}
+
+/* The macaron root scopes UnoCSS-generated utilities here. */
+.genui-root {
+  font-family: var(--font-interface);
+}
+
+/* UI-internal wikilinks ([[target]]) rendered by <LinkText>. */
+.ui4a-wikilink {
+  color: var(--text-accent);
+  text-decoration: underline;
+  text-decoration-color: var(--text-accent);
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.ui4a-wikilink:hover {
+  color: var(--text-accent-hover);
+}

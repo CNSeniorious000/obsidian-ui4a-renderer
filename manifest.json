@@ -1,0 +1,9 @@
+{
+  "id": "ui4a-renderer",
+  "name": "UI4A Renderer",
+  "version": "0.1.0",
+  "minAppVersion": "1.5.0",
+  "description": "Render UI4A-protocol TSX widgets inside Obsidian notes as interactive React components. Companion to the genui-builder skill.",
+  "author": "MindLab Research (UI4A) — Obsidian port",
+  "isDesktopOnly": true
+}

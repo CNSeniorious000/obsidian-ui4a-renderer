@@ -1,0 +1,43 @@
+obsidian-ui4a-renderer
+======================
+
+An Obsidian plugin that renders UI4A-protocol TSX widgets as interactive
+React components inside notes.
+
+Vendored component library
+--------------------------
+The component library under `src/vendor/` is vendored from the Macaron
+project (MindLab Research):
+
+  Source:    https://github.com/MindLab-Research/macaron-artifacts
+  Vendored at commit: e9dbee4a9f106951569a69730a9d72be22d2483e (2026-07-22)
+
+These files are:
+  - src/vendor/macaron/source.tsx          (the 118-export component registry)
+  - src/vendor/components/ui/*.tsx         (shadcn/Radix primitives)
+  - src/vendor/genui/charts.tsx            (Recharts-backed chart primitives)
+  - src/vendor/genui/lucide-react.tsx
+  - src/vendor/hooks/use-file-upload.ts
+  - src/vendor/lib/{progressiveBlur,standalone-uno,style}.ts
+
+All other code (src/runtime/, src/codeblock-processor.ts, src/main.ts,
+src/styling.ts, esbuild.config.mjs) is the Obsidian adaptation layer
+written for this plugin.
+
+Third-party dependencies
+-----------------------
+This plugin bundles (via esbuild) several third-party libraries, each under
+its own license — see node_modules for the authoritative copy:
+  - react, react-dom               (MIT)
+  - @radix-ui/*                     (MIT)
+  - recharts                        (MIT)
+  - lucide-react                    (ISC)
+  - motion                          (MIT)
+  - embla-carousel-react            (MIT)
+  - input-otp                       (MIT)
+  - @number-flow/react              (MIT)
+  - clsx                            (MIT)
+  - tailwind-merge                  (MIT)
+  - class-variance-authority        (Apache-2.0)
+  - sucrase                          (MIT)
+  - @unocss/core, @unocss/preset-wind3, unocss-preset-animations (MIT)
