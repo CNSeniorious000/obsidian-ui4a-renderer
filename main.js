@@ -7235,7 +7235,7 @@ var require_react_dom_client_development = __commonJS({
             "Should have a queue. You are likely calling Hooks conditionally, which is not allowed. (https://react.dev/link/invalid-hook-call)"
           );
         queue.lastRenderedReducer = reducer2;
-        var dispatch2 = queue.dispatch, lastRenderPhaseUpdate = queue.pending, newState = hook.memoizedState;
+        var dispatch = queue.dispatch, lastRenderPhaseUpdate = queue.pending, newState = hook.memoizedState;
         if (null !== lastRenderPhaseUpdate) {
           queue.pending = null;
           var update = lastRenderPhaseUpdate = lastRenderPhaseUpdate.next;
@@ -7247,7 +7247,7 @@ var require_react_dom_client_development = __commonJS({
           null === hook.baseQueue && (hook.baseState = newState);
           queue.lastRenderedState = newState;
         }
-        return [newState, dispatch2];
+        return [newState, dispatch];
       }
       function mountSyncExternalStore(subscribe2, getSnapshot, getServerSnapshot) {
         var fiber = currentlyRenderingFiber, hook = mountWorkInProgressHook();
@@ -7393,9 +7393,9 @@ var require_react_dom_client_development = __commonJS({
       }
       function mountState(initialState15) {
         initialState15 = mountStateImpl(initialState15);
-        var queue = initialState15.queue, dispatch2 = dispatchSetState.bind(null, currentlyRenderingFiber, queue);
-        queue.dispatch = dispatch2;
-        return [initialState15.memoizedState, dispatch2];
+        var queue = initialState15.queue, dispatch = dispatchSetState.bind(null, currentlyRenderingFiber, queue);
+        queue.dispatch = dispatch;
+        return [initialState15.memoizedState, dispatch];
       }
       function mountOptimistic(passthrough) {
         var hook = mountWorkInProgressHook();
@@ -7627,14 +7627,14 @@ var require_react_dom_client_development = __commonJS({
           }
         else state2 = currentStateHook;
         currentStateHook = updateWorkInProgressHook();
-        var actionQueue = currentStateHook.queue, dispatch2 = actionQueue.dispatch;
+        var actionQueue = currentStateHook.queue, dispatch = actionQueue.dispatch;
         action !== currentStateHook.memoizedState && (currentlyRenderingFiber.flags |= 2048, pushSimpleEffect(
           HasEffect | Passive,
           { destroy: void 0 },
           actionStateActionEffect.bind(null, actionQueue, action),
           null
         ));
-        return [state2, dispatch2, stateHook];
+        return [state2, dispatch, stateHook];
       }
       function actionStateActionEffect(actionQueue, action) {
         actionQueue.action = action;
@@ -7646,9 +7646,9 @@ var require_react_dom_client_development = __commonJS({
         updateWorkInProgressHook();
         stateHook = stateHook.memoizedState;
         currentStateHook = updateWorkInProgressHook();
-        var dispatch2 = currentStateHook.queue.dispatch;
+        var dispatch = currentStateHook.queue.dispatch;
         currentStateHook.memoizedState = action;
-        return [stateHook, dispatch2, false];
+        return [stateHook, dispatch, false];
       }
       function pushSimpleEffect(tag, inst, create, deps) {
         tag = { tag, create, deps, inst, next: null };
@@ -23062,9 +23062,9 @@ var require_with_selector_development = __commonJS({
         return x4 === y4 && (0 !== x4 || 1 / x4 === 1 / y4) || x4 !== x4 && y4 !== y4;
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React165 = require_react(), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is3, useSyncExternalStore3 = shim.useSyncExternalStore, useRef77 = React165.useRef, useEffect76 = React165.useEffect, useMemo46 = React165.useMemo, useDebugValue2 = React165.useDebugValue;
+      var React165 = require_react(), shim = require_shim(), objectIs = "function" === typeof Object.is ? Object.is : is3, useSyncExternalStore3 = shim.useSyncExternalStore, useRef76 = React165.useRef, useEffect76 = React165.useEffect, useMemo46 = React165.useMemo, useDebugValue2 = React165.useDebugValue;
       exports.useSyncExternalStoreWithSelector = function(subscribe2, getSnapshot, getServerSnapshot, selector, isEqual2) {
-        var instRef = useRef77(null);
+        var instRef = useRef76(null);
         if (null === instRef.current) {
           var inst = { hasValue: false, value: null };
           instRef.current = inst;
@@ -23141,9 +23141,9 @@ var require_use_sync_external_store_with_selector_development = __commonJS({
         return x4 === y4 && (0 !== x4 || 1 / x4 === 1 / y4) || x4 !== x4 && y4 !== y4;
       }
       "undefined" !== typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ && "function" === typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart && __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(Error());
-      var React165 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is3, useSyncExternalStore3 = React165.useSyncExternalStore, useRef77 = React165.useRef, useEffect76 = React165.useEffect, useMemo46 = React165.useMemo, useDebugValue2 = React165.useDebugValue;
+      var React165 = require_react(), objectIs = "function" === typeof Object.is ? Object.is : is3, useSyncExternalStore3 = React165.useSyncExternalStore, useRef76 = React165.useRef, useEffect76 = React165.useEffect, useMemo46 = React165.useMemo, useDebugValue2 = React165.useDebugValue;
       exports.useSyncExternalStoreWithSelector = function(subscribe2, getSnapshot, getServerSnapshot, selector, isEqual2) {
-        var instRef = useRef77(null);
+        var instRef = useRef76(null);
         if (null === instRef.current) {
           var inst = { hasValue: false, value: null };
           instRef.current = inst;
@@ -58077,7 +58077,7 @@ function useControllableStateReducer(reducer2, userArgs, initialArg, init) {
   if (init) {
     args.push(init);
   }
-  const [internalState, dispatch2] = React23.useReducer(
+  const [internalState, dispatch] = React23.useReducer(
     (state22, action) => {
       if (action.type === SYNC_STATE) {
         return { ...state22, state: action.state };
@@ -58109,10 +58109,10 @@ function useControllableStateReducer(reducer2, userArgs, initialArg, init) {
   }, [internalState, controlledState]);
   React23.useEffect(() => {
     if (isControlled && !Object.is(controlledState, internalState.state)) {
-      dispatch2({ type: SYNC_STATE, state: controlledState });
+      dispatch({ type: SYNC_STATE, state: controlledState });
     }
   }, [controlledState, internalState.state, isControlled]);
-  return [state2, dispatch2];
+  return [state2, dispatch];
 }
 __name7(useControllableStateReducer, "useControllableStateReducer");
 
@@ -104606,7 +104606,7 @@ function useDndMonitorProvider() {
     listeners.add(listener2);
     return () => listeners.delete(listener2);
   }, [listeners]);
-  const dispatch2 = (0, import_react106.useCallback)((_ref2) => {
+  const dispatch = (0, import_react106.useCallback)((_ref2) => {
     let {
       type,
       event
@@ -104616,7 +104616,7 @@ function useDndMonitorProvider() {
       return (_listener$type = listener2[type]) == null ? void 0 : _listener$type.call(listener2, event);
     });
   }, [listeners]);
-  return [dispatch2, registerListener];
+  return [dispatch, registerListener];
 }
 var defaultScreenReaderInstructions = {
   draggable: "\n    To pick up a draggable item, press the space bar.\n    While dragging, use the arrow keys to move the item.\n    Press space again to drop the item in its new position, or press escape to cancel.\n  "
@@ -106984,7 +106984,7 @@ var DndContext = /* @__PURE__ */ (0, import_react106.memo)(function DndContext2(
     ...props
   } = _ref2;
   const store = (0, import_react106.useReducer)(reducer, void 0, getInitialState);
-  const [state2, dispatch2] = store;
+  const [state2, dispatch] = store;
   const [dispatchMonitorEvent, registerMonitorListener] = useDndMonitorProvider();
   const [status, setStatus] = (0, import_react106.useState)(Status.Uninitialized);
   const isInitialized2 = status === Status.Initialized;
@@ -107184,7 +107184,7 @@ var DndContext = /* @__PURE__ */ (0, import_react106.memo)(function DndContext2(
           (0, import_react_dom2.unstable_batchedUpdates)(() => {
             onDragStart == null ? void 0 : onDragStart(event2);
             setStatus(Status.Initializing);
-            dispatch2({
+            dispatch({
               type: Action.DragStart,
               initialCoordinates,
               active: id5
@@ -107198,7 +107198,7 @@ var DndContext = /* @__PURE__ */ (0, import_react106.memo)(function DndContext2(
           });
         },
         onMove(coordinates) {
-          dispatch2({
+          dispatch({
             type: Action.DragMove,
             coordinates
           });
@@ -107236,7 +107236,7 @@ var DndContext = /* @__PURE__ */ (0, import_react106.memo)(function DndContext2(
           }
           activeRef.current = null;
           (0, import_react_dom2.unstable_batchedUpdates)(() => {
-            dispatch2({
+            dispatch({
               type
             });
             setStatus(Status.Uninitialized);
@@ -107431,13 +107431,13 @@ var DndContext = /* @__PURE__ */ (0, import_react106.memo)(function DndContext2(
       ariaDescribedById: {
         draggable: draggableDescribedById
       },
-      dispatch: dispatch2,
+      dispatch,
       draggableNodes,
       over,
       measureDroppableContainers
     };
     return context;
-  }, [activatorEvent, activators, active, activeNodeRect, dispatch2, draggableDescribedById, draggableNodes, over, measureDroppableContainers]);
+  }, [activatorEvent, activators, active, activeNodeRect, dispatch, draggableDescribedById, draggableNodes, over, measureDroppableContainers]);
   return import_react106.default.createElement(DndMonitorContext.Provider, {
     value: registerMonitorListener
   }, import_react106.default.createElement(InternalContext.Provider, {
@@ -107556,7 +107556,7 @@ function useDroppable(_ref2) {
   const key2 = useUniqueId(ID_PREFIX$1);
   const {
     active,
-    dispatch: dispatch2,
+    dispatch,
     over,
     measureDroppableContainers
   } = (0, import_react106.useContext)(InternalContext);
@@ -107620,7 +107620,7 @@ function useDroppable(_ref2) {
   }, [nodeRef, resizeObserver]);
   (0, import_react106.useEffect)(
     () => {
-      dispatch2({
+      dispatch({
         type: Action.RegisterDroppable,
         element: {
           id: id4,
@@ -107631,7 +107631,7 @@ function useDroppable(_ref2) {
           data: dataRef
         }
       });
-      return () => dispatch2({
+      return () => dispatch({
         type: Action.UnregisterDroppable,
         key: key2,
         id: id4
@@ -107642,7 +107642,7 @@ function useDroppable(_ref2) {
   );
   (0, import_react106.useEffect)(() => {
     if (disabled !== previous.current.disabled) {
-      dispatch2({
+      dispatch({
         type: Action.SetDroppableDisabled,
         id: id4,
         key: key2,
@@ -107650,7 +107650,7 @@ function useDroppable(_ref2) {
       });
       previous.current.disabled = disabled;
     }
-  }, [id4, key2, disabled, dispatch2]);
+  }, [id4, key2, disabled, dispatch]);
   return {
     active,
     rect,
@@ -110691,10 +110691,7 @@ function SelectionGrid({ items, columns: columns2 = 2, defaultValue: defaultValu
 // src/runtime/wikilink.tsx
 var import_react118 = __toESM(require_react(), 1);
 var WIKILINK_RE = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g;
-function opener() {
-  return globalThis.__ui4a_open_note;
-}
-function parseWikilinks(text, keyPrefix) {
+function parseWikilinks(text, keyPrefix, openNote) {
   const nodes = [];
   let lastIndex = 0;
   let m4;
@@ -110706,7 +110703,6 @@ function parseWikilinks(text, keyPrefix) {
     }
     const target = m4[1].trim();
     const alias = m4[2]?.trim() ?? target;
-    const open = opener();
     nodes.push(
       (0, import_react118.createElement)(
         "a",
@@ -110717,7 +110713,7 @@ function parseWikilinks(text, keyPrefix) {
           "data-note": target,
           onClick: (e3) => {
             e3.preventDefault();
-            open?.(target);
+            openNote?.(target);
           }
         },
         alias
@@ -110728,17 +110724,20 @@ function parseWikilinks(text, keyPrefix) {
   if (lastIndex < text.length) nodes.push(text.slice(lastIndex));
   return nodes;
 }
-function LinkText({ children }) {
-  if (typeof children === "string") return (0, import_react118.createElement)("span", null, parseWikilinks(children, "lt"));
-  if (Array.isArray(children)) {
-    return (0, import_react118.createElement)(
-      "span",
-      null,
-      children.map((c3, i3) => typeof c3 === "string" ? parseWikilinks(c3, `lt${i3}`) : c3)
-    );
-  }
-  return children;
+function createLinkText(openNote) {
+  return function LinkText2({ children }) {
+    if (typeof children === "string") return (0, import_react118.createElement)("span", null, parseWikilinks(children, "lt", openNote));
+    if (Array.isArray(children)) {
+      return (0, import_react118.createElement)(
+        "span",
+        null,
+        children.map((c3, i3) => typeof c3 === "string" ? parseWikilinks(c3, `lt${i3}`, openNote) : c3)
+      );
+    }
+    return children;
+  };
 }
+var LinkText = createLinkText();
 
 // src/vendor/genui/charts.tsx
 var charts_exports = {};
@@ -114298,7 +114297,7 @@ function createStore(reducer2, preloadedState, enhancer) {
       currentListeners = null;
     };
   }
-  function dispatch2(action) {
+  function dispatch(action) {
     if (!isPlainObject(action)) {
       throw new Error(false ? formatProdErrorMessage(7) : `Actions must be plain objects. Instead, the actual type was: '${kindOf(action)}'. You may need to add middleware to your store setup to handle dispatching other values, such as 'redux-thunk' to handle dispatching functions. See https://redux.js.org/tutorials/fundamentals/part-4-store#middleware and https://redux.js.org/tutorials/fundamentals/part-6-async-logic#using-the-redux-thunk-middleware for examples.`);
     }
@@ -114328,7 +114327,7 @@ function createStore(reducer2, preloadedState, enhancer) {
       throw new Error(false ? formatProdErrorMessage(10) : `Expected the nextReducer to be a function. Instead, received: '${kindOf(nextReducer)}`);
     }
     currentReducer = nextReducer;
-    dispatch2({
+    dispatch({
       type: actionTypes_default.REPLACE
     });
   }
@@ -114364,11 +114363,11 @@ function createStore(reducer2, preloadedState, enhancer) {
       }
     };
   }
-  dispatch2({
+  dispatch({
     type: actionTypes_default.INIT
   });
   const store = {
-    dispatch: dispatch2,
+    dispatch,
     subscribe: subscribe2,
     getState: getState7,
     replaceReducer,
@@ -114485,18 +114484,18 @@ function compose(...funcs) {
 function applyMiddleware(...middlewares) {
   return (createStore2) => (reducer2, preloadedState) => {
     const store = createStore2(reducer2, preloadedState);
-    let dispatch2 = () => {
+    let dispatch = () => {
       throw new Error(false ? formatProdErrorMessage(15) : "Dispatching while constructing your middleware is not allowed. Other middleware would not be applied to this dispatch.");
     };
     const middlewareAPI = {
       getState: store.getState,
-      dispatch: (action, ...args) => dispatch2(action, ...args)
+      dispatch: (action, ...args) => dispatch(action, ...args)
     };
     const chain = middlewares.map((middleware) => middleware(middlewareAPI));
-    dispatch2 = compose(...chain)(store.dispatch);
+    dispatch = compose(...chain)(store.dispatch);
     return {
       ...store,
-      dispatch: dispatch2
+      dispatch
     };
   };
 }
@@ -115334,9 +115333,9 @@ var castDraft = (value) => value;
 
 // node_modules/redux-thunk/dist/redux-thunk.mjs
 function createThunkMiddleware(extraArgument) {
-  const middleware = ({ dispatch: dispatch2, getState: getState7 }) => (next3) => (action) => {
+  const middleware = ({ dispatch, getState: getState7 }) => (next3) => (action) => {
     if (typeof action === "function") {
-      return action(dispatch2, getState7, extraArgument);
+      return action(dispatch, getState7, extraArgument);
     }
     return next3(action);
   };
@@ -116124,7 +116123,7 @@ var createAsyncThunk = /* @__PURE__ */ (() => {
     function actionCreator(arg, {
       signal
     } = {}) {
-      return (dispatch2, getState7, extra) => {
+      return (dispatch, getState7, extra) => {
         const requestId = options?.idGenerator ? options.idGenerator(arg) : nanoid();
         const abortController = new AbortController();
         let abortHandler;
@@ -116169,7 +116168,7 @@ var createAsyncThunk = /* @__PURE__ */ (() => {
                 once: true
               });
             });
-            dispatch2(pending(requestId, arg, options?.getPendingMeta?.({
+            dispatch(pending(requestId, arg, options?.getPendingMeta?.({
               requestId,
               arg
             }, {
@@ -116177,7 +116176,7 @@ var createAsyncThunk = /* @__PURE__ */ (() => {
               extra
             })));
             finalAction = await Promise.race([abortedPromise, Promise.resolve(payloadCreator(arg, {
-              dispatch: dispatch2,
+              dispatch,
               getState: getState7,
               extra,
               requestId,
@@ -116207,7 +116206,7 @@ var createAsyncThunk = /* @__PURE__ */ (() => {
           }
           const skipDispatch = options && !options.dispatchConditionRejection && rejected.match(finalAction) && finalAction.meta.condition;
           if (!skipDispatch) {
-            dispatch2(finalAction);
+            dispatch(finalAction);
           }
           return finalAction;
         })();
@@ -118078,7 +118077,7 @@ var useIsInChartContext = () => {
   return layout2 !== void 0;
 };
 var ReportChartSize = (props) => {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
   var widthFromProps = props.width, heightFromProps = props.height;
   var responsiveContainerCalculations = useResponsiveContainerContext();
@@ -118090,12 +118089,12 @@ var ReportChartSize = (props) => {
   }
   (0, import_react129.useEffect)(() => {
     if (!isPanorama && isPositiveNumber(width2) && isPositiveNumber(height2)) {
-      dispatch2(setChartSize({
+      dispatch(setChartSize({
         width: width2,
         height: height2
       }));
     }
-  }, [dispatch2, isPanorama, width2, height2]);
+  }, [dispatch, isPanorama, width2, height2]);
   return null;
 };
 
@@ -118685,9 +118684,9 @@ function getDefaultPosition(style2, props, margin, chartWidth, chartHeight, box)
 }
 function LegendSettingsDispatcher(_ref2) {
   var align = _ref2.align, layout2 = _ref2.layout, verticalAlign = _ref2.verticalAlign, itemSorter = _ref2.itemSorter, position2 = _ref2.position, offset4 = _ref2.offset;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   (0, import_react130.useLayoutEffect)(() => {
-    dispatch2(setLegendSettings({
+    dispatch(setLegendSettings({
       align,
       layout: layout2,
       verticalAlign,
@@ -118695,26 +118694,26 @@ function LegendSettingsDispatcher(_ref2) {
       position: position2,
       offset: offset4
     }));
-  }, [dispatch2, align, layout2, verticalAlign, itemSorter, position2, offset4]);
+  }, [dispatch, align, layout2, verticalAlign, itemSorter, position2, offset4]);
   return null;
 }
 function LegendSizeDispatcher(_ref2) {
   var width2 = _ref2.width, height2 = _ref2.height;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   (0, import_react130.useLayoutEffect)(() => {
-    dispatch2(setLegendSize({
+    dispatch(setLegendSize({
       width: width2,
       height: height2
     }));
-  }, [dispatch2, width2, height2]);
+  }, [dispatch, width2, height2]);
   (0, import_react130.useLayoutEffect)(() => {
     return () => {
-      dispatch2(setLegendSize({
+      dispatch(setLegendSize({
         width: 0,
         height: 0
       }));
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   return null;
 }
 function getWidthOrHeight(layout2, height2, width2, maxWidth2) {
@@ -128081,13 +128080,13 @@ function ZIndexLayer(_ref2) {
   var isPanorama = useIsPanorama();
   var lastPortalElementRef = (0, import_react136.useRef)(void 0);
   var registeredZIndexesRef = (0, import_react136.useRef)(/* @__PURE__ */ new Set());
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var portalElement = useAppSelector((state2) => selectZIndexPortalElement(state2, zIndex2, isPanorama));
   (0, import_react136.useLayoutEffect)(() => {
     if (!shouldRenderInPortal) {
       var registered = registeredZIndexesRef.current;
       registered.forEach((z2) => {
-        dispatch2(unregisterZIndexPortal({
+        dispatch(unregisterZIndexPortal({
           zIndex: z2
         }));
       });
@@ -128096,7 +128095,7 @@ function ZIndexLayer(_ref2) {
       return;
     }
     if (!registeredZIndexesRef.current.has(zIndex2)) {
-      dispatch2(registerZIndexPortal({
+      dispatch(registerZIndexPortal({
         zIndex: zIndex2
       }));
       registeredZIndexesRef.current.add(zIndex2);
@@ -128106,25 +128105,25 @@ function ZIndexLayer(_ref2) {
       var _registered = registeredZIndexesRef.current;
       _registered.forEach((z2) => {
         if (z2 !== zIndex2) {
-          dispatch2(unregisterZIndexPortal({
+          dispatch(unregisterZIndexPortal({
             zIndex: z2
           }));
           _registered.delete(z2);
         }
       });
     }
-  }, [dispatch2, zIndex2, shouldRenderInPortal, portalElement]);
+  }, [dispatch, zIndex2, shouldRenderInPortal, portalElement]);
   (0, import_react136.useLayoutEffect)(() => {
     var registered = registeredZIndexesRef.current;
     return () => {
       registered.forEach((z2) => {
-        dispatch2(unregisterZIndexPortal({
+        dispatch(unregisterZIndexPortal({
           zIndex: z2
         }));
       });
       registered.clear();
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   if (!shouldRenderInPortal) {
     return children;
   }
@@ -128415,7 +128414,7 @@ function _objectWithoutPropertiesLoose8(r4, e3) {
 function useTooltipSyncEventsListener() {
   var mySyncId = useAppSelector(selectSyncId);
   var myEventEmitter = useAppSelector(selectEventEmitter);
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var syncMethod = useAppSelector(selectSyncMethod);
   var tooltipTicks = useAppSelector(selectTooltipAxisTicks);
   var layout2 = useChartLayout();
@@ -128433,7 +128432,7 @@ function useTooltipSyncEventsListener() {
         return;
       }
       if (action.payload.active === false) {
-        dispatch2(setSyncInteraction({
+        dispatch(setSyncInteraction({
           active: false,
           coordinate: void 0,
           dataKey: void 0,
@@ -128453,13 +128452,13 @@ function useTooltipSyncEventsListener() {
             x: viewBox.x + (sourceWidth ? (_x - sourceX) / sourceWidth : 0) * viewBox.width,
             y: viewBox.y + (sourceHeight ? (_y - sourceY) / sourceHeight : 0) * viewBox.height
           });
-          dispatch2(_objectSpread23(_objectSpread23({}, action), {}, {
+          dispatch(_objectSpread23(_objectSpread23({}, action), {}, {
             payload: _objectSpread23(_objectSpread23({}, action.payload), {}, {
               coordinate: scaledCoordinate
             })
           }));
         } else {
-          dispatch2(action);
+          dispatch(action);
         }
         return;
       }
@@ -128483,7 +128482,7 @@ function useTooltipSyncEventsListener() {
       }
       var coordinate = action.payload.coordinate;
       if (coordinate == null || viewBox == null) {
-        dispatch2(setSyncInteraction({
+        dispatch(setSyncInteraction({
           active: false,
           coordinate: void 0,
           dataKey: void 0,
@@ -128495,7 +128494,7 @@ function useTooltipSyncEventsListener() {
         return;
       }
       if (activeTick == null) {
-        dispatch2(setSyncInteraction({
+        dispatch(setSyncInteraction({
           active: false,
           coordinate: void 0,
           dataKey: void 0,
@@ -128522,18 +128521,18 @@ function useTooltipSyncEventsListener() {
         sourceViewBox: action.payload.sourceViewBox,
         graphicalItemId: action.payload.graphicalItemId
       });
-      dispatch2(syncAction);
+      dispatch(syncAction);
     };
     eventCenter.on(TOOLTIP_SYNC_EVENT, listener2);
     return () => {
       eventCenter.off(TOOLTIP_SYNC_EVENT, listener2);
     };
-  }, [className, dispatch2, myEventEmitter, mySyncId, syncMethod, tooltipTicks, layout2, viewBox]);
+  }, [className, dispatch, myEventEmitter, mySyncId, syncMethod, tooltipTicks, layout2, viewBox]);
 }
 function useBrushSyncEventsListener() {
   var mySyncId = useAppSelector(selectSyncId);
   var myEventEmitter = useAppSelector(selectEventEmitter);
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   (0, import_react139.useEffect)(() => {
     if (mySyncId == null) {
       return noop5;
@@ -128543,20 +128542,20 @@ function useBrushSyncEventsListener() {
         return;
       }
       if (mySyncId === incomingSyncId) {
-        dispatch2(setDataStartEndIndexes(action));
+        dispatch(setDataStartEndIndexes(action));
       }
     };
     eventCenter.on(BRUSH_SYNC_EVENT, listener2);
     return () => {
       eventCenter.off(BRUSH_SYNC_EVENT, listener2);
     };
-  }, [dispatch2, myEventEmitter, mySyncId]);
+  }, [dispatch, myEventEmitter, mySyncId]);
 }
 function useSynchronisedEventsFromOtherCharts() {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   (0, import_react139.useEffect)(() => {
-    dispatch2(createEventEmitter());
-  }, [dispatch2]);
+    dispatch(createEventEmitter());
+  }, [dispatch]);
   useTooltipSyncEventsListener();
   useBrushSyncEventsListener();
 }
@@ -128716,17 +128715,17 @@ function Tooltip(outsideProps) {
   var _useAppSelector, _ref2;
   var props = resolveDefaultProps(outsideProps, defaultTooltipProps);
   var activeFromProps = props.active, allowEscapeViewBox = props.allowEscapeViewBox, animationDuration = props.animationDuration, animationEasing = props.animationEasing, content = props.content, filterNull = props.filterNull, isAnimationActive = props.isAnimationActive, offset4 = props.offset, payloadUniqBy = props.payloadUniqBy, position2 = props.position, reverseDirection = props.reverseDirection, useTranslate3d = props.useTranslate3d, wrapperStyle = props.wrapperStyle, cursor = props.cursor, shared = props.shared, trigger = props.trigger, defaultIndex = props.defaultIndex, portalFromProps = props.portal, axisId = props.axisId;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var defaultIndexAsString = typeof defaultIndex === "number" ? String(defaultIndex) : defaultIndex;
   (0, import_react140.useEffect)(() => {
-    dispatch2(setTooltipSettingsState({
+    dispatch(setTooltipSettingsState({
       shared,
       trigger,
       axisId,
       active: activeFromProps,
       defaultIndex: defaultIndexAsString
     }));
-  }, [dispatch2, shared, trigger, axisId, activeFromProps, defaultIndexAsString]);
+  }, [dispatch, shared, trigger, axisId, activeFromProps, defaultIndexAsString]);
   var viewBox = useViewBox();
   var accessibilityLayer = useAccessibilityLayer();
   var tooltipEventType = useTooltipEventType(shared);
@@ -130482,7 +130481,7 @@ var eps = 1e-5;
 var COS_45 = Math.cos(degreeToRadian(45));
 var AXIS_TYPE = "angleAxis";
 function SetAngleAxisSettings(props) {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var layout2 = usePolarChartLayout();
   var settings = (0, import_react144.useMemo)(() => {
     var children = props.children, typeFromProps = props.type, rest = _objectWithoutProperties14(props, _excluded14);
@@ -130500,11 +130499,11 @@ function SetAngleAxisSettings(props) {
     if (settings == null) {
       return noop5;
     }
-    dispatch2(addAngleAxis(settings));
+    dispatch(addAngleAxis(settings));
     return () => {
-      dispatch2(removeAngleAxis(settings));
+      dispatch(removeAngleAxis(settings));
     };
-  }, [dispatch2, settings]);
+  }, [dispatch, settings]);
   if (settingsAreSynchronized) {
     return props.children;
   }
@@ -130916,10 +130915,10 @@ function Shape(_ref2) {
 
 // node_modules/recharts/es6/context/tooltipContext.js
 var useMouseEnterItemDispatch = (onMouseEnterFromProps, dataKey, graphicalItemId) => {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   return (data, index2) => (event) => {
     onMouseEnterFromProps === null || onMouseEnterFromProps === void 0 || onMouseEnterFromProps(data, index2, event);
-    dispatch2(setActiveMouseOverItemIndex({
+    dispatch(setActiveMouseOverItemIndex({
       activeIndex: String(index2),
       activeDataKey: dataKey,
       activeCoordinate: data.tooltipPosition,
@@ -130928,17 +130927,17 @@ var useMouseEnterItemDispatch = (onMouseEnterFromProps, dataKey, graphicalItemId
   };
 };
 var useMouseLeaveItemDispatch = (onMouseLeaveFromProps) => {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   return (data, index2) => (event) => {
     onMouseLeaveFromProps === null || onMouseLeaveFromProps === void 0 || onMouseLeaveFromProps(data, index2, event);
-    dispatch2(mouseLeaveItem());
+    dispatch(mouseLeaveItem());
   };
 };
 var useMouseClickItemDispatch = (onMouseClickFromProps, dataKey, graphicalItemId) => {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   return (data, index2) => (event) => {
     onMouseClickFromProps === null || onMouseClickFromProps === void 0 || onMouseClickFromProps(data, index2, event);
-    dispatch2(setActiveClickItemIndex({
+    dispatch(setActiveClickItemIndex({
       activeIndex: String(index2),
       activeDataKey: dataKey,
       activeCoordinate: data.tooltipPosition,
@@ -130951,7 +130950,7 @@ var useMouseClickItemDispatch = (onMouseClickFromProps, dataKey, graphicalItemId
 var import_react147 = __toESM(require_react());
 function SetTooltipEntrySettings(_ref2) {
   var tooltipEntrySettings = _ref2.tooltipEntrySettings;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
   var prevSettingsRef = (0, import_react147.useRef)(null);
   (0, import_react147.useLayoutEffect)(() => {
@@ -130959,23 +130958,23 @@ function SetTooltipEntrySettings(_ref2) {
       return;
     }
     if (prevSettingsRef.current === null) {
-      dispatch2(addTooltipEntrySettings(tooltipEntrySettings));
+      dispatch(addTooltipEntrySettings(tooltipEntrySettings));
     } else if (prevSettingsRef.current !== tooltipEntrySettings) {
-      dispatch2(replaceTooltipEntrySettings({
+      dispatch(replaceTooltipEntrySettings({
         prev: prevSettingsRef.current,
         next: tooltipEntrySettings
       }));
     }
     prevSettingsRef.current = tooltipEntrySettings;
-  }, [tooltipEntrySettings, dispatch2, isPanorama]);
+  }, [tooltipEntrySettings, dispatch, isPanorama]);
   (0, import_react147.useLayoutEffect)(() => {
     return () => {
       if (prevSettingsRef.current) {
-        dispatch2(removeTooltipEntrySettings(prevSettingsRef.current));
+        dispatch(removeTooltipEntrySettings(prevSettingsRef.current));
         prevSettingsRef.current = null;
       }
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   return null;
 }
 
@@ -130983,7 +130982,7 @@ function SetTooltipEntrySettings(_ref2) {
 var import_react148 = __toESM(require_react());
 function SetLegendPayload(_ref2) {
   var legendPayload = _ref2.legendPayload;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
   var prevPayloadRef = (0, import_react148.useRef)(null);
   (0, import_react148.useLayoutEffect)(() => {
@@ -130991,28 +130990,28 @@ function SetLegendPayload(_ref2) {
       return;
     }
     if (prevPayloadRef.current === null) {
-      dispatch2(addLegendPayload(legendPayload));
+      dispatch(addLegendPayload(legendPayload));
     } else if (prevPayloadRef.current !== legendPayload) {
-      dispatch2(replaceLegendPayload({
+      dispatch(replaceLegendPayload({
         prev: prevPayloadRef.current,
         next: legendPayload
       }));
     }
     prevPayloadRef.current = legendPayload;
-  }, [dispatch2, isPanorama, legendPayload]);
+  }, [dispatch, isPanorama, legendPayload]);
   (0, import_react148.useLayoutEffect)(() => {
     return () => {
       if (prevPayloadRef.current) {
-        dispatch2(removeLegendPayload(prevPayloadRef.current));
+        dispatch(removeLegendPayload(prevPayloadRef.current));
         prevPayloadRef.current = null;
       }
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   return null;
 }
 function SetPolarLegendPayload(_ref2) {
   var legendPayload = _ref2.legendPayload;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var layout2 = useAppSelector(selectChartLayout);
   var prevPayloadRef = (0, import_react148.useRef)(null);
   (0, import_react148.useLayoutEffect)(() => {
@@ -131020,23 +131019,23 @@ function SetPolarLegendPayload(_ref2) {
       return;
     }
     if (prevPayloadRef.current === null) {
-      dispatch2(addLegendPayload(legendPayload));
+      dispatch(addLegendPayload(legendPayload));
     } else if (prevPayloadRef.current !== legendPayload) {
-      dispatch2(replaceLegendPayload({
+      dispatch(replaceLegendPayload({
         prev: prevPayloadRef.current,
         next: legendPayload
       }));
     }
     prevPayloadRef.current = legendPayload;
-  }, [dispatch2, layout2, legendPayload]);
+  }, [dispatch, layout2, legendPayload]);
   (0, import_react148.useLayoutEffect)(() => {
     return () => {
       if (prevPayloadRef.current) {
-        dispatch2(removeLegendPayload(prevPayloadRef.current));
+        dispatch(removeLegendPayload(prevPayloadRef.current));
         prevPayloadRef.current = null;
       }
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   return null;
 }
 
@@ -131451,52 +131450,52 @@ var graphicalItemsReducer = graphicalItemsSlice.reducer;
 
 // node_modules/recharts/es6/state/SetGraphicalItem.js
 var SetCartesianGraphicalItemImpl = (props) => {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var prevPropsRef = (0, import_react152.useRef)(null);
   (0, import_react152.useLayoutEffect)(() => {
     if (prevPropsRef.current === null) {
-      dispatch2(addCartesianGraphicalItem(props));
+      dispatch(addCartesianGraphicalItem(props));
     } else if (prevPropsRef.current !== props) {
-      dispatch2(replaceCartesianGraphicalItem({
+      dispatch(replaceCartesianGraphicalItem({
         prev: prevPropsRef.current,
         next: props
       }));
     }
     prevPropsRef.current = props;
-  }, [dispatch2, props]);
+  }, [dispatch, props]);
   (0, import_react152.useLayoutEffect)(() => {
     return () => {
       if (prevPropsRef.current) {
-        dispatch2(removeCartesianGraphicalItem(prevPropsRef.current));
+        dispatch(removeCartesianGraphicalItem(prevPropsRef.current));
         prevPropsRef.current = null;
       }
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   return null;
 };
 var SetCartesianGraphicalItem = /* @__PURE__ */ (0, import_react152.memo)(SetCartesianGraphicalItemImpl);
 var SetPolarGraphicalItemImpl = (props) => {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var prevPropsRef = (0, import_react152.useRef)(null);
   (0, import_react152.useLayoutEffect)(() => {
     if (prevPropsRef.current === null) {
-      dispatch2(addPolarGraphicalItem(props));
+      dispatch(addPolarGraphicalItem(props));
     } else if (prevPropsRef.current !== props) {
-      dispatch2(replacePolarGraphicalItem({
+      dispatch(replacePolarGraphicalItem({
         prev: prevPropsRef.current,
         next: props
       }));
     }
     prevPropsRef.current = props;
-  }, [dispatch2, props]);
+  }, [dispatch, props]);
   (0, import_react152.useLayoutEffect)(() => {
     return () => {
       if (prevPropsRef.current) {
-        dispatch2(removePolarGraphicalItem(prevPropsRef.current));
+        dispatch(removePolarGraphicalItem(prevPropsRef.current));
         prevPropsRef.current = null;
       }
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   return null;
 };
 var SetPolarGraphicalItem = /* @__PURE__ */ (0, import_react152.memo)(SetPolarGraphicalItemImpl);
@@ -133913,18 +133912,18 @@ RadialBar.displayName = "RadialBar";
 var import_react158 = __toESM(require_react());
 var ChartDataContextProvider = (props) => {
   var chartData = props.chartData;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
   (0, import_react158.useEffect)(() => {
     if (isPanorama) {
       return () => {
       };
     }
-    dispatch2(setChartData(chartData));
+    dispatch(setChartData(chartData));
     return () => {
-      dispatch2(setChartData(void 0));
+      dispatch(setChartData(void 0));
     };
-  }, [chartData, dispatch2, isPanorama]);
+  }, [chartData, dispatch, isPanorama]);
   return null;
 };
 
@@ -134881,7 +134880,7 @@ function TickItem(props) {
 }
 function RenderedTicksReporter(_ref2) {
   var ticks2 = _ref2.ticks, axisType = _ref2.axisType, axisId = _ref2.axisId;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var lastDispatchedTicksRef = (0, import_react160.useRef)(null);
   (0, import_react160.useEffect)(() => {
     if (axisId == null || axisType == null) {
@@ -134902,23 +134901,23 @@ function RenderedTicksReporter(_ref2) {
       axisId,
       axisType
     };
-    dispatch2(setRenderedTicks({
+    dispatch(setRenderedTicks({
       ticks: tickItems,
       axisId,
       axisType
     }));
-  }, [dispatch2, ticks2, axisId, axisType]);
+  }, [dispatch, ticks2, axisId, axisType]);
   (0, import_react160.useEffect)(() => {
     if (axisId == null || axisType == null) {
       return noop5;
     }
     return () => {
-      dispatch2(removeRenderedTicks({
+      dispatch(removeRenderedTicks({
         axisId,
         axisType
       }));
     };
-  }, [dispatch2, axisId, axisType]);
+  }, [dispatch, axisId, axisType]);
   return null;
 }
 var Ticks2 = /* @__PURE__ */ (0, import_react160.forwardRef)((props, ref) => {
@@ -138092,7 +138091,7 @@ function _objectWithoutPropertiesLoose31(r4, e3) {
   return t3;
 }
 function SetXAxisSettings(props) {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var prevSettingsRef = (0, import_react168.useRef)(null);
   var layout2 = useCartesianChartLayout();
   var typeFromProps = props.type, restProps = _objectWithoutProperties31(props, _excluded46);
@@ -138110,23 +138109,23 @@ function SetXAxisSettings(props) {
       return;
     }
     if (prevSettingsRef.current === null) {
-      dispatch2(addXAxis(settings));
+      dispatch(addXAxis(settings));
     } else if (prevSettingsRef.current !== settings) {
-      dispatch2(replaceXAxis({
+      dispatch(replaceXAxis({
         prev: prevSettingsRef.current,
         next: settings
       }));
     }
     prevSettingsRef.current = settings;
-  }, [settings, dispatch2]);
+  }, [settings, dispatch]);
   (0, import_react168.useLayoutEffect)(() => {
     return () => {
       if (prevSettingsRef.current) {
-        dispatch2(removeXAxis(prevSettingsRef.current));
+        dispatch(removeXAxis(prevSettingsRef.current));
         prevSettingsRef.current = null;
       }
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   return null;
 }
 var XAxisImpl = (props) => {
@@ -138135,7 +138134,7 @@ var XAxisImpl = (props) => {
   var labelRef = (0, import_react168.useRef)(null);
   var viewBox = useAppSelector(selectAxisViewBox);
   var isPanorama = useIsPanorama();
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var axisType = "xAxis";
   var cartesianTickItems = useAppSelector((state2) => selectTicksOfAxis(state2, axisType, xAxisId, isPanorama));
   var axisSize = useAppSelector((state2) => selectXAxisSize(state2, xAxisId));
@@ -138151,7 +138150,7 @@ var XAxisImpl = (props) => {
     }
     var updatedXAxisHeight = axisComponent.getCalculatedHeight();
     if (Math.round(axisSize.height) !== Math.round(updatedXAxisHeight)) {
-      dispatch2(updateXAxisHeight({
+      dispatch(updateXAxisHeight({
         id: xAxisId,
         height: updatedXAxisHeight
       }));
@@ -138162,7 +138161,7 @@ var XAxisImpl = (props) => {
     // To re-run this effect when ticks change, we can depend on the ticks array from the store.
     cartesianTickItems,
     axisSize,
-    dispatch2,
+    dispatch,
     label,
     xAxisId,
     height2,
@@ -138317,7 +138316,7 @@ function _objectWithoutPropertiesLoose32(r4, e3) {
   return t3;
 }
 function SetYAxisSettings(props) {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var prevSettingsRef = (0, import_react169.useRef)(null);
   var layout2 = useCartesianChartLayout();
   var typeFromProps = props.type, restProps = _objectWithoutProperties32(props, _excluded47);
@@ -138335,23 +138334,23 @@ function SetYAxisSettings(props) {
       return;
     }
     if (prevSettingsRef.current === null) {
-      dispatch2(addYAxis(settings));
+      dispatch(addYAxis(settings));
     } else if (prevSettingsRef.current !== settings) {
-      dispatch2(replaceYAxis({
+      dispatch(replaceYAxis({
         prev: prevSettingsRef.current,
         next: settings
       }));
     }
     prevSettingsRef.current = settings;
-  }, [settings, dispatch2]);
+  }, [settings, dispatch]);
   (0, import_react169.useLayoutEffect)(() => {
     return () => {
       if (prevSettingsRef.current) {
-        dispatch2(removeYAxis(prevSettingsRef.current));
+        dispatch(removeYAxis(prevSettingsRef.current));
         prevSettingsRef.current = null;
       }
     };
-  }, [dispatch2]);
+  }, [dispatch]);
   return null;
 }
 function YAxisImpl(props) {
@@ -138360,7 +138359,7 @@ function YAxisImpl(props) {
   var labelRef = (0, import_react169.useRef)(null);
   var viewBox = useAppSelector(selectAxisViewBox);
   var isPanorama = useIsPanorama();
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var axisType = "yAxis";
   var axisSize = useAppSelector((state2) => selectYAxisSize(state2, yAxisId));
   var position2 = useAppSelector((state2) => selectYAxisPosition(state2, yAxisId));
@@ -138376,7 +138375,7 @@ function YAxisImpl(props) {
     }
     var updatedYAxisWidth = axisComponent.getCalculatedWidth();
     if (Math.round(axisSize.width) !== Math.round(updatedYAxisWidth)) {
-      dispatch2(updateYAxisWidth({
+      dispatch(updateYAxisWidth({
         id: yAxisId,
         width: updatedYAxisWidth
       }));
@@ -138387,7 +138386,7 @@ function YAxisImpl(props) {
     // To re-run this effect when ticks change, we can depend on the ticks array from the store.
     cartesianTickItems,
     axisSize,
-    dispatch2,
+    dispatch,
     label,
     yAxisId,
     width2,
@@ -139168,14 +139167,14 @@ function RechartsStoreProvider(_ref2) {
 var import_react171 = __toESM(require_react());
 function ReportMainChartPropsImpl(_ref2) {
   var layout2 = _ref2.layout, margin = _ref2.margin;
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var isPanorama = useIsPanorama();
   (0, import_react171.useEffect)(() => {
     if (!isPanorama) {
-      dispatch2(setLayout(layout2));
-      dispatch2(setMargin(margin));
+      dispatch(setLayout(layout2));
+      dispatch(setMargin(margin));
     }
-  }, [dispatch2, isPanorama, layout2, margin]);
+  }, [dispatch, isPanorama, layout2, margin]);
   return null;
 }
 var ReportMainChartProps = /* @__PURE__ */ (0, import_react171.memo)(ReportMainChartPropsImpl, propsAreEqual);
@@ -139183,20 +139182,20 @@ var ReportMainChartProps = /* @__PURE__ */ (0, import_react171.memo)(ReportMainC
 // node_modules/recharts/es6/state/ReportChartProps.js
 var import_react172 = __toESM(require_react());
 function ReportChartProps(props) {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   (0, import_react172.useEffect)(() => {
-    dispatch2(updateOptions(props));
-  }, [dispatch2, props]);
+    dispatch(updateOptions(props));
+  }, [dispatch, props]);
   return null;
 }
 
 // node_modules/recharts/es6/state/ReportEventSettings.js
 var import_react173 = __toESM(require_react());
 var ReportEventSettingsImpl = (props) => {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   (0, import_react173.useEffect)(() => {
-    dispatch2(setEventSettings(props));
-  }, [dispatch2, props]);
+    dispatch(setEventSettings(props));
+  }, [dispatch, props]);
   return null;
 };
 var ReportEventSettings = /* @__PURE__ */ (0, import_react173.memo)(ReportEventSettingsImpl, propsAreEqual);
@@ -139215,22 +139214,22 @@ var import_react174 = __toESM(require_react());
 function ZIndexSvgPortal(_ref2) {
   var zIndex2 = _ref2.zIndex, isPanorama = _ref2.isPanorama;
   var ref = (0, import_react174.useRef)(null);
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   (0, import_react174.useLayoutEffect)(() => {
     if (ref.current) {
-      dispatch2(registerZIndexPortalElement({
+      dispatch(registerZIndexPortalElement({
         zIndex: zIndex2,
         element: ref.current,
         isPanorama
       }));
     }
     return () => {
-      dispatch2(unregisterZIndexPortalElement({
+      dispatch(unregisterZIndexPortalElement({
         zIndex: zIndex2,
         isPanorama
       }));
     };
-  }, [dispatch2, zIndex2, isPanorama]);
+  }, [dispatch, zIndex2, isPanorama]);
   return /* @__PURE__ */ React150.createElement("g", {
     tabIndex: -1,
     ref,
@@ -139409,7 +139408,7 @@ function _arrayWithHoles22(r4) {
   if (Array.isArray(r4)) return r4;
 }
 function useReportScale() {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var _useState = (0, import_react176.useState)(null), _useState2 = _slicedToArray22(_useState, 2), ref = _useState2[0], setRef4 = _useState2[1];
   var scale2 = useAppSelector(selectContainerScale);
   (0, import_react176.useEffect)(() => {
@@ -139419,9 +139418,9 @@ function useReportScale() {
     var rect = ref.getBoundingClientRect();
     var newScale = rect.width / ref.offsetWidth;
     if (isWellBehavedNumber(newScale) && newScale !== scale2) {
-      dispatch2(setScale(newScale));
+      dispatch(setScale(newScale));
     }
-  }, [ref, dispatch2, scale2]);
+  }, [ref, dispatch, scale2]);
   return setRef4;
 }
 
@@ -139661,7 +139660,7 @@ function getWrapperDivComponent(responsive) {
 var RechartsWrapper = /* @__PURE__ */ (0, import_react177.forwardRef)((props, ref) => {
   var children = props.children, className = props.className, heightFromProps = props.height, onClick = props.onClick, onContextMenu = props.onContextMenu, onDoubleClick = props.onDoubleClick, onMouseDown = props.onMouseDown, onMouseEnter = props.onMouseEnter, onMouseLeave = props.onMouseLeave, onMouseMove = props.onMouseMove, onMouseUp = props.onMouseUp, onTouchEnd = props.onTouchEnd, onTouchMove = props.onTouchMove, onTouchStart = props.onTouchStart, style2 = props.style, widthFromProps = props.width, responsive = props.responsive, _props$dispatchTouchE = props.dispatchTouchEvents, dispatchTouchEvents = _props$dispatchTouchE === void 0 ? true : _props$dispatchTouchE;
   var containerRef = (0, import_react177.useRef)(null);
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   var _useState5 = (0, import_react177.useState)(null), _useState6 = _slicedToArray23(_useState5, 2), tooltipPortal = _useState6[0], setTooltipPortal = _useState6[1];
   var _useState7 = (0, import_react177.useState)(null), _useState8 = _slicedToArray23(_useState7, 2), legendPortal = _useState8[0], setLegendPortal = _useState8[1];
   var setScaleRef = useReportScale();
@@ -139680,87 +139679,87 @@ var RechartsWrapper = /* @__PURE__ */ (0, import_react177.forwardRef)((props, re
     }
   }, [setScaleRef, ref, setTooltipPortal, setLegendPortal]);
   var myOnClick = (0, import_react177.useCallback)((e3) => {
-    dispatch2(mouseClickAction(e3));
-    dispatch2(externalEventAction({
+    dispatch(mouseClickAction(e3));
+    dispatch(externalEventAction({
       handler: onClick,
       reactEvent: e3
     }));
-  }, [dispatch2, onClick]);
+  }, [dispatch, onClick]);
   var myOnMouseEnter = (0, import_react177.useCallback)((e3) => {
-    dispatch2(mouseMoveAction(e3));
-    dispatch2(externalEventAction({
+    dispatch(mouseMoveAction(e3));
+    dispatch(externalEventAction({
       handler: onMouseEnter,
       reactEvent: e3
     }));
-  }, [dispatch2, onMouseEnter]);
+  }, [dispatch, onMouseEnter]);
   var myOnMouseLeave = (0, import_react177.useCallback)((e3) => {
-    dispatch2(mouseLeaveChart());
-    dispatch2(externalEventAction({
+    dispatch(mouseLeaveChart());
+    dispatch(externalEventAction({
       handler: onMouseLeave,
       reactEvent: e3
     }));
-  }, [dispatch2, onMouseLeave]);
+  }, [dispatch, onMouseLeave]);
   var myOnMouseMove = (0, import_react177.useCallback)((e3) => {
-    dispatch2(mouseMoveAction(e3));
-    dispatch2(externalEventAction({
+    dispatch(mouseMoveAction(e3));
+    dispatch(externalEventAction({
       handler: onMouseMove,
       reactEvent: e3
     }));
-  }, [dispatch2, onMouseMove]);
+  }, [dispatch, onMouseMove]);
   var onFocus = (0, import_react177.useCallback)(() => {
-    dispatch2(focusAction());
-  }, [dispatch2]);
+    dispatch(focusAction());
+  }, [dispatch]);
   var onBlur = (0, import_react177.useCallback)(() => {
-    dispatch2(blurAction());
-  }, [dispatch2]);
+    dispatch(blurAction());
+  }, [dispatch]);
   var onKeyDown = (0, import_react177.useCallback)((e3) => {
-    dispatch2(keyDownAction(e3.key));
-  }, [dispatch2]);
+    dispatch(keyDownAction(e3.key));
+  }, [dispatch]);
   var myOnContextMenu = (0, import_react177.useCallback)((e3) => {
-    dispatch2(externalEventAction({
+    dispatch(externalEventAction({
       handler: onContextMenu,
       reactEvent: e3
     }));
-  }, [dispatch2, onContextMenu]);
+  }, [dispatch, onContextMenu]);
   var myOnDoubleClick = (0, import_react177.useCallback)((e3) => {
-    dispatch2(externalEventAction({
+    dispatch(externalEventAction({
       handler: onDoubleClick,
       reactEvent: e3
     }));
-  }, [dispatch2, onDoubleClick]);
+  }, [dispatch, onDoubleClick]);
   var myOnMouseDown = (0, import_react177.useCallback)((e3) => {
-    dispatch2(externalEventAction({
+    dispatch(externalEventAction({
       handler: onMouseDown,
       reactEvent: e3
     }));
-  }, [dispatch2, onMouseDown]);
+  }, [dispatch, onMouseDown]);
   var myOnMouseUp = (0, import_react177.useCallback)((e3) => {
-    dispatch2(externalEventAction({
+    dispatch(externalEventAction({
       handler: onMouseUp,
       reactEvent: e3
     }));
-  }, [dispatch2, onMouseUp]);
+  }, [dispatch, onMouseUp]);
   var myOnTouchStart = (0, import_react177.useCallback)((e3) => {
-    dispatch2(externalEventAction({
+    dispatch(externalEventAction({
       handler: onTouchStart,
       reactEvent: e3
     }));
-  }, [dispatch2, onTouchStart]);
+  }, [dispatch, onTouchStart]);
   var myOnTouchMove = (0, import_react177.useCallback)((e3) => {
     if (dispatchTouchEvents) {
-      dispatch2(touchEventAction(e3));
+      dispatch(touchEventAction(e3));
     }
-    dispatch2(externalEventAction({
+    dispatch(externalEventAction({
       handler: onTouchMove,
       reactEvent: e3
     }));
-  }, [dispatch2, dispatchTouchEvents, onTouchMove]);
+  }, [dispatch, dispatchTouchEvents, onTouchMove]);
   var myOnTouchEnd = (0, import_react177.useCallback)((e3) => {
-    dispatch2(externalEventAction({
+    dispatch(externalEventAction({
       handler: onTouchEnd,
       reactEvent: e3
     }));
-  }, [dispatch2, onTouchEnd]);
+  }, [dispatch, onTouchEnd]);
   var WrapperDiv = getWrapperDivComponent(responsive);
   return /* @__PURE__ */ React152.createElement(TooltipPortalContext.Provider, {
     value: tooltipPortal
@@ -139997,10 +139996,10 @@ var React157 = __toESM(require_react());
 // node_modules/recharts/es6/state/ReportPolarOptions.js
 var import_react182 = __toESM(require_react());
 function ReportPolarOptions(props) {
-  var dispatch2 = useAppDispatch();
+  var dispatch = useAppDispatch();
   (0, import_react182.useEffect)(() => {
-    dispatch2(updatePolarOptions(props));
-  }, [dispatch2, props]);
+    dispatch(updatePolarOptions(props));
+  }, [dispatch, props]);
   return null;
 }
 
@@ -140582,25 +140581,32 @@ var XAxis2 = XAxis;
 var YAxis2 = YAxis;
 
 // src/runtime/macaron-chat.ts
-var dispatch = (text) => {
-  const bridge = globalThis["$app/chat"];
-  if (bridge) {
-    bridge(text);
-    return;
-  }
+var bridgeStack = [];
+function pushChatBridge(dispatch) {
+  bridgeStack.push(dispatch);
+  return () => {
+    const i3 = bridgeStack.indexOf(dispatch);
+    if (i3 !== -1) bridgeStack.splice(i3, 1);
+  };
+}
+function fallbackToClipboard(text) {
   try {
     navigator.clipboard?.writeText(text);
     console.info("[ui4a] sendUserMessage (no active bridge \u2014 copied to clipboard):", text);
   } catch {
     console.warn("[ui4a] sendUserMessage dropped (no bridge, no clipboard):", text);
   }
-};
-function sendUserMessage(prompt) {
-  if (typeof prompt !== "string") throw new TypeError("sendUserMessage expects a string prompt");
-  dispatch(prompt);
+}
+function createSendUserMessage(dispatch) {
+  return function sendUserMessage(prompt) {
+    if (typeof prompt !== "string") throw new TypeError("sendUserMessage expects a string prompt");
+    const target = dispatch ?? bridgeStack[bridgeStack.length - 1];
+    if (target) target(prompt);
+    else fallbackToClipboard(prompt);
+  };
 }
 var g2 = globalThis;
-if (typeof g2.sendUserMessage === "undefined") g2.sendUserMessage = sendUserMessage;
+if (typeof g2.sendUserMessage === "undefined") g2.sendUserMessage = createSendUserMessage();
 
 // src/runtime/compiler.ts
 var REGISTRY = {
@@ -140609,14 +140615,12 @@ var REGISTRY = {
   "react/jsx-dev-runtime": JSXRuntime,
   "react-dom": ReactDOMClient,
   "react-dom/client": ReactDOMClient,
-  "$macaron/ui": { ...source_exports, LinkText },
   "$macaron/ui/charts": charts_exports,
-  "$macaron/chat": { sendUserMessage },
   "lucide-react": lucide_react_exports,
   "motion/react": react_exports,
   "motion": react_exports
 };
-function compileWidget(code) {
+function compileWidget(code, bridge = {}) {
   const { code: js } = transform(code, {
     transforms: ["typescript", "jsx", "imports"],
     jsxRuntime: "automatic",
@@ -140624,8 +140628,13 @@ function compileWidget(code) {
   });
   const moduleExports = {};
   const moduleObj = { exports: moduleExports };
+  const registry = {
+    ...REGISTRY,
+    "$macaron/ui": { ...source_exports, LinkText: createLinkText(bridge.openNote) },
+    "$macaron/chat": { sendUserMessage: createSendUserMessage(bridge.sendUserMessage) }
+  };
   const require2 = (specifier) => {
-    if (specifier in REGISTRY) return REGISTRY[specifier];
+    if (specifier in registry) return registry[specifier];
     throw new Error(
       `[ui4a] Cannot resolve import "${specifier}". UI4A widgets may only import from react, $macaron/ui, $macaron/ui/charts, $macaron/chat, lucide-react, and motion/react.`
     );
@@ -149097,51 +149106,40 @@ function scopeAtRuleBody(body) {
 // src/runtime/WidgetHost.tsx
 var import_jsx_runtime63 = __toESM(require_jsx_runtime(), 1);
 function WidgetHost({ code, onUserIntent, app }) {
-  const containerRef = (0, import_react192.useRef)(null);
-  const rootRef = (0, import_react192.useRef)(null);
   const [status, setStatus] = (0, import_react192.useState)("idle");
   const [error, setError] = (0, import_react192.useState)(null);
   const [widget, setWidget] = (0, import_react192.useState)(null);
+  const [compileId, setCompileId] = (0, import_react192.useState)(0);
   (0, import_react192.useEffect)(() => {
     try {
-      setWidget(compileWidget(code));
+      setWidget(
+        compileWidget(code, {
+          sendUserMessage: onUserIntent ? (prompt) => onUserIntent(prompt) : void 0,
+          openNote: app ? (target) => void app.workspace.openLinkText(target, "", false) : void 0
+        })
+      );
       setStatus("ready");
       setError(null);
+      setCompileId((n4) => n4 + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
       setStatus("error");
     }
-  }, [code]);
+  }, [code, onUserIntent, app]);
   (0, import_react192.useEffect)(() => {
-    const g3 = globalThis;
-    g3["$app/chat"] = (prompt) => onUserIntent?.(prompt);
-    if (app) {
-      g3.__ui4a_open_note = (target) => app.workspace.openLinkText(target, "", false);
-    }
-    return () => {
-      delete g3["$app/chat"];
-      delete g3.__ui4a_open_note;
-    };
-  }, [onUserIntent, app]);
+    if (!onUserIntent) return;
+    return pushChatBridge(onUserIntent);
+  }, [onUserIntent]);
   (0, import_react192.useEffect)(() => {
-    if (status !== "ready" || !widget || !containerRef.current) return;
-    const root = ReactDOMClient2.createRoot(containerRef.current);
-    rootRef.current = root;
-    root.render(
-      /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(ErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(widget.App, {}) })
-    );
+    if (status !== "ready" || !widget) return;
     void refreshStyles();
     const id4 = setTimeout(() => void refreshStyles(), 0);
-    return () => {
-      clearTimeout(id4);
-      root.unmount();
-      rootRef.current = null;
-    };
+    return () => clearTimeout(id4);
   }, [status, widget]);
   if (status === "error") {
     return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)("pre", { className: "ui4a-error", children: error });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)("div", { className: "ui4a-widget", ref: containerRef });
+  return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)("div", { className: "ui4a-widget", children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(ErrorBoundary, { children: widget ? /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(widget.App, {}) : null }, compileId) });
 }
 function mountWidget(el, code, onUserIntent, app) {
   const root = ReactDOMClient2.createRoot(el);
