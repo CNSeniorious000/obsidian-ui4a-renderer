@@ -5,8 +5,10 @@
  * `globalThis`. The previous bridge exposed `__ui4a_theme` as a bare string,
  * which widgets could read once but never subscribe to — so an Obsidian theme
  * switch left mounted widgets stale until a full remount. This module keeps
- * the string for one-shot reads and adds `__ui4a_on_theme(cb)`, an unsubscribe-
- * returning subscription that fires synchronously on every theme flip.
+ * the string for one-shot reads and adds two functions, making the bridge
+ * bidirectional: `__ui4a_on_theme(cb)` (host → widget, fires synchronously on
+ * every flip) and `__ui4a_set_theme(pref)` (widget → host, routed into
+ * Obsidian's own theme setting so every widget sees the change).
  *
  * `dark:` utilities don't need this — they key off Obsidian's own
  * `body.theme-dark` class in CSS, so they repaint on their own. The store is
@@ -32,6 +34,28 @@ export function onThemeChange(listener: ThemeListener): () => void {
   };
 }
 
+/** Widget-facing preference: an explicit scheme, or "system" to follow the OS. */
+export type UI4AThemePreference = UI4ATheme | "system";
+
+/** Host-side applier, injected by main.ts (writes Obsidian's theme config). */
+let applyPreference: ((pref: UI4AThemePreference) => void) | null = null;
+
+export function initThemeBridge(apply: (pref: UI4AThemePreference) => void): void {
+  applyPreference = apply;
+}
+
+/**
+ * Widget → host direction of the bridge. A widget calls
+ * `globalThis.__ui4a_set_theme("dark" | "light" | "system")` (e.g. from its own
+ * theme toggle); we route the request to Obsidian, and the resulting body-class
+ * change re-enters syncTheme, so the new theme flows back to every subscriber
+ * through the same path as a host-initiated switch. Single source of truth:
+ * Obsidian's body class.
+ */
+export function setThemePreference(pref: UI4AThemePreference): void {
+  applyPreference?.(pref);
+}
+
 /**
  * Re-read the body class, refresh the globalThis bridge, and notify
  * subscribers if the theme actually changed. Idempotent — safe to call from
@@ -42,6 +66,7 @@ export function syncTheme(): UI4ATheme {
   const g = globalThis as unknown as Record<string, unknown>;
   g.__ui4a_theme = theme;
   g.__ui4a_on_theme = onThemeChange;
+  g.__ui4a_set_theme = setThemePreference;
   if (theme !== current) {
     current = theme;
     listeners.forEach((listener) => listener(theme));

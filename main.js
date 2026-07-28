@@ -149217,11 +149217,19 @@ function onThemeChange(listener2) {
     listeners.delete(listener2);
   };
 }
+var applyPreference = null;
+function initThemeBridge(apply) {
+  applyPreference = apply;
+}
+function setThemePreference(pref) {
+  applyPreference?.(pref);
+}
 function syncTheme() {
   const theme4 = getTheme();
   const g3 = globalThis;
   g3.__ui4a_theme = theme4;
   g3.__ui4a_on_theme = onThemeChange;
+  g3.__ui4a_set_theme = setThemePreference;
   if (theme4 !== current3) {
     current3 = theme4;
     listeners.forEach((listener2) => listener2(theme4));
@@ -149252,6 +149260,9 @@ var UI4ARendererPlugin = class extends import_obsidian2.Plugin {
       attributes: true,
       attributeFilter: ["class"],
       childList: true
+    });
+    initThemeBridge((pref) => {
+      this.app.vault.setConfig("theme", pref === "dark" ? "obsidian" : pref === "light" ? "moonstone" : "system");
     });
     syncTheme();
     this.registerEvent(this.app.workspace.on("css-change", syncTheme));
