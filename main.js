@@ -23484,7 +23484,7 @@ __export(main_exports, {
   default: () => UI4ARendererPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian2 = require("obsidian");
+var import_obsidian3 = require("obsidian");
 
 // src/codeblock-processor.ts
 var import_obsidian = require("obsidian");
@@ -149199,11 +149199,31 @@ function appendIntentCallout(plugin, prompt) {
   new import_obsidian.Notice("\u5DF2\u8BB0\u5F55 UI4A \u610F\u56FE\u5230\u7B14\u8BB0");
 }
 
+// src/settings-tab.ts
+var import_obsidian2 = require("obsidian");
+var UI4ASettingTab = class extends import_obsidian2.PluginSettingTab {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+  display() {
+    this.containerEl.empty();
+    new import_obsidian2.Setting(this.containerEl).setName("Record interactions in the note").setDesc(
+      "When a widget calls sendUserMessage, append a > [!user-intent] callout to the note. Turn this off to only show a transient notice and never write to the vault."
+    ).addToggle(
+      (toggle) => toggle.setValue(this.plugin.settings.appendCallout).onChange(async (value) => {
+        this.plugin.settings.appendCallout = value;
+        await this.plugin.saveSettings();
+      })
+    );
+  }
+};
+
 // src/main.ts
 var DEFAULT_SETTINGS = {
   appendCallout: true
 };
-var UI4ARendererPlugin = class extends import_obsidian2.Plugin {
+var UI4ARendererPlugin = class extends import_obsidian3.Plugin {
   settings = DEFAULT_SETTINGS;
   styleObserver = null;
   async onload() {
@@ -149213,6 +149233,7 @@ var UI4ARendererPlugin = class extends import_obsidian2.Plugin {
     styleLink.rel = "stylesheet";
     styleLink.href = this.app.vault.adapter.getResourcePath(`${this.manifest.dir}/styles.css`);
     document.head.appendChild(styleLink);
+    this.addSettingTab(new UI4ASettingTab(this.app, this));
     registerCodeblockProcessor(this);
     this.styleObserver = new MutationObserver(() => {
       void refreshStyles();

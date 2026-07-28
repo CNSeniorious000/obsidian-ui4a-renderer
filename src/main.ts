@@ -1,5 +1,6 @@
 import { Plugin } from "obsidian";
 import { registerCodeblockProcessor } from "./codeblock-processor";
+import { UI4ASettingTab } from "./settings-tab";
 import { refreshStyles } from "./styling";
 
 const DEFAULT_SETTINGS = {
@@ -20,6 +21,8 @@ export default class UI4ARendererPlugin extends Plugin {
     styleLink.rel = "stylesheet";
     styleLink.href = this.app.vault.adapter.getResourcePath(`${this.manifest.dir}/styles.css`);
     document.head.appendChild(styleLink);
+
+    this.addSettingTab(new UI4ASettingTab(this.app, this));
 
     // Register the ```ui4a codeblock processor.
     registerCodeblockProcessor(this);

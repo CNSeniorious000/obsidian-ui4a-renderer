@@ -60,6 +60,7 @@ src/
   main.ts                 plugin entry: codeblock processor, styles, UnoCSS observer
   codeblock-processor.ts  ```ui4a processor → mounts WidgetHost, bridges sendUserMessage→callout
   styling.ts              UnoCSS runtime engine (preset-wind3), scoped to .genui-root
+  settings-tab.ts         settings UI for the appendCallout toggle
   runtime/
     compiler.ts           sucrase transpile + require() shim registry → App component
     WidgetHost.tsx        compile + mount + ErrorBoundary + $app/chat bridge
