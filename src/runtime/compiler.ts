@@ -25,13 +25,13 @@ import * as JSXRuntime from "react/jsx-runtime";
 // hooks resolved to (via REGISTRY) — avoids "Invalid hook call" from two copies.
 export { React, ReactDOMClient };
 
-// $macaron/ui — the 118-export registry, plus the Obsidian-only LinkText helper.
+// $macaron/ui — the 118-export registry; LinkText is injected per widget below.
 import * as MacaronUI from "../vendor/macaron/source";
-import { LinkText } from "./wikilink";
+import { createLinkText, type OpenNoteFn } from "./wikilink";
 // $macaron/ui/charts — Recharts-backed chart primitives.
 import * as MacaronCharts from "../vendor/genui/charts";
-// $macaron/chat — sendUserMessage bridge.
-import { sendUserMessage } from "./macaron-chat";
+// $macaron/chat — sendUserMessage bridge factory.
+import { createSendUserMessage } from "./macaron-chat";
 // lucide-react icons.
 import * as LucideReact from "lucide-react";
 // motion/react — animation primitives (motion, AnimatePresence, …).
@@ -45,9 +45,22 @@ export type CompiledWidget = {
 };
 
 /**
- * Bare-specifier → module registry. Each entry is what a widget's
- * `import … from "<specifier>"` resolves to. We expose the React namespace
- * (so `useState` etc. destructure correctly) plus the named-export namespaces.
+ * Per-widget host capabilities, injected at compile time so each widget's
+ * `$macaron/chat` and `$macaron/ui` (LinkText) imports close over its own
+ * bridge. Two widgets on the same page never share — and never fight over —
+ * a global singleton.
+ */
+export type WidgetBridge = {
+  /** Routes sendUserMessage(prompt) to the mounting widget's host. */
+  sendUserMessage?: (prompt: string) => void;
+  /** Opens a [[wikilink]] target; typically app.workspace.openLinkText. */
+  openNote?: OpenNoteFn;
+};
+
+/**
+ * Bare-specifier → module registry, shared across widgets. Entries whose
+ * behavior depends on the mounting widget ($macaron/chat, LinkText inside
+ * $macaron/ui) are NOT here — they are added per compile in compileWidget.
  */
 const REGISTRY: Record<string, unknown> = {
   react: React,
@@ -55,9 +68,7 @@ const REGISTRY: Record<string, unknown> = {
   "react/jsx-dev-runtime": JSXRuntime,
   "react-dom": ReactDOMClient,
   "react-dom/client": ReactDOMClient,
-  "$macaron/ui": { ...MacaronUI, LinkText },
   "$macaron/ui/charts": MacaronCharts,
-  "$macaron/chat": { sendUserMessage },
   "lucide-react": LucideReact,
   "motion/react": Motion,
   "motion": Motion,
@@ -69,7 +80,7 @@ const REGISTRY: Record<string, unknown> = {
  *
  * Synchronous: one in-process pass. No wasm, no worker, no init step.
  */
-export function compileWidget(code: string): CompiledWidget {
+export function compileWidget(code: string, bridge: WidgetBridge = {}): CompiledWidget {
   // typescript: strip TS types. jsx: JSX → automatic runtime (react/jsx-runtime).
   // imports: ESM → CommonJS so the result runs under a `require()` shim.
   // production: use react/jsx-runtime (not jsx-dev-runtime), drop dev markers.
@@ -82,10 +93,19 @@ export function compileWidget(code: string): CompiledWidget {
   const moduleExports: Record<string, unknown> = {};
   const moduleObj = { exports: moduleExports };
 
-  // `require` resolves bare specifiers against the bundled registry. Any import
+  // Per-widget registry entries: each widget's imports close over its own
+  // bridge, so concurrent widgets can't misroute into each other and one
+  // widget's unmount can't sever another's bridge.
+  const registry: Record<string, unknown> = {
+    ...REGISTRY,
+    "$macaron/ui": { ...MacaronUI, LinkText: createLinkText(bridge.openNote) },
+    "$macaron/chat": { sendUserMessage: createSendUserMessage(bridge.sendUserMessage) },
+  };
+
+  // `require` resolves bare specifiers against the registry. Any import
   // not in the registry (e.g. a stray `import _ from "foo"`) throws clearly.
   const require = (specifier: string): unknown => {
-    if (specifier in REGISTRY) return REGISTRY[specifier];
+    if (specifier in registry) return registry[specifier];
     throw new Error(
       `[ui4a] Cannot resolve import "${specifier}". UI4A widgets may only import from react, $macaron/ui, $macaron/ui/charts, $macaron/chat, lucide-react, and motion/react.`
     );
