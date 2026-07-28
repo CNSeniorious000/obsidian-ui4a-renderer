@@ -1,6 +1,7 @@
 import { Plugin } from "obsidian";
 import { registerCodeblockProcessor } from "./codeblock-processor";
 import { refreshStyles } from "./styling";
+import { syncTheme } from "./theme";
 
 const DEFAULT_SETTINGS = {
   appendCallout: true,
@@ -37,17 +38,14 @@ export default class UI4ARendererPlugin extends Plugin {
     });
 
     // Expose the current color scheme so widgets can read it at runtime
-    // (globalThis.__ui4a_theme === "dark" | "light") and generate theme-aware UI.
-    // Updated on theme change via multiple signals (css-change is not always fired).
-    const exposeTheme = () => {
-      (globalThis as unknown as Record<string, string>).__ui4a_theme =
-        document.body.classList.contains("theme-dark") ? "dark" : "light";
-    };
-    exposeTheme();
-    this.registerEvent(this.app.workspace.on("css-change", exposeTheme));
+    // (globalThis.__ui4a_theme === "dark" | "light") and subscribe to flips
+    // (globalThis.__ui4a_on_theme(cb) → unsubscribe). Updated on theme change
+    // via multiple signals (css-change is not always fired).
+    syncTheme();
+    this.registerEvent(this.app.workspace.on("css-change", syncTheme));
     // Belt-and-suspenders: the theme <body> class changes before css-change fires
     // sometimes; observe it directly so widgets never see a stale value.
-    const themeObserver = new MutationObserver(exposeTheme);
+    const themeObserver = new MutationObserver(syncTheme);
     themeObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
     this.register(() => themeObserver.disconnect());
 
