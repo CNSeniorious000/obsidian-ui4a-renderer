@@ -108,16 +108,16 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(({ value, v
   const emptyState = (
     <button
       type="button"
-      className={cn("flex w-full cursor-pointer flex-col items-center justify-center gap-3 p-6 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EE5C2A]/30", variant === "avatar" ? "aspect-square rounded-full" : "min-h-[168px]")}
+      className={cn("flex w-full cursor-pointer flex-col items-center justify-center gap-3 p-6 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30", variant === "avatar" ? "aspect-square rounded-full" : "min-h-[168px]")}
       onClick={openFileDialog}
       disabled={disabled}
     >
-      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#EE5C2A]/10 text-[#EE5C2A]">{imageVariant ? <ImageIcon className="h-6 w-6" aria-hidden="true" /> : <UploadCloud className="h-6 w-6" aria-hidden="true" />}</span>
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">{imageVariant ? <ImageIcon className="h-6 w-6" aria-hidden="true" /> : <UploadCloud className="h-6 w-6" aria-hidden="true" />}</span>
       <span className="space-y-1">
-        <span className="block text-sm font-semibold text-[#171411]">{heading}</span>
-        <span className="block text-xs leading-5 text-[#8A7E72]">{detailText}</span>
+        <span className="block text-sm font-semibold text-foreground">{heading}</span>
+        <span className="block text-xs leading-5 text-muted-foreground">{detailText}</span>
       </span>
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white/82 px-3 py-1 text-xs font-medium text-[#6F655B] shadow-sm">
+      <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
         <UploadCloud className="h-3.5 w-3.5" aria-hidden="true" />
         Browse files
       </span>
@@ -128,14 +128,14 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(({ value, v
     primaryFile.preview ? (
       <div className={cn("relative w-full overflow-hidden", variant === "avatar" ? "aspect-square rounded-full" : "aspect-[21/9]")}>
         <img src={primaryFile.preview} alt={`Preview of ${primaryFile.file.name}`} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-black/0 transition-colors duration-200 group-hover:bg-black/35" />
+        <div className="absolute inset-0 bg-transparent transition-colors duration-200 group-hover:bg-foreground/35" />
         <div className={cn("absolute flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100", variant === "avatar" ? "inset-x-3 bottom-3 justify-center" : "inset-x-3 bottom-3 flex-wrap items-center justify-between")}>
-          {variant === "cover" ? <div className="min-w-0 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#2D2925] shadow-sm backdrop-blur">{primaryFile.file.name}</div> : null}
-          <Button type="button" size="sm" variant="outline" className="h-8 gap-1.5 rounded-full bg-white/90 px-3 shadow-sm backdrop-blur" onClick={openFileDialog} disabled={disabled}>
+          {variant === "cover" ? <div className="min-w-0 rounded-full bg-card px-3 py-1 text-xs font-medium text-foreground shadow-sm">{primaryFile.file.name}</div> : null}
+          <Button type="button" size="sm" variant="outline" className="h-8 gap-1.5 rounded-full bg-card px-3 shadow-sm" onClick={openFileDialog} disabled={disabled}>
             <UploadCloud className="h-3.5 w-3.5" />
             Change
           </Button>
-          <Button type="button" size="sm" variant="outline" className="h-8 gap-1.5 rounded-full bg-white/90 px-3 text-[#A33D3D] shadow-sm backdrop-blur hover:text-[#7F2E2E]" onClick={() => removeFile(primaryFile.id)} disabled={disabled}>
+          <Button type="button" size="sm" variant="outline" className="h-8 gap-1.5 rounded-full bg-card px-3 text-destructive shadow-sm hover:text-destructive/80" onClick={() => removeFile(primaryFile.id)} disabled={disabled}>
             <X className="h-3.5 w-3.5" />
             Remove
           </Button>
@@ -144,22 +144,22 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(({ value, v
     ) : (
       <div className="flex min-h-[132px] flex-col justify-center gap-4 p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#F8F6F2] text-[#8A7E72]">
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-muted text-muted-foreground">
             <FileIcon file={primaryFile.file} className="h-5 w-5" />
           </span>
           <span className="min-w-0 space-y-1">
-            <span className="block truncate text-sm font-medium text-[#2D2925]">{primaryFile.file.name}</span>
-            <span className="block text-xs text-[#8A7E72]">
+            <span className="block truncate text-sm font-medium text-foreground">{primaryFile.file.name}</span>
+            <span className="block text-xs text-muted-foreground">
               {getFileTypeLabel(primaryFile.file)} · {formatBytes(primaryFile.file.size)}
             </span>
           </span>
         </div>
         <div className="flex gap-2">
-          <Button type="button" size="sm" variant="outline" className="h-8 gap-1.5 rounded-full bg-white/90 px-3 shadow-sm" onClick={openFileDialog} disabled={disabled}>
+          <Button type="button" size="sm" variant="outline" className="h-8 gap-1.5 rounded-full bg-card px-3 shadow-sm" onClick={openFileDialog} disabled={disabled}>
             <UploadCloud className="h-3.5 w-3.5" />
             Change
           </Button>
-          <Button type="button" size="sm" variant="outline" className="h-8 gap-1.5 rounded-full bg-white/90 px-3 text-[#A33D3D] shadow-sm hover:text-[#7F2E2E]" onClick={() => removeFile(primaryFile.id)} disabled={disabled}>
+          <Button type="button" size="sm" variant="outline" className="h-8 gap-1.5 rounded-full bg-card px-3 text-destructive shadow-sm hover:text-destructive/80" onClick={() => removeFile(primaryFile.id)} disabled={disabled}>
             <X className="h-3.5 w-3.5" />
             Remove
           </Button>
@@ -179,7 +179,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(({ value, v
           className={cn(
             "group relative overflow-hidden border transition-[background-color,border-color,box-shadow] duration-200",
             variant === "avatar" && (!primaryFile || primaryFile.preview) ? "mx-auto max-w-[180px] rounded-full" : "rounded-[18px]",
-            isDragging ? "border-[#EE5C2A] border-dashed bg-[#FFF3EA] shadow-[0_0_0_3px_rgba(238,92,42,0.10)]" : primaryFile ? "border-black/[0.08] bg-white/82 hover:border-black/[0.14]" : "border-dashed border-black/[0.12] bg-[#F8F6F2] hover:border-[#EE5C2A]/60 hover:bg-[#FFF8F4]",
+            isDragging ? "border-primary border-dashed bg-primary/10 ring-[3px] ring-primary/10" : primaryFile ? "border-border bg-card hover:border-border" : "border-dashed border-border bg-muted hover:border-primary/60 hover:bg-primary/5",
             disabled && "pointer-events-none opacity-55",
           )}
         >
@@ -192,7 +192,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(({ value, v
               {...dropzoneProps}
               className={cn(
                 "overflow-hidden rounded-[18px] border border-dashed transition-[background-color,border-color,box-shadow] duration-200",
-                isDragging ? "border-[#EE5C2A] bg-[#FFF3EA] shadow-[0_0_0_3px_rgba(238,92,42,0.10)]" : "border-black/[0.12] bg-[#F8F6F2] hover:border-[#EE5C2A]/60 hover:bg-[#FFF8F4]",
+                isDragging ? "border-primary bg-primary/10 ring-[3px] ring-primary/10" : "border-border bg-muted hover:border-primary/60 hover:bg-primary/5",
                 disabled && "pointer-events-none opacity-55",
               )}
             >
@@ -203,7 +203,7 @@ const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(({ value, v
         </>
       )}
       {errors.length > 0 ? (
-        <div role="alert" className="flex gap-2 rounded-[14px] border border-[#F3D0D0] bg-[#FFF4F4] px-3 py-2 text-xs leading-5 text-[#A33D3D]">
+        <div role="alert" className="flex gap-2 rounded-[14px] border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs leading-5 text-destructive">
           <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
           <div className="space-y-1">
             {errors.map((error) => (
@@ -224,7 +224,7 @@ function FileUploadFiles({ files, variant, disabled, removeFile, clearFiles, max
   if (variant === "gallery") {
     return (
       <div className="space-y-2">
-        <div className="flex items-center justify-between gap-3 text-xs text-[#8A7E72]">
+        <div className="flex items-center justify-between gap-3 text-xs text-muted-foreground">
           <span>
             Gallery ({files.length}/{maxFiles})
           </span>
@@ -234,21 +234,21 @@ function FileUploadFiles({ files, variant, disabled, removeFile, clearFiles, max
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {files.map((item) => (
-            <div key={item.id} className="group relative overflow-hidden rounded-[14px] border border-black/[0.08] bg-white/82">
+            <div key={item.id} className="group relative overflow-hidden rounded-[14px] border border-border bg-card">
               <div className="aspect-square">
                 {item.preview && isImageFile(item.file) ? (
                   <img src={item.preview} alt={`Preview of ${item.file.name}`} className="h-full w-full object-cover" />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-[#F8F6F2] text-[#8A7E72]">
+                  <div className="flex h-full w-full items-center justify-center bg-muted text-muted-foreground">
                     <FileIcon file={item.file} className="h-8 w-8" />
                   </div>
                 )}
               </div>
               <div className="space-y-0.5 p-2">
-                <div className="truncate text-xs font-medium text-[#2D2925]">{item.file.name}</div>
-                <div className="text-[11px] text-[#8A7E72]">{formatBytes(item.file.size)}</div>
+                <div className="truncate text-xs font-medium text-foreground">{item.file.name}</div>
+                <div className="text-[11px] text-muted-foreground">{formatBytes(item.file.size)}</div>
               </div>
-              <Button type="button" variant="outline" size="icon" className="absolute right-2 top-2 h-7 w-7 rounded-full bg-white/90 opacity-0 shadow-sm backdrop-blur transition-opacity group-hover:opacity-100" onClick={() => removeFile(item.id)} disabled={disabled} aria-label={`Remove ${item.file.name}`}>
+              <Button type="button" variant="outline" size="icon" className="absolute right-2 top-2 h-7 w-7 rounded-full bg-card opacity-0 shadow-sm transition-opacity group-hover:opacity-100" onClick={() => removeFile(item.id)} disabled={disabled} aria-label={`Remove ${item.file.name}`}>
                 <X className="h-3.5 w-3.5" />
               </Button>
             </div>
@@ -262,10 +262,10 @@ function FileUploadFiles({ files, variant, disabled, removeFile, clearFiles, max
     return (
       <div className="flex flex-wrap gap-2">
         {files.map((item) => (
-          <span key={item.id} className="inline-flex max-w-full items-center gap-2 rounded-full border border-black/[0.08] bg-white/82 px-3 py-1.5 text-xs text-[#4F463F] shadow-sm">
-            <FileIcon file={item.file} className="h-3.5 w-3.5 shrink-0 text-[#8A7E72]" />
+          <span key={item.id} className="inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-sm">
+            <FileIcon file={item.file} className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
             <span className="truncate">{item.file.name}</span>
-            <button type="button" className="shrink-0 rounded-full p-0.5 text-[#A33D3D] hover:bg-[#FFF4F4]" onClick={() => removeFile(item.id)} disabled={disabled} aria-label={`Remove ${item.file.name}`}>
+            <button type="button" className="shrink-0 rounded-full p-0.5 text-destructive hover:bg-destructive/10" onClick={() => removeFile(item.id)} disabled={disabled} aria-label={`Remove ${item.file.name}`}>
               <X className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
           </span>
@@ -275,24 +275,24 @@ function FileUploadFiles({ files, variant, disabled, removeFile, clearFiles, max
   }
 
   return (
-    <div className="overflow-hidden rounded-[14px] border border-black/[0.08] bg-white/82">
-      <div className="grid grid-cols-[minmax(0,1fr)_88px_88px_44px] gap-3 border-b border-black/[0.06] px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#A69B90]">
+    <div className="overflow-hidden rounded-[14px] border border-border bg-card">
+      <div className="grid grid-cols-[minmax(0,1fr)_88px_88px_44px] gap-3 border-b border-border px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
         <span>Name</span>
         <span>Type</span>
         <span>Size</span>
         <span />
       </div>
       {files.map((item) => (
-        <div key={item.id} className="grid grid-cols-[minmax(0,1fr)_88px_88px_44px] items-center gap-3 border-b border-black/[0.06] px-3 py-2 last:border-b-0">
+        <div key={item.id} className="grid grid-cols-[minmax(0,1fr)_88px_88px_44px] items-center gap-3 border-b border-border px-3 py-2 last:border-b-0">
           <div className="flex min-w-0 items-center gap-2">
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-[#F8F6F2] text-[#8A7E72]">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-muted text-muted-foreground">
               <FileIcon file={item.file} className="h-4 w-4" />
             </span>
-            <span className="truncate text-sm font-medium text-[#2D2925]">{item.file.name}</span>
+            <span className="truncate text-sm font-medium text-foreground">{item.file.name}</span>
           </div>
-          <span className="truncate text-xs text-[#8A7E72]">{getFileTypeLabel(item.file)}</span>
-          <span className="truncate text-xs text-[#8A7E72]">{formatBytes(item.file.size)}</span>
-          <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-[#A33D3D]" onClick={() => removeFile(item.id)} disabled={disabled} aria-label={`Remove ${item.file.name}`}>
+          <span className="truncate text-xs text-muted-foreground">{getFileTypeLabel(item.file)}</span>
+          <span className="truncate text-xs text-muted-foreground">{formatBytes(item.file.size)}</span>
+          <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => removeFile(item.id)} disabled={disabled} aria-label={`Remove ${item.file.name}`}>
             <X className="h-4 w-4" />
           </Button>
         </div>

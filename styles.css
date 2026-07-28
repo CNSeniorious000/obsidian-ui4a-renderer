@@ -1,39 +1,41 @@
 /* UI4A widget host — wraps each rendered codeblock.
-   (vendor/base.css uses @apply/@layer UnoCSS build directives we can't import
-    verbatim, so the shadcn HSL tokens the vendored CSS expects are redefined
-    below in plain CSS. These are light-mode baseline values only — we do NOT
-    remap for dark mode, because the vendored components hard-code light
-    surfaces (e.g. Card's bg-white/82), so flipping the text tokens to light
-    would create white-on-white. Leave the components' own light palette.) */
+   The vendored components reference shadcn-style tokens (--card, --primary, …).
+   Instead of shipping our own palette, every token is an alias to Obsidian's
+   own CSS variables (https://docs.obsidian.md/Reference/CSS+variables/CSS+variables),
+   so widgets adopt the host theme — light/dark *and* community themes, accent
+   color included — the same way VS Code extensions style themselves with
+   --vscode-* variables. No dark-mode block is needed: Obsidian flips its
+   variables itself. Widgets that need control beyond the tokens can still use
+   `dark:` utilities, which compile against body.theme-dark. */
 .ui4a-host {
   margin: 0.75em 0;
-  /* shadcn HSL token baselines (light). The vendored components reference these. */
-  --radius: 0.5rem;
-  --background: 0 0% 100%;
-  --foreground: 222.2 47.4% 11.2%;
-  --card: 0 0% 100%;
-  --card-foreground: 222.2 47.4% 11.2%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 222.2 47.4% 11.2%;
-  --primary: 24 95% 53%;
-  --primary-foreground: 0 0% 100%;
-  --secondary: 210 40% 96.1%;
-  --secondary-foreground: 222.2 47.4% 11.2%;
-  --muted: 210 40% 96.1%;
-  --muted-foreground: 215.4 16.3% 46.9%;
-  --accent: 210 40% 96.1%;
-  --accent-foreground: 222.2 47.4% 11.2%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 214.3 31.8% 91.4%;
-  --input: 214.3 31.8% 91.4%;
-  --ring: 24 95% 53%;
-  /* chart palette */
-  --chart-1: 24 95% 53%;
-  --chart-2: 173 58% 39%;
-  --chart-3: 197 37% 24%;
-  --chart-4: 43 74% 66%;
-  --chart-5: 27 87% 67%;
+  --radius: var(--radius-m);
+  --background: var(--background-primary);
+  --foreground: var(--text-normal);
+  --card: var(--background-secondary);
+  --card-foreground: var(--text-normal);
+  --popover: var(--background-primary);
+  --popover-foreground: var(--text-normal);
+  --primary: var(--interactive-accent);
+  --primary-foreground: var(--text-on-accent);
+  --secondary: var(--background-secondary);
+  --secondary-foreground: var(--text-normal);
+  --muted: var(--background-secondary);
+  --muted-foreground: var(--text-muted);
+  --accent: var(--background-modifier-hover);
+  --accent-foreground: var(--text-normal);
+  --destructive: var(--background-modifier-error);
+  --destructive-foreground: var(--text-error);
+  --border: var(--background-modifier-border);
+  --input: var(--background-modifier-border);
+  --ring: var(--interactive-accent);
+  /* Chart series palette: Obsidian exposes no categorical colors, so keep a
+     neutral ramp; series 1 follows the theme accent. */
+  --chart-1: var(--interactive-accent);
+  --chart-2: hsl(173 58% 39%);
+  --chart-3: hsl(197 37% 24%);
+  --chart-4: hsl(43 74% 66%);
+  --chart-5: hsl(27 87% 67%);
 }
 
 .ui4a-status,

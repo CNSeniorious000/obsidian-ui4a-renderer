@@ -26,7 +26,7 @@ function InputOTPSlot({ index, className, ...props }: React.HTMLAttributes<HTMLD
       data-slot="input-otp-slot"
       data-active={isActive || undefined}
       className={cn(
-        "relative flex h-10 w-10 items-center justify-center border-y border-r border-black/[0.08] bg-white text-sm font-medium text-[#171411] transition-all first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-2 data-[active=true]:ring-black/[0.08]",
+        "relative flex h-10 w-10 items-center justify-center border-y border-r border-border bg-background text-sm font-medium text-foreground transition-all first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-2 data-[active=true]:ring-ring",
         className,
       )}
       {...props}
@@ -34,7 +34,7 @@ function InputOTPSlot({ index, className, ...props }: React.HTMLAttributes<HTMLD
       {char}
       {hasFakeCaret ? (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-4 w-px animate-pulse bg-[#171411]" />
+          <div className="h-4 w-px animate-pulse bg-foreground" />
         </div>
       ) : null}
     </div>
@@ -44,7 +44,7 @@ function InputOTPSlot({ index, className, ...props }: React.HTMLAttributes<HTMLD
 /** Visual separator between OTP slot groups. */
 function InputOTPSeparator({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div data-slot="input-otp-separator" role="separator" className={cn("px-1 text-[#8A7E72]", className)} {...props}>
+    <div data-slot="input-otp-separator" role="separator" className={cn("px-1 text-muted-foreground", className)} {...props}>
       <MinusIcon className="h-4 w-4" />
     </div>
   );

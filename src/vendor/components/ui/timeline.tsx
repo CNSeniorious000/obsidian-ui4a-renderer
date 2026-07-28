@@ -100,13 +100,13 @@ function TimelineHeader({ className, ...props }: React.HTMLAttributes<HTMLDivEle
 /** Date or relative time label for a timeline event. Use `asChild` when rendering a custom time/link element. */
 function TimelineDate({ asChild = false, className, ...props }: TimelineDateProps) {
   const Comp = asChild ? Slot : "time";
-  return <Comp data-slot="timeline-date" className={cn("mb-1 block text-xs font-medium text-[#8A7E72] group-data-[orientation=vertical]/timeline:max-sm:h-4", className)} {...props} />;
+  return <Comp data-slot="timeline-date" className={cn("mb-1 block text-xs font-medium text-muted-foreground group-data-[orientation=vertical]/timeline:max-sm:h-4", className)} {...props} />;
 }
 
 /** Event title. Keep it concise so horizontal timelines do not wrap awkwardly. */
 function TimelineTitle({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
-    <h3 data-slot="timeline-title" className={cn("m-0 text-sm font-semibold leading-5 text-[#171411]", className)} {...props}>
+    <h3 data-slot="timeline-title" className={cn("m-0 text-sm font-semibold leading-5 text-foreground", className)} {...props}>
       {children}
     </h3>
   );
@@ -131,8 +131,8 @@ function TimelineIndicator({ asChild = false, className, children, onClick, type
       data-completed={completed || undefined}
       type={type ?? "button"}
       className={cn(
-        "absolute size-4 rounded-full border-2 bg-white p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EE5C2A] group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:left-0 group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:top-0 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:-translate-x-1/2",
-        completed ? "border-[#EE5C2A]" : "border-[#EE5C2A]/24",
+        "absolute size-4 rounded-full border-2 bg-background p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:left-0 group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:top-0 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:-translate-x-1/2",
+        completed ? "border-primary" : "border-primary/25",
         className,
       )}
       onClick={handleClick}
@@ -153,7 +153,7 @@ function TimelineSeparator({ className, ...props }: React.HTMLAttributes<HTMLDiv
       data-completed={lineCompleted || undefined}
       className={cn(
         "absolute self-start transition-colors group-last/timeline-item:hidden group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:h-0.5 group-data-[orientation=horizontal]/timeline:w-[calc(100%-1rem-0.25rem)] group-data-[orientation=horizontal]/timeline:translate-x-[1.125rem] group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:h-[calc(100%-1rem-0.25rem)] group-data-[orientation=vertical]/timeline:w-0.5 group-data-[orientation=vertical]/timeline:-translate-x-1/2 group-data-[orientation=vertical]/timeline:translate-y-[1.125rem]",
-        lineCompleted ? "bg-[#EE5C2A]" : "bg-[#EE5C2A]/12",
+        lineCompleted ? "bg-primary" : "bg-primary/10",
         className,
       )}
       {...props}
@@ -163,7 +163,7 @@ function TimelineSeparator({ className, ...props }: React.HTMLAttributes<HTMLDiv
 
 /** Supporting event details. Keep long prose here rather than inside TimelineTitle. */
 function TimelineContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div data-slot="timeline-content" className={cn("text-sm leading-6 text-[#6F655B]", className)} {...props} />;
+  return <div data-slot="timeline-content" className={cn("text-sm leading-6 text-muted-foreground", className)} {...props} />;
 }
 
 export { Timeline, TimelineContent, TimelineDate, TimelineHeader, TimelineIndicator, TimelineItem, TimelineSeparator, TimelineTitle };

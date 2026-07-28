@@ -1,6 +1,7 @@
 import { Plugin } from "obsidian";
 import { registerCodeblockProcessor } from "./codeblock-processor";
 import { refreshStyles } from "./styling";
+import { syncTheme, initThemeBridge } from "./theme";
 
 const DEFAULT_SETTINGS = {
   appendCallout: true,
@@ -36,18 +37,22 @@ export default class UI4ARendererPlugin extends Plugin {
       childList: true,
     });
 
-    // Expose the current color scheme so widgets can read it at runtime
-    // (globalThis.__ui4a_theme === "dark" | "light") and generate theme-aware UI.
-    // Updated on theme change via multiple signals (css-change is not always fired).
-    const exposeTheme = () => {
-      (globalThis as unknown as Record<string, string>).__ui4a_theme =
-        document.body.classList.contains("theme-dark") ? "dark" : "light";
-    };
-    exposeTheme();
-    this.registerEvent(this.app.workspace.on("css-change", exposeTheme));
+    // Bidirectional theme bridge: widgets read globalThis.__ui4a_theme and
+    // subscribe via __ui4a_on_theme(cb) (host → widget), and can request a
+    // switch via __ui4a_set_theme("dark" | "light" | "system") (widget → host),
+    // which we route into Obsidian's own theme setting. Updated on theme change
+    // via multiple signals (css-change is not always fired).
+    initThemeBridge((pref) => {
+      // vault.setConfig is the same internal API the appearance settings use;
+      // "obsidian"/"moonstone" are Obsidian's built-in dark/light scheme ids.
+      (this.app.vault as unknown as { setConfig: (key: string, value: string) => void })
+        .setConfig("theme", pref === "dark" ? "obsidian" : pref === "light" ? "moonstone" : "system");
+    });
+    syncTheme();
+    this.registerEvent(this.app.workspace.on("css-change", syncTheme));
     // Belt-and-suspenders: the theme <body> class changes before css-change fires
     // sometimes; observe it directly so widgets never see a stale value.
-    const themeObserver = new MutationObserver(exposeTheme);
+    const themeObserver = new MutationObserver(syncTheme);
     themeObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
     this.register(() => themeObserver.disconnect());
 

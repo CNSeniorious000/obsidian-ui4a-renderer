@@ -22,14 +22,14 @@ const Slider = React.forwardRef<React.ComponentRef<typeof SliderPrimitive.Root>,
       className={cn("group relative flex w-full touch-none select-none items-center data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col", className)}
       {...props}
     >
-      <SliderPrimitive.Track data-slot="slider-track" className="relative h-2.5 w-full grow overflow-hidden rounded-full bg-black/[0.08] transition-colors duration-200 ease-out group-hover:bg-black/[0.1] group-active:bg-black/[0.13] data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2.5">
-        <SliderPrimitive.Range data-slot="slider-range" className="absolute h-full bg-macaron-gradient-new data-[orientation=vertical]:w-full" />
+      <SliderPrimitive.Track data-slot="slider-track" className="relative h-2.5 w-full grow overflow-hidden rounded-full bg-muted transition-colors duration-200 ease-out group-hover:bg-accent group-active:bg-accent data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2.5">
+        <SliderPrimitive.Range data-slot="slider-range" className="absolute h-full bg-primary data-[orientation=vertical]:w-full" />
       </SliderPrimitive.Track>
       {Array.from({ length: values.length }, (_, index) => (
         <SliderPrimitive.Thumb
           key={index}
           data-slot="slider-thumb"
-          className="block h-5 w-5 rounded-full border border-black/[0.1] bg-white ring-offset-background transition-[background-color,border-color,opacity] duration-200 ease-out hover:border-black/[0.16] hover:bg-[#FFFCF8] active:border-black/[0.2] active:bg-[#E2DFD8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08] focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50"
+          className="block h-5 w-5 rounded-full border border-border bg-background ring-offset-background transition-[background-color,border-color,opacity] duration-200 ease-out hover:bg-background active:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50"
         />
       ))}
     </SliderPrimitive.Root>

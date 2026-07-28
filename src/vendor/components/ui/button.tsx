@@ -6,19 +6,19 @@ import { cn } from "@/lib/style";
 const buttonVariants = cva("demo-motion-ease inline-flex items-center justify-center whitespace-nowrap rounded-full font-medium transition-[background-color,color,border-color,filter,opacity,box-shadow] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", {
   variants: {
     variant: {
-      default: "bg-[#161615] text-primary-foreground hover:bg-[#343330] active:bg-[#4A4843]",
-      destructive: "bg-destructive text-destructive-foreground hover:bg-[#B91C1C] active:bg-[#991B1B]",
-      outline: "border border-black/[0.08] bg-white/[0.78] text-[#161615] hover:border-black/[0.14] hover:bg-[#F1EFE9] active:border-black/[0.18] active:bg-[#E2DFD8]",
-      secondary: "bg-[#F1EFE9] text-[#2A2A29] hover:bg-[#E9E7E2] active:bg-[#E2DFD8]",
-      tertiary: "border border-black/[0.06] bg-black/[0.03] text-[#2A2A29] hover:border-black/[0.1] hover:bg-black/[0.05] active:border-black/[0.14] active:bg-black/[0.06]",
-      ghost: "text-[#6F655B] hover:bg-[#F1EFE9] hover:text-[#161615] active:bg-[#E2DFD8]",
+      default: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
+      destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80",
+      outline: "border border-border bg-background text-foreground hover:bg-accent active:bg-accent",
+      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70",
+      tertiary: "border border-border bg-muted text-foreground hover:bg-accent active:bg-accent",
+      ghost: "text-muted-foreground hover:bg-accent hover:text-foreground active:bg-accent",
       link: "text-primary underline-offset-4 hover:underline",
-      primary: ["bg-gradient-to-br from-yellow-400 via-pink-500 to-red-500", "text-white", "border border-white/70", "rounded-full", "hover:brightness-105 hover:saturate-110 active:brightness-95 active:saturate-125"],
-      macaron: ["bg-macaron-gradient", "noise-background", "text-white", "border border-white/70", "rounded-full", "hover:brightness-105 hover:saturate-110 active:brightness-95 active:saturate-125"],
-      "macaron-new": ["bg-macaron-gradient-new", "text-white", "backdrop-blur-[120px]", "ring-[1px] ring-white/40 ring-inset", "px-4 md:px-5", "rounded-full", "hover:brightness-105 hover:saturate-110 active:brightness-95 active:saturate-125"],
+      primary: ["bg-primary", "text-primary-foreground", "rounded-full", "hover:brightness-105 active:brightness-95"],
+      macaron: ["bg-primary", "text-primary-foreground", "rounded-full", "hover:brightness-105 active:brightness-95"],
+      "macaron-new": ["bg-primary", "text-primary-foreground", "px-4 md:px-5", "rounded-full", "hover:brightness-105 active:brightness-95"],
     },
     disabled: {
-      true: ["pointer-events-none", "bg-[#DAD8D3]", "text-white", "rounded-full", "border border-white/30", "shadow-none", "cursor-not-allowed"],
+      true: ["pointer-events-none", "bg-muted", "text-muted-foreground", "rounded-full", "shadow-none", "cursor-not-allowed"],
     },
     size: {
       default: "h-10 px-4 py-2",
@@ -31,7 +31,7 @@ const buttonVariants = cva("demo-motion-ease inline-flex items-center justify-ce
       true: "w-full",
     },
   },
-  compoundVariants: [{ variant: "macaron-new", disabled: true, className: "bg-macaron-gradient-new border-none opacity-20" }],
+  compoundVariants: [{ variant: "macaron-new", disabled: true, className: "bg-primary border-none opacity-20" }],
   defaultVariants: { variant: "default", size: "default" },
 });
 

@@ -18,7 +18,11 @@ let enginePromise: Promise<ReturnType<typeof createGenerator>> | null = null;
 function getEngine(): Promise<ReturnType<typeof createGenerator>> {
   if (enginePromise) return enginePromise;
   enginePromise = createGenerator({
-    presets: [presetWind3({ dark: "class" }), presetAnimations()],
+    // Map `dark:`/`light:` onto Obsidian's own body classes. Nobody ever adds a
+    // `.dark` class in this plugin, so the default `dark: "class"` strategy
+    // produced dead selectors; `.theme-dark`/`.theme-light` are what Obsidian
+    // actually toggles at runtime.
+    presets: [presetWind3({ dark: { dark: ".theme-dark", light: ".theme-light" } }), presetAnimations()],
     theme: unoTheme,
     shortcuts: unoShortcuts,
     rules: unoRules,
@@ -81,6 +85,8 @@ export async function refreshStyles(scope: ParentNode = document): Promise<void>
  * blocks (preflights + utilities), skipping @-rules other than selectors.
  * Scoping the preflight `*,::before,::after` rule to `.genui-root *` keeps the
  * UnoCSS variable defaults (shadow/border/etc.) inside widgets only.
+ * Selectors carrying a theme-ancestor class (`.theme-dark .foo`) are hoisted
+ * instead: `.theme-dark .genui-root .foo`.
  */
 function scopeCss(css: string): string {
   // Split into top-level rules by tracking brace depth.
@@ -116,6 +122,12 @@ function scopeCss(css: string): string {
           const sel = s.trim();
           if (!sel) return sel;
           if (sel.startsWith(".genui-root")) return sel;
+          // Theme selectors (`.theme-dark .foo`) must keep the theme class
+          // *above* the scope: it lives on <body>, an ancestor of
+          // `.genui-root`. A blind `.genui-root ${sel}` would demote it to a
+          // descendant and never match.
+          const themed = sel.match(/^(\.theme-dark|\.theme-light)(\s.+)$/);
+          if (themed) return `${themed[1]} .genui-root ${themed[2].trim()}`;
           return `.genui-root ${sel}`;
         })
         .join(", ");

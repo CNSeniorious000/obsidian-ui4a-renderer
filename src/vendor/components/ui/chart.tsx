@@ -114,7 +114,7 @@ function ChartTooltipContent({ active, payload, className, indicator = "dot", hi
   const nestLabel = payload.length === 1 && indicator !== "dot";
 
   return (
-    <div className={cn("grid min-w-32 items-start rounded-xl border border-black/[0.08] bg-white/95 px-3 py-2 text-xs text-[#3d352f] shadow-[0_12px_36px_rgba(61,53,47,0.12)] backdrop-blur-md", className)}>
+    <div className={cn("grid min-w-32 items-start rounded-xl border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-[var(--shadow-l)]", className)}>
       {!nestLabel ? tooltipLabel : null}
       <div className="grid gap-1.5">
         {payload
@@ -176,7 +176,7 @@ function ChartLegendContent({ className, hideIcon = false, payload, verticalAlig
   if (!payload?.length) return null;
 
   return (
-    <div className={cn("flex items-center justify-center gap-4 text-xs text-[#8a7e72]", verticalAlign === "top" ? "pb-3" : "pt-3", className)}>
+    <div className={cn("flex items-center justify-center gap-4 text-xs text-muted-foreground", verticalAlign === "top" ? "pb-3" : "pt-3", className)}>
       {payload
         .filter((item) => item.type !== "none")
         .map((item, index) => {

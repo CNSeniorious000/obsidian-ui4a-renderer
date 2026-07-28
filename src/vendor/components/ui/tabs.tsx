@@ -35,7 +35,7 @@ Tabs.displayName = TabsPrimitive.Root.displayName;
 
 /** Horizontal trigger container. */
 const TabsList = React.forwardRef<React.ComponentRef<typeof TabsPrimitive.List>, React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>>(({ className, ...props }, ref) => (
-  <TabsPrimitive.List ref={ref} data-slot="tabs-list" className={cn("inline-flex h-10 w-fit items-center justify-center gap-1 rounded-full bg-[#F1EFE9] p-1 text-[#6F6B66]", className)} {...props} />
+  <TabsPrimitive.List ref={ref} data-slot="tabs-list" className={cn("inline-flex h-10 w-fit items-center justify-center gap-1 rounded-full bg-muted p-1 text-muted-foreground", className)} {...props} />
 ));
 TabsList.displayName = TabsPrimitive.List.displayName;
 
@@ -45,7 +45,7 @@ const TabsTrigger = React.forwardRef<React.ComponentRef<typeof TabsPrimitive.Tri
     ref={ref}
     data-slot="tabs-trigger"
     className={cn(
-      "inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-4 text-sm font-medium text-[#6F6B66] transition-[background-color,color,filter,opacity] duration-200 ease-out hover:bg-[#E9E7E2] hover:text-[#2A2A29] active:bg-[#E2DFD8] disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white/[0.92] data-[state=active]:text-[#161615] data-[state=active]:hover:bg-white data-[state=active]:active:bg-white/[0.82] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-4 text-sm font-medium text-muted-foreground transition-[background-color,color,filter,opacity] duration-200 ease-out hover:bg-accent hover:text-foreground active:bg-accent disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:hover:bg-card data-[state=active]:active:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       className,
     )}
     {...props}

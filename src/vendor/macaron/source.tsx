@@ -239,7 +239,7 @@ type SurfaceProps = PropsWithChildren<{ kicker?: string; title: string; descript
  */
 export function Surface({ kicker, title, description, actions, children }: SurfaceProps) {
   return (
-    <Card className="rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.88)_0%,rgba(249,247,241,0.96)_100%)] shadow-[0_20px_48px_rgba(22,22,21,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]">
+    <Card className="rounded-[24px] bg-card shadow-[var(--shadow-s)]">
       <CardHeader className="space-y-5 p-6 md:p-7">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div className="space-y-3">
@@ -249,14 +249,14 @@ export function Surface({ kicker, title, description, actions, children }: Surfa
               </Badge>
             ) : null}
             <div className="space-y-2">
-              <CardTitle className="text-balance text-[28px] font-semibold leading-[1.05] tracking-[-0.03em] text-[#161615]">{title}</CardTitle>
-              {description ? <CardDescription className="max-w-2xl text-sm leading-6 text-[#595856]">{description}</CardDescription> : null}
+              <CardTitle className="text-balance text-[28px] font-semibold leading-[1.05] tracking-[-0.03em] text-foreground">{title}</CardTitle>
+              {description ? <CardDescription className="max-w-2xl text-sm leading-6 text-muted-foreground">{description}</CardDescription> : null}
             </div>
           </div>
           {actions ? <div className="shrink-0">{actions}</div> : null}
         </div>
       </CardHeader>
-      <Separator className="bg-black/[0.06]" />
+      <Separator className="bg-border" />
       <CardContent className="pt-6 md:p-7 md:pt-6">{children}</CardContent>
     </Card>
   );
@@ -302,7 +302,7 @@ export function Text({ children, tone, color, size = "md", weight = "normal", cl
     <p
       className={cn(
         "m-0",
-        resolvedTone === "muted" ? "text-[#6F655B]" : resolvedTone === "accent" ? "text-[#EE5C2A]" : "text-[#171411]",
+        resolvedTone === "muted" ? "text-muted-foreground" : resolvedTone === "accent" ? "text-primary" : "text-foreground",
         size === "xs" ? "text-xs leading-5" : size === "sm" ? "text-sm leading-6" : size === "lg" ? "text-lg leading-7" : size === "xl" ? "text-xl leading-8" : "text-[15px] leading-6",
         weight === "bold" ? "font-bold" : weight === "semibold" ? "font-semibold" : weight === "medium" ? "font-medium" : "font-normal",
         className,
@@ -319,8 +319,8 @@ type FieldProps = PropsWithChildren<{ label: string; hint?: string }>;
 export function Field({ label, hint, children }: FieldProps) {
   return (
     <div className="space-y-2">
-      <Label className="text-sm font-semibold text-[#161615]">{label}</Label>
-      {hint ? <p className="m-0 text-xs leading-5 text-[#ABAAA6]">{hint}</p> : null}
+      <Label className="text-sm font-semibold text-foreground">{label}</Label>
+      {hint ? <p className="m-0 text-xs leading-5 text-muted-foreground">{hint}</p> : null}
       {children}
     </div>
   );
@@ -566,7 +566,7 @@ export function MorphingDialogContainer({ children }: MorphingDialogContainerPro
     <AnimatePresence initial={false} mode="sync">
       {isOpen ? (
         <>
-          <motion.div key={`backdrop-${uniqueId}`} className="fixed inset-0 z-40 h-full w-full bg-black/30 backdrop-blur-[6px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsOpen(false)} />
+          <motion.div key={`backdrop-${uniqueId}`} className="fixed inset-0 z-40 h-full w-full bg-foreground/30 backdrop-blur-[6px]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsOpen(false)} />
           <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">{children}</div>
         </>
       ) : null}
@@ -640,7 +640,7 @@ export function TextShimmer({ children, as: Component = "p", className, duration
     <Component
       data-slot="text-shimmer"
       className={cn(
-        "macaron-text-shimmer relative inline-block bg-[length:250%_100%,auto] bg-clip-text text-transparent [background-repeat:no-repeat,padding-box] [--bg:linear-gradient(90deg,#0000_calc(50%-var(--spread)),var(--base-gradient-color),#0000_calc(50%+var(--spread)))] [--base-color:#a1a1aa] [--base-gradient-color:#000] dark:[--base-color:#71717a] dark:[--base-gradient-color:#ffffff]",
+        "macaron-text-shimmer relative inline-block bg-[length:250%_100%,auto] bg-clip-text text-transparent [background-repeat:no-repeat,padding-box] [--bg:linear-gradient(90deg,#0000_calc(50%-var(--spread)),var(--base-gradient-color),#0000_calc(50%+var(--spread)))] [--base-color:var(--muted-foreground)] [--base-gradient-color:var(--foreground)] dark:[--base-color:#71717a] dark:[--base-gradient-color:#ffffff]",
         className,
       )}
       style={
@@ -1038,7 +1038,7 @@ function ToolbarDynamicButton({ children, onClick, disabled, ariaLabel }: { chil
       aria-label={ariaLabel}
       disabled={disabled}
       onClick={onClick}
-      className="relative flex h-9 w-9 shrink-0 select-none items-center justify-center rounded-lg text-[#6F655B] transition-[background-color,color,transform] hover:bg-black/[0.05] hover:text-[#171411] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08]"
+      className="relative flex h-9 w-9 shrink-0 select-none items-center justify-center rounded-lg text-muted-foreground transition-[background-color,color,transform] hover:bg-accent hover:text-foreground active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
     >
       {children}
     </button>
@@ -1102,14 +1102,14 @@ export function ToolbarDynamic({ className, style, compact, expanded, placeholde
         <ArrowLeft className="h-5 w-5" />
       </ToolbarDynamicButton>
       <div className="relative w-full">
-        <input className="h-9 w-full rounded-lg border border-black/[0.08] bg-transparent px-3 py-2 text-sm text-[#171411] placeholder:text-[#8A7E72] focus:outline-none focus:ring-2 focus:ring-black/[0.08]" aria-label={placeholder} placeholder={placeholder} />
+        <input className="h-9 w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring" aria-label={placeholder} placeholder={placeholder} />
       </div>
     </div>
   );
 
   return (
     <MotionConfig transition={{ type: "spring", bounce: 0.1, duration: 0.2 }}>
-      <div ref={ref} data-slot="toolbar-dynamic" className={cn("w-fit rounded-xl border border-black/[0.08] bg-white/92 shadow-[0_12px_34px_rgba(22,22,21,0.08),inset_0_1px_0_rgba(255,255,255,0.84)] backdrop-blur-[18px]", className)} style={style}>
+      <div ref={ref} data-slot="toolbar-dynamic" className={cn("w-fit rounded-xl border border-border bg-popover shadow-[var(--shadow-l)]", className)} style={style}>
         <motion.div animate={{ width: resolveToolbarWidth(isOpen ? expandedWidth : collapsedWidth) }} initial={false}>
           <div className="overflow-hidden transition-[height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{ height: contentHeight }}>
             <div ref={innerRef} className="p-2">
@@ -1156,10 +1156,10 @@ export function GlowEffect({ className, style, colors = ["#FF5733", "#33FF57", "
  */
 export function FeatureCard({ title, description, badges, actionLabel }: { title: string; description?: string; badges: string[]; actionLabel?: string }) {
   return (
-    <Card className="bg-white/76">
+    <Card className="bg-card">
       <CardHeader className={description ? "space-y-2" : "space-y-0"}>
-        <CardTitle className="text-xl leading-6 text-[#161615]">{title}</CardTitle>
-        {description ? <CardDescription className="text-[#595856]">{description}</CardDescription> : null}
+        <CardTitle className="text-xl leading-6 text-foreground">{title}</CardTitle>
+        {description ? <CardDescription className="text-muted-foreground">{description}</CardDescription> : null}
       </CardHeader>
       <CardContent className="space-y-4 pt-0">
         <PillRow items={badges} />
@@ -1182,11 +1182,11 @@ export function StatGrid({ children }: PropsWithChildren) {
 
 /** Compact metric label/value pair. */
 export function Stat({ label, value, tone = "default" }: { label: string; value: string; tone?: "default" | "accent" | "muted" }) {
-  const toneClass = tone === "accent" ? "border-[#FBC1B6]/70 bg-[#FFF1EC]" : tone === "muted" ? "border-black/[0.06] bg-[#F1EFE9]" : "border-black/[0.06] bg-white/76";
+  const toneClass = tone === "accent" ? "border-primary/30 bg-primary/5" : tone === "muted" ? "border-border bg-muted" : "border-border bg-card";
   return (
     <div className={`rounded-[16px] border p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-[14px] ${toneClass}`}>
-      <div className="text-xs uppercase tracking-[0.18em] text-[#ABAAA6]">{label}</div>
-      <div className="mt-2 text-xl font-semibold text-[#161615]">{value}</div>
+      <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{label}</div>
+      <div className="mt-2 text-xl font-semibold text-foreground">{value}</div>
     </div>
   );
 }
@@ -1206,7 +1206,7 @@ export function TickSlider({ value = 0, min = 0, max = 100, step = 1 }: { value?
   return (
     <div className="flex w-full items-center gap-2">
       <input type="range" aria-label="Slider value" min={min} max={max} step={step} value={currentValue} className="w-full" onChange={(event) => setCurrentValue(Number(event.target.value))} />
-      <span className="w-10 text-right text-xs text-[#667085]">{currentValue}</span>
+      <span className="w-10 text-right text-xs text-muted-foreground">{currentValue}</span>
     </div>
   );
 }
@@ -1223,8 +1223,8 @@ export function SelectionGrid({ items, columns = 2, defaultValue }: { items: Sel
       {items.map((item, index) => {
         const active = item.value === selectedValue;
         return (
-          <button key={`${item.value}-${index}`} type="button" className={`relative rounded-lg border px-3 py-2 text-sm ${active ? "border-[#8CA62A] bg-[#F6FAE8]" : "border-[#D0D5DD] bg-white"}`} onClick={() => setSelectedValue(item.value)}>
-            <span className="absolute right-2 top-1 text-xs text-[#667085]">{active ? "✓" : ""}</span>
+          <button key={`${item.value}-${index}`} type="button" className={`relative rounded-lg border px-3 py-2 text-sm ${active ? "border-primary bg-primary/10" : "border-border bg-card"}`} onClick={() => setSelectedValue(item.value)}>
+            <span className="absolute right-2 top-1 text-xs text-muted-foreground">{active ? "✓" : ""}</span>
             {item.label}
           </button>
         );
