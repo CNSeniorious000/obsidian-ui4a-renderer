@@ -1,16 +1,29 @@
 import type { Rule, UserShortcuts } from "@unocss/core";
 import type { Theme } from "@unocss/preset-wind3";
 
-const hsl = (name: string) => `hsl(var(--${name}))`;
-const withForeground = (name: string) => ({ DEFAULT: hsl(name), foreground: hsl(`${name}-foreground`) });
+/**
+ * Token consumption for the vendored components.
+ *
+ * The shadcn-style tokens (`--card`, `--primary`, …) are defined in
+ * styles.css as *aliases to Obsidian's own CSS variables*
+ * (--background-primary, --text-normal, --interactive-accent, …), so widgets
+ * follow the host theme — including community themes — the way VS Code
+ * extensions follow --vscode-* variables. Those aliases resolve to complete
+ * color values (hex/rgb/var chains), not HSL triplets, so we can't consume
+ * them with `hsl(var(--x))`. The color-mix form below keeps UnoCSS's alpha
+ * modifiers (`bg-card/80`) working: without an explicit <alpha-value>
+ * placeholder the modifier would be silently dropped for var() colors.
+ */
+const tok = (name: string) => `color-mix(in srgb, var(--${name}) calc(<alpha-value> * 100%), transparent)`;
+const withForeground = (name: string) => ({ DEFAULT: tok(name), foreground: tok(`${name}-foreground`) });
 
 export const unoTheme: Theme = {
   colors: {
-    border: hsl("border"),
-    input: hsl("input"),
-    ring: hsl("ring"),
-    background: hsl("background"),
-    foreground: hsl("foreground"),
+    border: tok("border"),
+    input: tok("input"),
+    ring: tok("ring"),
+    background: tok("background"),
+    foreground: tok("foreground"),
     primary: withForeground("primary"),
     secondary: withForeground("secondary"),
     destructive: withForeground("destructive"),
@@ -21,8 +34,8 @@ export const unoTheme: Theme = {
   },
   borderRadius: { lg: "var(--radius)", md: "calc(var(--radius) - 2px)", sm: "calc(var(--radius) - 4px)" },
   fontFamily: {
-    sans: '"Geist Variable", "Noto Sans SC", system-ui, sans-serif',
-    mono: '"Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+    sans: "var(--font-interface)",
+    mono: "var(--font-monospace)",
   },
   // wind3 stores animation data under { keyframes, durations, timingFns }, not Tailwind's animation/keyframes split.
   animation: {
@@ -35,9 +48,6 @@ export const unoTheme: Theme = {
   },
 };
 
-export const unoShortcuts: UserShortcuts<Theme> = {
-  "bg-macaron-gradient": "bg-[linear-gradient(97.87deg,#FFC400_0.21%,#FF5A70_50.21%,#F63B3B_100.21%)]",
-  "bg-macaron-gradient-new": "bg-[linear-gradient(98deg,#FFC300_0.21%,#FF5A70_50.21%,#F63B3B_100.21%)]",
-};
+export const unoShortcuts: UserShortcuts<Theme> = {};
 
 export const unoRules: Rule<Theme>[] = [[/^transition-\[padding-left\]$/, () => ({ "transition-property": "padding-left" })]];

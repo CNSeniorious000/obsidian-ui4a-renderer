@@ -18,23 +18,23 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes
 TableBody.displayName = "TableBody";
 
 /** Footer section for totals or summary rows. */
-const TableFooter = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => <tfoot ref={ref} data-slot="table-footer" className={cn("border-t bg-black/[0.03] font-medium [&>tr]:last:border-b-0", className)} {...props} />);
+const TableFooter = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(({ className, ...props }, ref) => <tfoot ref={ref} data-slot="table-footer" className={cn("border-t bg-muted font-medium [&>tr]:last:border-b-0", className)} {...props} />);
 TableFooter.displayName = "TableFooter";
 
 /** Row grouping table cells. */
-const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(({ className, ...props }, ref) => <tr ref={ref} data-slot="table-row" className={cn("border-b border-black/[0.08] transition-colors hover:bg-black/[0.025] data-[state=selected]:bg-black/[0.04]", className)} {...props} />);
+const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(({ className, ...props }, ref) => <tr ref={ref} data-slot="table-row" className={cn("border-b border-border transition-colors hover:bg-accent data-[state=selected]:bg-muted", className)} {...props} />);
 TableRow.displayName = "TableRow";
 
 /** Column label cell. */
-const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<HTMLTableCellElement>>(({ className, ...props }, ref) => <th ref={ref} data-slot="table-head" className={cn("h-10 px-3 text-left align-middle font-medium text-[#171411] [&:has([role=checkbox])]:pr-0", className)} {...props} />);
+const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<HTMLTableCellElement>>(({ className, ...props }, ref) => <th ref={ref} data-slot="table-head" className={cn("h-10 px-3 text-left align-middle font-medium text-foreground [&:has([role=checkbox])]:pr-0", className)} {...props} />);
 TableHead.displayName = "TableHead";
 
 /** Data or summary cell. */
-const TableCell = React.forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(({ className, ...props }, ref) => <td ref={ref} data-slot="table-cell" className={cn("p-3 align-middle text-[#2D2925] [&:has([role=checkbox])]:pr-0", className)} {...props} />);
+const TableCell = React.forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(({ className, ...props }, ref) => <td ref={ref} data-slot="table-cell" className={cn("p-3 align-middle text-foreground [&:has([role=checkbox])]:pr-0", className)} {...props} />);
 TableCell.displayName = "TableCell";
 
 /** Concise accessible caption. */
-const TableCaption = React.forwardRef<HTMLTableCaptionElement, React.HTMLAttributes<HTMLTableCaptionElement>>(({ className, ...props }, ref) => <caption ref={ref} data-slot="table-caption" className={cn("mt-4 text-sm text-[#6F655B]", className)} {...props} />);
+const TableCaption = React.forwardRef<HTMLTableCaptionElement, React.HTMLAttributes<HTMLTableCaptionElement>>(({ className, ...props }, ref) => <caption ref={ref} data-slot="table-caption" className={cn("mt-4 text-sm text-muted-foreground", className)} {...props} />);
 TableCaption.displayName = "TableCaption";
 
 export { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow };

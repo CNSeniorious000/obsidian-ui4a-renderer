@@ -15,7 +15,7 @@ const SelectTrigger = React.forwardRef<React.ComponentRef<typeof SelectPrimitive
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex h-9 items-center justify-between gap-2 rounded-sm border border-black/[0.06] bg-white px-2.5 text-[13px] font-440 text-[#6F655B] shadow-none outline-none transition-[border-color,color,background-color,box-shadow,opacity] duration-200 ease-out hover:border-black/[0.1] hover:bg-[#F1EFE9] hover:text-[#171411] active:border-black/[0.14] active:bg-[#E2DFD8] focus:border-black/[0.1] focus:text-[#171411] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-[#6F655B] data-[state=open]:border-black/[0.12] data-[state=open]:bg-[#E9E7E2] data-[state=open]:text-[#171411]",
+      "inline-flex h-9 items-center justify-between gap-2 rounded-sm border border-border bg-background px-2.5 text-[13px] font-440 text-muted-foreground shadow-none outline-none transition-[border-color,color,background-color,box-shadow,opacity] duration-200 ease-out hover:bg-accent hover:text-foreground active:bg-accent focus:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-muted-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground",
       className,
     )}
     {...props}
@@ -39,7 +39,7 @@ const SelectContent = React.forwardRef<React.ComponentRef<typeof SelectPrimitive
       position={position}
       sideOffset={sideOffset}
       className={cn(
-        "relative z-50 min-w-[8rem] overflow-hidden rounded-sm border border-black/[0.06] bg-white text-[#171411] shadow-[0_8px_24px_-12px_rgba(23,20,17,0.12)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1",
+        "relative z-50 min-w-[8rem] overflow-hidden rounded-sm border border-border bg-popover text-popover-foreground shadow-[var(--shadow-l)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1",
         className,
       )}
       {...props}
@@ -57,7 +57,7 @@ const SelectItem = React.forwardRef<React.ComponentRef<typeof SelectPrimitive.It
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex h-8 cursor-default select-none items-center rounded-sm py-1 pl-2 pr-8 text-[13px] font-440 text-[#6F655B] outline-none transition-[background-color,color] duration-150 hover:bg-[#F1EFE9] hover:text-[#171411] active:bg-[#E2DFD8] focus:bg-[#F1EFE9] focus:text-[#171411] data-[highlighted]:bg-[#F1EFE9] data-[highlighted]:text-[#171411] data-[state=checked]:bg-[#F8F6F2] data-[state=checked]:text-[#171411]",
+      "relative flex h-8 cursor-default select-none items-center rounded-sm py-1 pl-2 pr-8 text-[13px] font-440 text-muted-foreground outline-none transition-[background-color,color] duration-150 hover:bg-accent hover:text-foreground active:bg-accent focus:bg-accent focus:text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-foreground data-[state=checked]:bg-muted data-[state=checked]:text-foreground",
       className,
     )}
     {...props}
@@ -73,11 +73,11 @@ const SelectItem = React.forwardRef<React.ComponentRef<typeof SelectPrimitive.It
 SelectItem.displayName = SelectPrimitive.Item.displayName;
 
 /** Non-selectable label for an option group. */
-const SelectLabel = React.forwardRef<React.ComponentRef<typeof SelectPrimitive.Label>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>>(({ className, ...props }, ref) => <SelectPrimitive.Label ref={ref} className={cn("px-2 py-1.5 text-[12px] font-440 text-[#8A7E72]", className)} {...props} />);
+const SelectLabel = React.forwardRef<React.ComponentRef<typeof SelectPrimitive.Label>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>>(({ className, ...props }, ref) => <SelectPrimitive.Label ref={ref} className={cn("px-2 py-1.5 text-[12px] font-440 text-muted-foreground", className)} {...props} />);
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
 /** Divider between option groups. */
-const SelectSeparator = React.forwardRef<React.ComponentRef<typeof SelectPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>>(({ className, ...props }, ref) => <SelectPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-black/[0.06]", className)} {...props} />);
+const SelectSeparator = React.forwardRef<React.ComponentRef<typeof SelectPrimitive.Separator>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>>(({ className, ...props }, ref) => <SelectPrimitive.Separator ref={ref} className={cn("-mx-1 my-1 h-px bg-border", className)} {...props} />);
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
 export { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue };

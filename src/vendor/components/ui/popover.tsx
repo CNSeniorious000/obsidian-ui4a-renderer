@@ -23,7 +23,7 @@ const PopoverContent = React.forwardRef<React.ComponentRef<typeof PopoverPrimiti
       align={align}
       sideOffset={sideOffset}
       className={cn(
-        "z-50 w-72 rounded-[16px] border border-black/[0.08] bg-white/95 p-4 text-[#171411] shadow-[0_18px_48px_rgba(23,20,17,0.16)] outline-none backdrop-blur-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1",
+        "z-50 w-72 rounded-[16px] border border-border bg-popover p-4 text-popover-foreground shadow-[var(--shadow-l)] outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1",
         className,
       )}
       {...props}
@@ -45,7 +45,7 @@ const PopoverTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<H
 PopoverTitle.displayName = "PopoverTitle";
 
 /** Supporting copy below a popover title. */
-const PopoverDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(({ className, ...props }, ref) => <p ref={ref} className={cn("text-sm leading-5 text-[#6F655B]", className)} {...props} />);
+const PopoverDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(({ className, ...props }, ref) => <p ref={ref} className={cn("text-sm leading-5 text-muted-foreground", className)} {...props} />);
 PopoverDescription.displayName = "PopoverDescription";
 
 export { Popover, PopoverAnchor, PopoverClose, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger };

@@ -38911,9 +38911,9 @@ function parseModuleExpression() {
 function isMaybeDefaultImport(lookahead) {
   return (lookahead.type === TokenType.name || !!(lookahead.type & TokenType.IS_KEYWORD)) && lookahead.contextualKeyword !== ContextualKeyword._from;
 }
-function flowParseTypeInitialiser(tok) {
+function flowParseTypeInitialiser(tok2) {
   const oldIsType = pushTypeContext(0);
-  expect(tok || TokenType.colon);
+  expect(tok2 || TokenType.colon);
   flowParseType();
   popTypeContext(oldIsType);
 }
@@ -90226,16 +90226,16 @@ var Avatar3 = import_react54.default.forwardRef(({ className, size: size4 = "def
 Avatar3.displayName = Avatar.displayName;
 var AvatarImage3 = import_react54.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(AvatarImage, { ref, "data-slot": "avatar-image", className: cn("aspect-square h-full w-full object-cover", className), ...props }));
 AvatarImage3.displayName = AvatarImage.displayName;
-var AvatarFallback3 = import_react54.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(AvatarFallback, { ref, "data-slot": "avatar-fallback", className: cn("flex h-full w-full items-center justify-center rounded-full bg-[#F1EFE9] font-medium text-[#6F655B]", className), ...props }));
+var AvatarFallback3 = import_react54.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(AvatarFallback, { ref, "data-slot": "avatar-fallback", className: cn("flex h-full w-full items-center justify-center rounded-full bg-muted font-medium text-muted-foreground", className), ...props }));
 AvatarFallback3.displayName = AvatarFallback.displayName;
 function AvatarBadge({ className, ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { "data-slot": "avatar-badge", className: cn("absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-[#22C55E]", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("span", { "data-slot": "avatar-badge", className: cn("absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-[#22C55E]", className), ...props });
 }
 function AvatarGroup({ className, ...props }) {
   return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { "data-slot": "avatar-group", className: cn("flex items-center -space-x-2 [&_[data-slot=avatar]]:ring-2 [&_[data-slot=avatar]]:ring-white", className), ...props });
 }
 function AvatarGroupCount({ className, ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { "data-slot": "avatar-group-count", className: cn("z-10 flex h-10 w-10 items-center justify-center rounded-full bg-[#171411] text-xs font-semibold text-white ring-2 ring-white", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { "data-slot": "avatar-group-count", className: cn("z-10 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground ring-2 ring-background", className), ...props });
 }
 
 // node_modules/class-variance-authority/dist/index.mjs
@@ -90285,10 +90285,10 @@ var import_jsx_runtime22 = __toESM(require_jsx_runtime(), 1);
 var badgeVariants = cva("inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold tracking-[0.02em] transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2", {
   variants: {
     variant: {
-      default: "border-transparent bg-black/[0.04] text-[#161615] hover:bg-black/[0.06]",
-      secondary: "border-transparent bg-[#F1EFE9] text-[#595856] hover:bg-[#E9E7E2]",
+      default: "border-transparent bg-muted text-foreground hover:bg-accent",
+      secondary: "border-transparent bg-muted text-muted-foreground hover:bg-accent",
       destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-      outline: "border-black/[0.08] bg-white/72 text-[#595856] shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-[14px]"
+      outline: "border-border bg-card text-muted-foreground"
     }
   },
   defaultVariants: {
@@ -90301,7 +90301,7 @@ var BADGE_TONE_CLASS = {
   orange: "border-[#FFD8B8] bg-[#FFF3EA] text-[#B45418]",
   red: "border-[#FFC9C9] bg-[#FFF0F0] text-[#B3261E]",
   purple: "border-[#D8CCFF] bg-[#F5F1FF] text-[#6046A8]",
-  muted: "border-black/[0.06] bg-[#F1EFE9] text-[#595856]"
+  muted: "border-border bg-muted text-muted-foreground"
 };
 function Badge2({ className, variant, tone, ...props }) {
   return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { "data-slot": "badge", className: cn(badgeVariants({ variant }), tone ? BADGE_TONE_CLASS[tone] : "", className), ...props });
@@ -90313,19 +90313,19 @@ var import_jsx_runtime23 = __toESM(require_jsx_runtime(), 1);
 var buttonVariants = cva("demo-motion-ease inline-flex items-center justify-center whitespace-nowrap rounded-full font-medium transition-[background-color,color,border-color,filter,opacity,box-shadow] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2", {
   variants: {
     variant: {
-      default: "bg-[#161615] text-primary-foreground hover:bg-[#343330] active:bg-[#4A4843]",
-      destructive: "bg-destructive text-destructive-foreground hover:bg-[#B91C1C] active:bg-[#991B1B]",
-      outline: "border border-black/[0.08] bg-white/[0.78] text-[#161615] hover:border-black/[0.14] hover:bg-[#F1EFE9] active:border-black/[0.18] active:bg-[#E2DFD8]",
-      secondary: "bg-[#F1EFE9] text-[#2A2A29] hover:bg-[#E9E7E2] active:bg-[#E2DFD8]",
-      tertiary: "border border-black/[0.06] bg-black/[0.03] text-[#2A2A29] hover:border-black/[0.1] hover:bg-black/[0.05] active:border-black/[0.14] active:bg-black/[0.06]",
-      ghost: "text-[#6F655B] hover:bg-[#F1EFE9] hover:text-[#161615] active:bg-[#E2DFD8]",
+      default: "bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80",
+      destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80",
+      outline: "border border-border bg-background text-foreground hover:bg-accent active:bg-accent",
+      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80 active:bg-secondary/70",
+      tertiary: "border border-border bg-muted text-foreground hover:bg-accent active:bg-accent",
+      ghost: "text-muted-foreground hover:bg-accent hover:text-foreground active:bg-accent",
       link: "text-primary underline-offset-4 hover:underline",
-      primary: ["bg-gradient-to-br from-yellow-400 via-pink-500 to-red-500", "text-white", "border border-white/70", "rounded-full", "hover:brightness-105 hover:saturate-110 active:brightness-95 active:saturate-125"],
-      macaron: ["bg-macaron-gradient", "noise-background", "text-white", "border border-white/70", "rounded-full", "hover:brightness-105 hover:saturate-110 active:brightness-95 active:saturate-125"],
-      "macaron-new": ["bg-macaron-gradient-new", "text-white", "backdrop-blur-[120px]", "ring-[1px] ring-white/40 ring-inset", "px-4 md:px-5", "rounded-full", "hover:brightness-105 hover:saturate-110 active:brightness-95 active:saturate-125"]
+      primary: ["bg-primary", "text-primary-foreground", "rounded-full", "hover:brightness-105 active:brightness-95"],
+      macaron: ["bg-primary", "text-primary-foreground", "rounded-full", "hover:brightness-105 active:brightness-95"],
+      "macaron-new": ["bg-primary", "text-primary-foreground", "px-4 md:px-5", "rounded-full", "hover:brightness-105 active:brightness-95"]
     },
     disabled: {
-      true: ["pointer-events-none", "bg-[#DAD8D3]", "text-white", "rounded-full", "border border-white/30", "shadow-none", "cursor-not-allowed"]
+      true: ["pointer-events-none", "bg-muted", "text-muted-foreground", "rounded-full", "shadow-none", "cursor-not-allowed"]
     },
     size: {
       default: "h-10 px-4 py-2",
@@ -90338,7 +90338,7 @@ var buttonVariants = cva("demo-motion-ease inline-flex items-center justify-cent
       true: "w-full"
     }
   },
-  compoundVariants: [{ variant: "macaron-new", disabled: true, className: "bg-macaron-gradient-new border-none opacity-20" }],
+  compoundVariants: [{ variant: "macaron-new", disabled: true, className: "bg-primary border-none opacity-20" }],
   defaultVariants: { variant: "default", size: "default" }
 });
 var Button = import_react55.default.forwardRef(({ className, variant, full, size: size4, asChild = false, disabled, ...props }, ref) => {
@@ -94876,26 +94876,26 @@ function Calendar2({ className, classNames, showOutsideDays = true, captionLayou
         months: cn("relative flex flex-col gap-4 md:flex-row", defaultClassNames.months),
         month: cn("flex w-full flex-col gap-4", defaultClassNames.month),
         nav: cn("absolute inset-x-0 top-0 flex w-full items-center justify-between gap-1", defaultClassNames.nav),
-        button_previous: cn(buttonVariants({ variant: buttonVariant, size: "icon" }), "h-[--cell-size] w-[--cell-size] select-none rounded-md p-0 text-[#6F655B] aria-disabled:opacity-35", defaultClassNames.button_previous),
-        button_next: cn(buttonVariants({ variant: buttonVariant, size: "icon" }), "h-[--cell-size] w-[--cell-size] select-none rounded-md p-0 text-[#6F655B] aria-disabled:opacity-35", defaultClassNames.button_next),
+        button_previous: cn(buttonVariants({ variant: buttonVariant, size: "icon" }), "h-[--cell-size] w-[--cell-size] select-none rounded-md p-0 text-muted-foreground aria-disabled:opacity-35", defaultClassNames.button_previous),
+        button_next: cn(buttonVariants({ variant: buttonVariant, size: "icon" }), "h-[--cell-size] w-[--cell-size] select-none rounded-md p-0 text-muted-foreground aria-disabled:opacity-35", defaultClassNames.button_next),
         month_caption: cn("flex h-[--cell-size] w-full items-center justify-center px-[--cell-size]", defaultClassNames.month_caption),
         dropdowns: cn("flex h-[--cell-size] w-full items-center justify-center gap-1.5 text-sm font-medium", defaultClassNames.dropdowns),
-        dropdown_root: cn("relative rounded-md border border-black/[0.08] bg-white/80 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] focus-within:ring-2 focus-within:ring-black/[0.08]", defaultClassNames.dropdown_root),
+        dropdown_root: cn("relative rounded-md border border-border bg-popover focus-within:ring-2 focus-within:ring-ring", defaultClassNames.dropdown_root),
         dropdown: cn("absolute inset-0 opacity-0", defaultClassNames.dropdown),
-        caption_label: cn("select-none font-medium text-[#171411]", captionLayout === "label" ? "text-sm" : "flex h-8 items-center gap-1 rounded-md pl-2 pr-1 text-sm [&>svg]:h-3.5 [&>svg]:w-3.5 [&>svg]:text-[#8A7E72]", defaultClassNames.caption_label),
+        caption_label: cn("select-none font-medium text-foreground", captionLayout === "label" ? "text-sm" : "flex h-8 items-center gap-1 rounded-md pl-2 pr-1 text-sm [&>svg]:h-3.5 [&>svg]:w-3.5 [&>svg]:text-muted-foreground", defaultClassNames.caption_label),
         month_grid: cn("w-full border-collapse", defaultClassNames.month_grid),
         weekdays: cn("flex", defaultClassNames.weekdays),
-        weekday: cn("flex-1 select-none rounded-md text-[0.8rem] font-normal text-[#8A7E72]", defaultClassNames.weekday),
+        weekday: cn("flex-1 select-none rounded-md text-[0.8rem] font-normal text-muted-foreground", defaultClassNames.weekday),
         week: cn("mt-2 flex w-full", defaultClassNames.week),
         week_number_header: cn("w-[--cell-size] select-none", defaultClassNames.week_number_header),
-        week_number: cn("select-none text-[0.8rem] text-[#8A7E72]", defaultClassNames.week_number),
+        week_number: cn("select-none text-[0.8rem] text-muted-foreground", defaultClassNames.week_number),
         day: cn("group/day relative aspect-square h-full w-full select-none p-0 text-center [&:first-child[data-selected=true]_button]:rounded-l-md [&:last-child[data-selected=true]_button]:rounded-r-md", defaultClassNames.day),
-        range_start: cn("rounded-l-md bg-[#F1EFE9]", defaultClassNames.range_start),
-        range_middle: cn("rounded-none bg-[#F1EFE9]", defaultClassNames.range_middle),
-        range_end: cn("rounded-r-md bg-[#F1EFE9]", defaultClassNames.range_end),
-        today: cn("rounded-md bg-[#F1EFE9] text-[#171411] data-[selected=true]:rounded-none", defaultClassNames.today),
-        outside: cn("text-[#B7AEA5] aria-selected:text-[#B7AEA5]", defaultClassNames.outside),
-        disabled: cn("text-[#B7AEA5] opacity-50", defaultClassNames.disabled),
+        range_start: cn("rounded-l-md bg-muted", defaultClassNames.range_start),
+        range_middle: cn("rounded-none bg-muted", defaultClassNames.range_middle),
+        range_end: cn("rounded-r-md bg-muted", defaultClassNames.range_end),
+        today: cn("rounded-md bg-muted text-foreground data-[selected=true]:rounded-none", defaultClassNames.today),
+        outside: cn("text-muted-foreground aria-selected:text-muted-foreground", defaultClassNames.outside),
+        disabled: cn("text-muted-foreground opacity-50", defaultClassNames.disabled),
         hidden: cn("invisible", defaultClassNames.hidden),
         ...classNames
       },
@@ -94922,7 +94922,7 @@ function CalendarDayButton({ className, day, modifiers, locale: locale3, ...prop
       "data-range-end": modifiers.range_end,
       "data-range-middle": modifiers.range_middle,
       className: cn(
-        "flex aspect-square h-auto w-full min-w-[--cell-size] flex-col gap-1 rounded-md text-[13px] font-normal leading-none text-[#2D2925] hover:bg-[#F1EFE9] hover:text-[#171411] data-[range-end=true]:rounded-md data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-[#F1EFE9] data-[range-start=true]:rounded-md data-[selected-single=true]:bg-[#171411] data-[selected-single=true]:text-white data-[range-end=true]:bg-[#171411] data-[range-end=true]:text-white data-[range-start=true]:bg-[#171411] data-[range-start=true]:text-white group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-2 group-data-[focused=true]/day:ring-black/[0.08] [&>span]:text-xs [&>span]:opacity-70",
+        "flex aspect-square h-auto w-full min-w-[--cell-size] flex-col gap-1 rounded-md text-[13px] font-normal leading-none text-foreground hover:bg-accent hover:text-foreground data-[range-end=true]:rounded-md data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-muted data-[range-start=true]:rounded-md data-[selected-single=true]:bg-primary data-[selected-single=true]:text-primary-foreground data-[range-end=true]:bg-primary data-[range-end=true]:text-primary-foreground data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:ring-2 group-data-[focused=true]/day:ring-ring [&>span]:text-xs [&>span]:opacity-70",
         defaultClassNames.day_button,
         className
       ),
@@ -94940,7 +94940,7 @@ var Card = import_react88.default.forwardRef(({ className, padding, ...props }, 
   {
     ref,
     "data-slot": "card",
-    className: cn("min-w-0 overflow-hidden rounded-[16px] border border-black/[0.08] bg-white/82 text-card-foreground shadow-[0_10px_30px_rgba(22,22,21,0.04),inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-[18px]", typeof padding === "number" ? CARD_PADDING_CLASS[padding] : "", className),
+    className: cn("min-w-0 overflow-hidden rounded-[16px] border border-border bg-card text-card-foreground shadow-[var(--shadow-s)]", typeof padding === "number" ? CARD_PADDING_CLASS[padding] : "", className),
     ...props
   }
 ));
@@ -97077,7 +97077,7 @@ var Checkbox3 = import_react91.default.forwardRef(({ className, ...props }, ref)
   {
     ref,
     className: cn(
-      "peer h-4 w-4 shrink-0 rounded-[5px] border border-black/[0.12] bg-white/70 ring-offset-background transition-[background-color,border-color,color,opacity] duration-200 ease-out hover:border-black/[0.16] hover:bg-[#F1EFE9] active:border-black/[0.18] active:bg-[#E2DFD8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08] focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-[#161615] data-[state=checked]:bg-[#161615] data-[state=checked]:text-primary-foreground data-[state=checked]:hover:border-[#20201F] data-[state=checked]:hover:bg-[#20201F] data-[state=checked]:active:border-[#2A2A29] data-[state=checked]:active:bg-[#2A2A29]",
+      "peer h-4 w-4 shrink-0 rounded-[5px] border border-border bg-background ring-offset-background transition-[background-color,border-color,color,opacity] duration-200 ease-out hover:bg-accent active:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:hover:bg-primary/90 data-[state=checked]:active:bg-primary/80",
       className
     ),
     ...props,
@@ -97304,16 +97304,16 @@ var FileUpload = import_react93.default.forwardRef(({ value, variant = "list", a
     "button",
     {
       type: "button",
-      className: cn("flex w-full cursor-pointer flex-col items-center justify-center gap-3 p-6 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#EE5C2A]/30", variant === "avatar" ? "aspect-square rounded-full" : "min-h-[168px]"),
+      className: cn("flex w-full cursor-pointer flex-col items-center justify-center gap-3 p-6 text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30", variant === "avatar" ? "aspect-square rounded-full" : "min-h-[168px]"),
       onClick: openFileDialog,
       disabled,
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "flex h-12 w-12 items-center justify-center rounded-full bg-[#EE5C2A]/10 text-[#EE5C2A]", children: imageVariant ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Image, { className: "h-6 w-6", "aria-hidden": "true" }) : /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CloudUpload, { className: "h-6 w-6", "aria-hidden": "true" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary", children: imageVariant ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Image, { className: "h-6 w-6", "aria-hidden": "true" }) : /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CloudUpload, { className: "h-6 w-6", "aria-hidden": "true" }) }),
         /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { className: "space-y-1", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "block text-sm font-semibold text-[#171411]", children: heading }),
-          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "block text-xs leading-5 text-[#8A7E72]", children: detailText })
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "block text-sm font-semibold text-foreground", children: heading }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "block text-xs leading-5 text-muted-foreground", children: detailText })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { className: "inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white/82 px-3 py-1 text-xs font-medium text-[#6F655B] shadow-sm", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { className: "inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm", children: [
           /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CloudUpload, { className: "h-3.5 w-3.5", "aria-hidden": "true" }),
           "Browse files"
         ] })
@@ -97322,24 +97322,24 @@ var FileUpload = import_react93.default.forwardRef(({ value, variant = "list", a
   );
   const singleContent = primaryFile ? primaryFile.preview ? /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: cn("relative w-full overflow-hidden", variant === "avatar" ? "aspect-square rounded-full" : "aspect-[21/9]"), children: [
     /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("img", { src: primaryFile.preview, alt: `Preview of ${primaryFile.file.name}`, className: "h-full w-full object-cover" }),
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "absolute inset-0 bg-black/0 transition-colors duration-200 group-hover:bg-black/35" }),
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "absolute inset-0 bg-transparent transition-colors duration-200 group-hover:bg-foreground/35" }),
     /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: cn("absolute flex gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100", variant === "avatar" ? "inset-x-3 bottom-3 justify-center" : "inset-x-3 bottom-3 flex-wrap items-center justify-between"), children: [
-      variant === "cover" ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "min-w-0 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-[#2D2925] shadow-sm backdrop-blur", children: primaryFile.file.name }) : null,
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 gap-1.5 rounded-full bg-white/90 px-3 shadow-sm backdrop-blur", onClick: openFileDialog, disabled, children: [
+      variant === "cover" ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "min-w-0 rounded-full bg-card px-3 py-1 text-xs font-medium text-foreground shadow-sm", children: primaryFile.file.name }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 gap-1.5 rounded-full bg-card px-3 shadow-sm", onClick: openFileDialog, disabled, children: [
         /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CloudUpload, { className: "h-3.5 w-3.5" }),
         "Change"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 gap-1.5 rounded-full bg-white/90 px-3 text-[#A33D3D] shadow-sm backdrop-blur hover:text-[#7F2E2E]", onClick: () => removeFile(primaryFile.id), disabled, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 gap-1.5 rounded-full bg-card px-3 text-destructive shadow-sm hover:text-destructive/80", onClick: () => removeFile(primaryFile.id), disabled, children: [
         /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(X, { className: "h-3.5 w-3.5" }),
         "Remove"
       ] })
     ] })
   ] }) : /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "flex min-h-[132px] flex-col justify-center gap-4 p-4 sm:flex-row sm:items-center sm:justify-between", children: [
     /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "flex min-w-0 items-center gap-3", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-[#F8F6F2] text-[#8A7E72]", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileIcon, { file: primaryFile.file, className: "h-5 w-5" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-muted text-muted-foreground", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileIcon, { file: primaryFile.file, className: "h-5 w-5" }) }),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { className: "min-w-0 space-y-1", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "block truncate text-sm font-medium text-[#2D2925]", children: primaryFile.file.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { className: "block text-xs text-[#8A7E72]", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "block truncate text-sm font-medium text-foreground", children: primaryFile.file.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { className: "block text-xs text-muted-foreground", children: [
           getFileTypeLabel(primaryFile.file),
           " \xB7 ",
           formatBytes(primaryFile.file.size)
@@ -97347,11 +97347,11 @@ var FileUpload = import_react93.default.forwardRef(({ value, variant = "list", a
       ] })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "flex gap-2", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 gap-1.5 rounded-full bg-white/90 px-3 shadow-sm", onClick: openFileDialog, disabled, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 gap-1.5 rounded-full bg-card px-3 shadow-sm", onClick: openFileDialog, disabled, children: [
         /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CloudUpload, { className: "h-3.5 w-3.5" }),
         "Change"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 gap-1.5 rounded-full bg-white/90 px-3 text-[#A33D3D] shadow-sm hover:text-[#7F2E2E]", onClick: () => removeFile(primaryFile.id), disabled, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Button, { type: "button", size: "sm", variant: "outline", className: "h-8 gap-1.5 rounded-full bg-card px-3 text-destructive shadow-sm hover:text-destructive/80", onClick: () => removeFile(primaryFile.id), disabled, children: [
         /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(X, { className: "h-3.5 w-3.5" }),
         "Remove"
       ] })
@@ -97366,7 +97366,7 @@ var FileUpload = import_react93.default.forwardRef(({ value, variant = "list", a
         className: cn(
           "group relative overflow-hidden border transition-[background-color,border-color,box-shadow] duration-200",
           variant === "avatar" && (!primaryFile || primaryFile.preview) ? "mx-auto max-w-[180px] rounded-full" : "rounded-[18px]",
-          isDragging2 ? "border-[#EE5C2A] border-dashed bg-[#FFF3EA] shadow-[0_0_0_3px_rgba(238,92,42,0.10)]" : primaryFile ? "border-black/[0.08] bg-white/82 hover:border-black/[0.14]" : "border-dashed border-black/[0.12] bg-[#F8F6F2] hover:border-[#EE5C2A]/60 hover:bg-[#FFF8F4]",
+          isDragging2 ? "border-primary border-dashed bg-primary/10 ring-[3px] ring-primary/10" : primaryFile ? "border-border bg-card hover:border-border" : "border-dashed border-border bg-muted hover:border-primary/60 hover:bg-primary/5",
           disabled && "pointer-events-none opacity-55"
         ),
         children: singleContent
@@ -97378,7 +97378,7 @@ var FileUpload = import_react93.default.forwardRef(({ value, variant = "list", a
           ...dropzoneProps,
           className: cn(
             "overflow-hidden rounded-[18px] border border-dashed transition-[background-color,border-color,box-shadow] duration-200",
-            isDragging2 ? "border-[#EE5C2A] bg-[#FFF3EA] shadow-[0_0_0_3px_rgba(238,92,42,0.10)]" : "border-black/[0.12] bg-[#F8F6F2] hover:border-[#EE5C2A]/60 hover:bg-[#FFF8F4]",
+            isDragging2 ? "border-primary bg-primary/10 ring-[3px] ring-primary/10" : "border-border bg-muted hover:border-primary/60 hover:bg-primary/5",
             disabled && "pointer-events-none opacity-55"
           ),
           children: emptyState
@@ -97386,7 +97386,7 @@ var FileUpload = import_react93.default.forwardRef(({ value, variant = "list", a
       ) : null,
       files.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileUploadFiles, { files, variant, disabled, removeFile, clearFiles, maxFiles: resolvedMaxFiles }) : null
     ] }),
-    errors2.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { role: "alert", className: "flex gap-2 rounded-[14px] border border-[#F3D0D0] bg-[#FFF4F4] px-3 py-2 text-xs leading-5 text-[#A33D3D]", children: [
+    errors2.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { role: "alert", className: "flex gap-2 rounded-[14px] border border-destructive/30 bg-destructive/10 px-3 py-2 text-xs leading-5 text-destructive", children: [
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CircleAlert, { className: "mt-0.5 h-4 w-4 shrink-0", "aria-hidden": "true" }),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "space-y-1", children: errors2.map((error) => /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { className: "m-0", children: error }, error)) })
     ] }) : null
@@ -97396,7 +97396,7 @@ FileUpload.displayName = "FileUpload";
 function FileUploadFiles({ files, variant, disabled, removeFile, clearFiles, maxFiles }) {
   if (variant === "gallery") {
     return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "space-y-2", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "flex items-center justify-between gap-3 text-xs text-[#8A7E72]", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "flex items-center justify-between gap-3 text-xs text-muted-foreground", children: [
         /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { children: [
           "Gallery (",
           files.length,
@@ -97406,38 +97406,38 @@ function FileUploadFiles({ files, variant, disabled, removeFile, clearFiles, max
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Button, { type: "button", variant: "ghost", size: "sm", className: "h-7 px-2 text-xs", onClick: clearFiles, disabled, children: "Clear" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "grid grid-cols-2 gap-3 sm:grid-cols-3", children: files.map((item) => /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "group relative overflow-hidden rounded-[14px] border border-black/[0.08] bg-white/82", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "aspect-square", children: item.preview && isImageFile(item.file) ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("img", { src: item.preview, alt: `Preview of ${item.file.name}`, className: "h-full w-full object-cover" }) : /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "flex h-full w-full items-center justify-center bg-[#F8F6F2] text-[#8A7E72]", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileIcon, { file: item.file, className: "h-8 w-8" }) }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "grid grid-cols-2 gap-3 sm:grid-cols-3", children: files.map((item) => /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "group relative overflow-hidden rounded-[14px] border border-border bg-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "aspect-square", children: item.preview && isImageFile(item.file) ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("img", { src: item.preview, alt: `Preview of ${item.file.name}`, className: "h-full w-full object-cover" }) : /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "flex h-full w-full items-center justify-center bg-muted text-muted-foreground", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileIcon, { file: item.file, className: "h-8 w-8" }) }) }),
         /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "space-y-0.5 p-2", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "truncate text-xs font-medium text-[#2D2925]", children: item.file.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "text-[11px] text-[#8A7E72]", children: formatBytes(item.file.size) })
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "truncate text-xs font-medium text-foreground", children: item.file.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "text-[11px] text-muted-foreground", children: formatBytes(item.file.size) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Button, { type: "button", variant: "outline", size: "icon", className: "absolute right-2 top-2 h-7 w-7 rounded-full bg-white/90 opacity-0 shadow-sm backdrop-blur transition-opacity group-hover:opacity-100", onClick: () => removeFile(item.id), disabled, "aria-label": `Remove ${item.file.name}`, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(X, { className: "h-3.5 w-3.5" }) })
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Button, { type: "button", variant: "outline", size: "icon", className: "absolute right-2 top-2 h-7 w-7 rounded-full bg-card opacity-0 shadow-sm transition-opacity group-hover:opacity-100", onClick: () => removeFile(item.id), disabled, "aria-label": `Remove ${item.file.name}`, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(X, { className: "h-3.5 w-3.5" }) })
       ] }, item.id)) })
     ] });
   }
   if (variant === "compact") {
-    return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "flex flex-wrap gap-2", children: files.map((item) => /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { className: "inline-flex max-w-full items-center gap-2 rounded-full border border-black/[0.08] bg-white/82 px-3 py-1.5 text-xs text-[#4F463F] shadow-sm", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileIcon, { file: item.file, className: "h-3.5 w-3.5 shrink-0 text-[#8A7E72]" }),
+    return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { className: "flex flex-wrap gap-2", children: files.map((item) => /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { className: "inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground shadow-sm", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileIcon, { file: item.file, className: "h-3.5 w-3.5 shrink-0 text-muted-foreground" }),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "truncate", children: item.file.name }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("button", { type: "button", className: "shrink-0 rounded-full p-0.5 text-[#A33D3D] hover:bg-[#FFF4F4]", onClick: () => removeFile(item.id), disabled, "aria-label": `Remove ${item.file.name}`, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(X, { className: "h-3.5 w-3.5", "aria-hidden": "true" }) })
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("button", { type: "button", className: "shrink-0 rounded-full p-0.5 text-destructive hover:bg-destructive/10", onClick: () => removeFile(item.id), disabled, "aria-label": `Remove ${item.file.name}`, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(X, { className: "h-3.5 w-3.5", "aria-hidden": "true" }) })
     ] }, item.id)) });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "overflow-hidden rounded-[14px] border border-black/[0.08] bg-white/82", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "grid grid-cols-[minmax(0,1fr)_88px_88px_44px] gap-3 border-b border-black/[0.06] px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-[#A69B90]", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "overflow-hidden rounded-[14px] border border-border bg-card", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "grid grid-cols-[minmax(0,1fr)_88px_88px_44px] gap-3 border-b border-border px-3 py-2 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground", children: [
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { children: "Name" }),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { children: "Type" }),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { children: "Size" }),
       /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", {})
     ] }),
-    files.map((item) => /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "grid grid-cols-[minmax(0,1fr)_88px_88px_44px] items-center gap-3 border-b border-black/[0.06] px-3 py-2 last:border-b-0", children: [
+    files.map((item) => /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "grid grid-cols-[minmax(0,1fr)_88px_88px_44px] items-center gap-3 border-b border-border px-3 py-2 last:border-b-0", children: [
       /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { className: "flex min-w-0 items-center gap-2", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-[#F8F6F2] text-[#8A7E72]", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileIcon, { file: item.file, className: "h-4 w-4" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "truncate text-sm font-medium text-[#2D2925]", children: item.file.name })
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-muted text-muted-foreground", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(FileIcon, { file: item.file, className: "h-4 w-4" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "truncate text-sm font-medium text-foreground", children: item.file.name })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "truncate text-xs text-[#8A7E72]", children: getFileTypeLabel(item.file) }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "truncate text-xs text-[#8A7E72]", children: formatBytes(item.file.size) }),
-      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Button, { type: "button", variant: "ghost", size: "icon", className: "h-8 w-8 text-[#A33D3D]", onClick: () => removeFile(item.id), disabled, "aria-label": `Remove ${item.file.name}`, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(X, { className: "h-4 w-4" }) })
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "truncate text-xs text-muted-foreground", children: getFileTypeLabel(item.file) }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { className: "truncate text-xs text-muted-foreground", children: formatBytes(item.file.size) }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Button, { type: "button", variant: "ghost", size: "icon", className: "h-8 w-8 text-destructive", onClick: () => removeFile(item.id), disabled, "aria-label": `Remove ${item.file.name}`, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(X, { className: "h-4 w-4" }) })
     ] }, item.id))
   ] });
 }
@@ -97450,7 +97450,7 @@ var Input = import_react94.default.forwardRef(({ className, type, ...props }, re
   {
     type,
     className: cn(
-      "flex h-11 w-full rounded-[14px] border border-black/[0.08] bg-[#F1EFE9]/[0.82] px-4 py-2 text-sm text-[#161615] ring-offset-background transition-[background-color,border-color,color,opacity] duration-200 ease-out file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-[#ABAAA6] hover:border-black/[0.12] hover:bg-[#EDEBE5] active:border-black/[0.16] active:bg-[#E2DFD8] focus-visible:border-black/[0.12] focus-visible:bg-white/[0.92] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08] focus-visible:ring-offset-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+      "flex h-11 w-full rounded-[14px] border border-border bg-muted px-4 py-2 text-sm text-foreground ring-offset-background transition-[background-color,border-color,color,opacity] duration-200 ease-out file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground hover:bg-accent active:bg-accent focus-visible:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
       className
     ),
     ref,
@@ -97692,19 +97692,19 @@ function InputOTPSlot({ index: index2, className, ...props }) {
       "data-slot": "input-otp-slot",
       "data-active": isActive || void 0,
       className: cn(
-        "relative flex h-10 w-10 items-center justify-center border-y border-r border-black/[0.08] bg-white text-sm font-medium text-[#171411] transition-all first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-2 data-[active=true]:ring-black/[0.08]",
+        "relative flex h-10 w-10 items-center justify-center border-y border-r border-border bg-background text-sm font-medium text-foreground transition-all first:rounded-l-md first:border-l last:rounded-r-md data-[active=true]:z-10 data-[active=true]:ring-2 data-[active=true]:ring-ring",
         className
       ),
       ...props,
       children: [
         char,
-        hasFakeCaret ? /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { className: "pointer-events-none absolute inset-0 flex items-center justify-center", children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { className: "h-4 w-px animate-pulse bg-[#171411]" }) }) : null
+        hasFakeCaret ? /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { className: "pointer-events-none absolute inset-0 flex items-center justify-center", children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { className: "h-4 w-px animate-pulse bg-foreground" }) }) : null
       ]
     }
   );
 }
 function InputOTPSeparator({ className, ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { "data-slot": "input-otp-separator", role: "separator", className: cn("px-1 text-[#8A7E72]", className), ...props, children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Minus, { className: "h-4 w-4" }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { "data-slot": "input-otp-separator", role: "separator", className: cn("px-1 text-muted-foreground", className), ...props, children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(Minus, { className: "h-4 w-4" }) });
 }
 
 // src/vendor/components/ui/label.tsx
@@ -101656,7 +101656,7 @@ var PopoverContent3 = import_react99.default.forwardRef(({ className, align = "c
     align,
     sideOffset,
     className: cn(
-      "z-50 w-72 rounded-[16px] border border-black/[0.08] bg-white/95 p-4 text-[#171411] shadow-[0_18px_48px_rgba(23,20,17,0.16)] outline-none backdrop-blur-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1",
+      "z-50 w-72 rounded-[16px] border border-border bg-popover p-4 text-popover-foreground shadow-[var(--shadow-l)] outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1",
       className
     ),
     ...props
@@ -101667,7 +101667,7 @@ var PopoverHeader = import_react99.default.forwardRef(({ className, ...props }, 
 PopoverHeader.displayName = "PopoverHeader";
 var PopoverTitle = import_react99.default.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h4", { ref, className: cn("text-sm font-semibold leading-none tracking-[-0.01em]", className), ...props, children }));
 PopoverTitle.displayName = "PopoverTitle";
-var PopoverDescription = import_react99.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { ref, className: cn("text-sm leading-5 text-[#6F655B]", className), ...props }));
+var PopoverDescription = import_react99.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { ref, className: cn("text-sm leading-5 text-muted-foreground", className), ...props }));
 PopoverDescription.displayName = "PopoverDescription";
 
 // src/vendor/components/ui/radio-group.tsx
@@ -102348,7 +102348,7 @@ var RadioGroupItem3 = import_react100.default.forwardRef(({ className, ...props 
   {
     ref,
     className: cn(
-      "relative inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-black/[0.12] bg-white/70 text-[#161615] ring-offset-background transition-[background-color,border-color,color,opacity] duration-200 ease-out hover:border-black/[0.16] hover:bg-[#F1EFE9] active:border-black/[0.18] active:bg-[#E2DFD8] focus:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08] focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-[#161615] data-[state=checked]:bg-[#F1EFE9] data-[state=checked]:hover:bg-[#E9E7E2] data-[state=checked]:active:bg-[#E2DFD8]",
+      "relative inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-border bg-background text-foreground ring-offset-background transition-[background-color,border-color,color,opacity] duration-200 ease-out hover:bg-accent active:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-muted data-[state=checked]:hover:bg-accent data-[state=checked]:active:bg-accent",
       className
     ),
     ...props,
@@ -103461,7 +103461,7 @@ var SelectTrigger3 = import_react101.default.forwardRef(({ className, children, 
   {
     ref,
     className: cn(
-      "inline-flex h-9 items-center justify-between gap-2 rounded-sm border border-black/[0.06] bg-white px-2.5 text-[13px] font-440 text-[#6F655B] shadow-none outline-none transition-[border-color,color,background-color,box-shadow,opacity] duration-200 ease-out hover:border-black/[0.1] hover:bg-[#F1EFE9] hover:text-[#171411] active:border-black/[0.14] active:bg-[#E2DFD8] focus:border-black/[0.1] focus:text-[#171411] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-[#6F655B] data-[state=open]:border-black/[0.12] data-[state=open]:bg-[#E9E7E2] data-[state=open]:text-[#171411]",
+      "inline-flex h-9 items-center justify-between gap-2 rounded-sm border border-border bg-background px-2.5 text-[13px] font-440 text-muted-foreground shadow-none outline-none transition-[border-color,color,background-color,box-shadow,opacity] duration-200 ease-out hover:bg-accent hover:text-foreground active:bg-accent focus:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[placeholder]:text-muted-foreground data-[state=open]:bg-accent data-[state=open]:text-foreground",
       className
     ),
     ...props,
@@ -103479,7 +103479,7 @@ var SelectContent3 = import_react101.default.forwardRef(({ className, children, 
     position: position2,
     sideOffset,
     className: cn(
-      "relative z-50 min-w-[8rem] overflow-hidden rounded-sm border border-black/[0.06] bg-white text-[#171411] shadow-[0_8px_24px_-12px_rgba(23,20,17,0.12)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1",
+      "relative z-50 min-w-[8rem] overflow-hidden rounded-sm border border-border bg-popover text-popover-foreground shadow-[var(--shadow-l)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1",
       className
     ),
     ...props,
@@ -103492,7 +103492,7 @@ var SelectItem3 = import_react101.default.forwardRef(({ className, children, ...
   {
     ref,
     className: cn(
-      "relative flex h-8 cursor-default select-none items-center rounded-sm py-1 pl-2 pr-8 text-[13px] font-440 text-[#6F655B] outline-none transition-[background-color,color] duration-150 hover:bg-[#F1EFE9] hover:text-[#171411] active:bg-[#E2DFD8] focus:bg-[#F1EFE9] focus:text-[#171411] data-[highlighted]:bg-[#F1EFE9] data-[highlighted]:text-[#171411] data-[state=checked]:bg-[#F8F6F2] data-[state=checked]:text-[#171411]",
+      "relative flex h-8 cursor-default select-none items-center rounded-sm py-1 pl-2 pr-8 text-[13px] font-440 text-muted-foreground outline-none transition-[background-color,color] duration-150 hover:bg-accent hover:text-foreground active:bg-accent focus:bg-accent focus:text-foreground data-[highlighted]:bg-accent data-[highlighted]:text-foreground data-[state=checked]:bg-muted data-[state=checked]:text-foreground",
       className
     ),
     ...props,
@@ -103503,9 +103503,9 @@ var SelectItem3 = import_react101.default.forwardRef(({ className, children, ...
   }
 ));
 SelectItem3.displayName = SelectItem.displayName;
-var SelectLabel3 = import_react101.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(SelectLabel, { ref, className: cn("px-2 py-1.5 text-[12px] font-440 text-[#8A7E72]", className), ...props }));
+var SelectLabel3 = import_react101.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(SelectLabel, { ref, className: cn("px-2 py-1.5 text-[12px] font-440 text-muted-foreground", className), ...props }));
 SelectLabel3.displayName = SelectLabel.displayName;
-var SelectSeparator3 = import_react101.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(SelectSeparator, { ref, className: cn("-mx-1 my-1 h-px bg-black/[0.06]", className), ...props }));
+var SelectSeparator3 = import_react101.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(SelectSeparator, { ref, className: cn("-mx-1 my-1 h-px bg-border", className), ...props }));
 SelectSeparator3.displayName = SelectSeparator.displayName;
 
 // src/vendor/components/ui/separator.tsx
@@ -103543,7 +103543,7 @@ var Root6 = Separator;
 
 // src/vendor/components/ui/separator.tsx
 var import_jsx_runtime48 = __toESM(require_jsx_runtime(), 1);
-var Separator3 = import_react102.default.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(Root6, { ref, decorative, orientation, className: cn("shrink-0 bg-black/[0.06]", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className), ...props }));
+var Separator3 = import_react102.default.forwardRef(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime48.jsx)(Root6, { ref, decorative, orientation, className: cn("shrink-0 bg-border", orientation === "horizontal" ? "h-[1px] w-full" : "h-full w-[1px]", className), ...props }));
 Separator3.displayName = Root6.displayName;
 
 // src/vendor/components/ui/slider.tsx
@@ -104233,12 +104233,12 @@ var Slider3 = import_react103.default.forwardRef(({ className, defaultValue: def
       className: cn("group relative flex w-full touch-none select-none items-center data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col", className),
       ...props,
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(SliderTrack, { "data-slot": "slider-track", className: "relative h-2.5 w-full grow overflow-hidden rounded-full bg-black/[0.08] transition-colors duration-200 ease-out group-hover:bg-black/[0.1] group-active:bg-black/[0.13] data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2.5", children: /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(SliderRange, { "data-slot": "slider-range", className: "absolute h-full bg-macaron-gradient-new data-[orientation=vertical]:w-full" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(SliderTrack, { "data-slot": "slider-track", className: "relative h-2.5 w-full grow overflow-hidden rounded-full bg-muted transition-colors duration-200 ease-out group-hover:bg-accent group-active:bg-accent data-[orientation=vertical]:h-full data-[orientation=vertical]:w-2.5", children: /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(SliderRange, { "data-slot": "slider-range", className: "absolute h-full bg-primary data-[orientation=vertical]:w-full" }) }),
         Array.from({ length: values.length }, (_2, index2) => /* @__PURE__ */ (0, import_jsx_runtime50.jsx)(
           SliderThumb,
           {
             "data-slot": "slider-thumb",
-            className: "block h-5 w-5 rounded-full border border-black/[0.1] bg-white ring-offset-background transition-[background-color,border-color,opacity] duration-200 ease-out hover:border-black/[0.16] hover:bg-[#FFFCF8] active:border-black/[0.2] active:bg-[#E2DFD8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08] focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50"
+            className: "block h-5 w-5 rounded-full border border-border bg-background ring-offset-background transition-[background-color,border-color,opacity] duration-200 ease-out hover:bg-background active:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50"
           },
           index2
         ))
@@ -108970,11 +108970,11 @@ var Switch3 = import_react109.default.forwardRef(({ className, ...props }, ref) 
   {
     ref,
     className: cn(
-      "peer group inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border border-black/[0.08] p-px transition-[background-color,border-color,opacity] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08] focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-[#161615] data-[state=checked]:bg-[#161615] data-[state=checked]:hover:border-[#20201F] data-[state=checked]:hover:bg-[#20201F] data-[state=checked]:active:border-[#2A2A29] data-[state=checked]:active:bg-[#2A2A29] data-[state=unchecked]:bg-[#E9E7E2] data-[state=unchecked]:hover:border-black/[0.12] data-[state=unchecked]:hover:bg-[#E2DFD8] data-[state=unchecked]:active:border-black/[0.16] data-[state=unchecked]:active:bg-[#DAD8D3]",
+      "peer group inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border border-border p-px transition-[background-color,border-color,opacity] duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:hover:bg-primary/90 data-[state=checked]:active:bg-primary/80 data-[state=unchecked]:bg-muted data-[state=unchecked]:hover:bg-accent data-[state=unchecked]:active:bg-accent",
       className
     ),
     ...props,
-    children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(SwitchThumb, { className: "pointer-events-none block h-5 w-5 rounded-full border border-black/[0.08] bg-white ring-0 transition-[transform,background-color,border-color] group-active:bg-[#F1EFE9] data-[state=checked]:[transform:translateX(1.25rem)] data-[state=unchecked]:[transform:translateX(0)]" })
+    children: /* @__PURE__ */ (0, import_jsx_runtime53.jsx)(SwitchThumb, { className: "pointer-events-none block h-5 w-5 rounded-full border border-border bg-primary-foreground ring-0 transition-[transform,background-color,border-color] group-active:bg-muted data-[state=checked]:[transform:translateX(1.25rem)] data-[state=unchecked]:[transform:translateX(0)]" })
   }
 ));
 Switch3.displayName = Switch.displayName;
@@ -108988,15 +108988,15 @@ var TableHeader = import_react110.default.forwardRef(({ className, ...props }, r
 TableHeader.displayName = "TableHeader";
 var TableBody = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("tbody", { ref, "data-slot": "table-body", className: cn("[&_tr:last-child]:border-0", className), ...props }));
 TableBody.displayName = "TableBody";
-var TableFooter = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("tfoot", { ref, "data-slot": "table-footer", className: cn("border-t bg-black/[0.03] font-medium [&>tr]:last:border-b-0", className), ...props }));
+var TableFooter = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("tfoot", { ref, "data-slot": "table-footer", className: cn("border-t bg-muted font-medium [&>tr]:last:border-b-0", className), ...props }));
 TableFooter.displayName = "TableFooter";
-var TableRow = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("tr", { ref, "data-slot": "table-row", className: cn("border-b border-black/[0.08] transition-colors hover:bg-black/[0.025] data-[state=selected]:bg-black/[0.04]", className), ...props }));
+var TableRow = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("tr", { ref, "data-slot": "table-row", className: cn("border-b border-border transition-colors hover:bg-accent data-[state=selected]:bg-muted", className), ...props }));
 TableRow.displayName = "TableRow";
-var TableHead = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("th", { ref, "data-slot": "table-head", className: cn("h-10 px-3 text-left align-middle font-medium text-[#171411] [&:has([role=checkbox])]:pr-0", className), ...props }));
+var TableHead = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("th", { ref, "data-slot": "table-head", className: cn("h-10 px-3 text-left align-middle font-medium text-foreground [&:has([role=checkbox])]:pr-0", className), ...props }));
 TableHead.displayName = "TableHead";
-var TableCell = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("td", { ref, "data-slot": "table-cell", className: cn("p-3 align-middle text-[#2D2925] [&:has([role=checkbox])]:pr-0", className), ...props }));
+var TableCell = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("td", { ref, "data-slot": "table-cell", className: cn("p-3 align-middle text-foreground [&:has([role=checkbox])]:pr-0", className), ...props }));
 TableCell.displayName = "TableCell";
-var TableCaption = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("caption", { ref, "data-slot": "table-caption", className: cn("mt-4 text-sm text-[#6F655B]", className), ...props }));
+var TableCaption = import_react110.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime54.jsx)("caption", { ref, "data-slot": "table-caption", className: cn("mt-4 text-sm text-muted-foreground", className), ...props }));
 TableCaption.displayName = "TableCaption";
 
 // src/vendor/components/ui/tabs.tsx
@@ -109194,7 +109194,7 @@ var Tabs3 = import_react111.default.forwardRef(({ className, items, value, defau
   return /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(Root24, { ref, "data-slot": "tabs", value, defaultValue: defaultValue2 ?? safeItems[0], className: cn("flex flex-col gap-2", className), ...props, children: safeItems.length > 0 && !children ? /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(TabsList3, { children: safeItems.map((item) => /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(TabsTrigger3, { value: item, children: item }, item)) }) : children });
 });
 Tabs3.displayName = Root24.displayName;
-var TabsList3 = import_react111.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(List2, { ref, "data-slot": "tabs-list", className: cn("inline-flex h-10 w-fit items-center justify-center gap-1 rounded-full bg-[#F1EFE9] p-1 text-[#6F6B66]", className), ...props }));
+var TabsList3 = import_react111.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(List2, { ref, "data-slot": "tabs-list", className: cn("inline-flex h-10 w-fit items-center justify-center gap-1 rounded-full bg-muted p-1 text-muted-foreground", className), ...props }));
 TabsList3.displayName = List2.displayName;
 var TabsTrigger3 = import_react111.default.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime56.jsx)(
   Trigger4,
@@ -109202,7 +109202,7 @@ var TabsTrigger3 = import_react111.default.forwardRef(({ className, ...props }, 
     ref,
     "data-slot": "tabs-trigger",
     className: cn(
-      "inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-4 text-sm font-medium text-[#6F6B66] transition-[background-color,color,filter,opacity] duration-200 ease-out hover:bg-[#E9E7E2] hover:text-[#2A2A29] active:bg-[#E2DFD8] disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-white/[0.92] data-[state=active]:text-[#161615] data-[state=active]:hover:bg-white data-[state=active]:active:bg-white/[0.82] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      "inline-flex h-8 items-center justify-center whitespace-nowrap rounded-full px-4 text-sm font-medium text-muted-foreground transition-[background-color,color,filter,opacity] duration-200 ease-out hover:bg-accent hover:text-foreground active:bg-accent disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:hover:bg-card data-[state=active]:active:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       className
     ),
     ...props
@@ -109219,7 +109219,7 @@ var Textarea = import_react112.default.forwardRef(({ className, ...props }, ref)
   "textarea",
   {
     className: cn(
-      "flex min-h-[96px] w-full rounded-[14px] border border-black/[0.08] bg-[#F1EFE9]/[0.82] px-4 py-3 text-sm text-[#161615] ring-offset-background transition-[background-color,border-color,color,opacity] duration-200 ease-out placeholder:text-[#ABAAA6] hover:border-black/[0.12] hover:bg-[#EAE8E2] active:border-black/[0.16] active:bg-[#E2DFD8] focus-visible:border-black/[0.12] focus-visible:bg-white/[0.92] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08] focus-visible:ring-offset-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
+      "flex min-h-[96px] w-full rounded-[14px] border border-border bg-muted px-4 py-3 text-sm text-foreground ring-offset-background transition-[background-color,border-color,color,opacity] duration-200 ease-out placeholder:text-muted-foreground hover:bg-accent active:bg-accent focus-visible:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
       className
     ),
     ref,
@@ -109278,10 +109278,10 @@ function TimelineHeader({ className, ...props }) {
 }
 function TimelineDate({ asChild = false, className, ...props }) {
   const Comp = asChild ? Slot : "time";
-  return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(Comp, { "data-slot": "timeline-date", className: cn("mb-1 block text-xs font-medium text-[#8A7E72] group-data-[orientation=vertical]/timeline:max-sm:h-4", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)(Comp, { "data-slot": "timeline-date", className: cn("mb-1 block text-xs font-medium text-muted-foreground group-data-[orientation=vertical]/timeline:max-sm:h-4", className), ...props });
 }
 function TimelineTitle({ className, children, ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("h3", { "data-slot": "timeline-title", className: cn("m-0 text-sm font-semibold leading-5 text-[#171411]", className), ...props, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("h3", { "data-slot": "timeline-title", className: cn("m-0 text-sm font-semibold leading-5 text-foreground", className), ...props, children });
 }
 function TimelineIndicator({ asChild = false, className, children, onClick, type, ...props }) {
   const { completed: completed2, step } = useTimelineItem();
@@ -109302,8 +109302,8 @@ function TimelineIndicator({ asChild = false, className, children, onClick, type
       "data-completed": completed2 || void 0,
       type: type ?? "button",
       className: cn(
-        "absolute size-4 rounded-full border-2 bg-white p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EE5C2A] group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:left-0 group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:top-0 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:-translate-x-1/2",
-        completed2 ? "border-[#EE5C2A]" : "border-[#EE5C2A]/24",
+        "absolute size-4 rounded-full border-2 bg-background p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:left-0 group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:top-0 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:-translate-x-1/2",
+        completed2 ? "border-primary" : "border-primary/25",
         className
       ),
       onClick: handleClick,
@@ -109322,7 +109322,7 @@ function TimelineSeparator({ className, ...props }) {
       "data-completed": lineCompleted || void 0,
       className: cn(
         "absolute self-start transition-colors group-last/timeline-item:hidden group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:h-0.5 group-data-[orientation=horizontal]/timeline:w-[calc(100%-1rem-0.25rem)] group-data-[orientation=horizontal]/timeline:translate-x-[1.125rem] group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:h-[calc(100%-1rem-0.25rem)] group-data-[orientation=vertical]/timeline:w-0.5 group-data-[orientation=vertical]/timeline:-translate-x-1/2 group-data-[orientation=vertical]/timeline:translate-y-[1.125rem]",
-        lineCompleted ? "bg-[#EE5C2A]" : "bg-[#EE5C2A]/12",
+        lineCompleted ? "bg-primary" : "bg-primary/10",
         className
       ),
       ...props
@@ -109330,7 +109330,7 @@ function TimelineSeparator({ className, ...props }) {
   );
 }
 function TimelineContent({ className, ...props }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { "data-slot": "timeline-content", className: cn("text-sm leading-6 text-[#6F655B]", className), ...props });
+  return /* @__PURE__ */ (0, import_jsx_runtime58.jsx)("div", { "data-slot": "timeline-content", className: cn("text-sm leading-6 text-muted-foreground", className), ...props });
 }
 
 // src/vendor/lib/progressiveBlur.ts
@@ -110024,18 +110024,18 @@ function resolvePaddingClass(value) {
   return typeof value === "number" && value in PADDING_CLASS ? PADDING_CLASS[value] : "";
 }
 function Surface({ kicker, title, description, actions, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)(Card, { className: "rounded-[24px] bg-[linear-gradient(180deg,rgba(255,255,255,0.88)_0%,rgba(249,247,241,0.96)_100%)] shadow-[0_20px_48px_rgba(22,22,21,0.05),inset_0_1px_0_rgba(255,255,255,0.8)]", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)(Card, { className: "rounded-[24px] bg-card shadow-[var(--shadow-s)]", children: [
     /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardHeader, { className: "space-y-5 p-6 md:p-7", children: /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { className: "flex flex-col gap-4 md:flex-row md:items-start md:justify-between", children: [
       /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { className: "space-y-3", children: [
         kicker ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Badge2, { variant: "outline", className: "w-fit text-[11px] uppercase tracking-[0.22em]", children: kicker }) : null,
         /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { className: "space-y-2", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardTitle, { className: "text-balance text-[28px] font-semibold leading-[1.05] tracking-[-0.03em] text-[#161615]", children: title }),
-          description ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardDescription, { className: "max-w-2xl text-sm leading-6 text-[#595856]", children: description }) : null
+          /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardTitle, { className: "text-balance text-[28px] font-semibold leading-[1.05] tracking-[-0.03em] text-foreground", children: title }),
+          description ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardDescription, { className: "max-w-2xl text-sm leading-6 text-muted-foreground", children: description }) : null
         ] })
       ] }),
       actions ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "shrink-0", children: actions }) : null
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Separator3, { className: "bg-black/[0.06]" }),
+    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Separator3, { className: "bg-border" }),
     /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardContent, { className: "pt-6 md:p-7 md:pt-6", children })
   ] });
 }
@@ -110058,7 +110058,7 @@ function Text({ children, tone, color: color3, size: size4 = "md", weight = "nor
     {
       className: cn(
         "m-0",
-        resolvedTone === "muted" ? "text-[#6F655B]" : resolvedTone === "accent" ? "text-[#EE5C2A]" : "text-[#171411]",
+        resolvedTone === "muted" ? "text-muted-foreground" : resolvedTone === "accent" ? "text-primary" : "text-foreground",
         size4 === "xs" ? "text-xs leading-5" : size4 === "sm" ? "text-sm leading-6" : size4 === "lg" ? "text-lg leading-7" : size4 === "xl" ? "text-xl leading-8" : "text-[15px] leading-6",
         weight === "bold" ? "font-bold" : weight === "semibold" ? "font-semibold" : weight === "medium" ? "font-medium" : "font-normal",
         className
@@ -110069,8 +110069,8 @@ function Text({ children, tone, color: color3, size: size4 = "md", weight = "nor
 }
 function Field({ label, hint, children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { className: "space-y-2", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Label3, { className: "text-sm font-semibold text-[#161615]", children: label }),
-    hint ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("p", { className: "m-0 text-xs leading-5 text-[#ABAAA6]", children: hint }) : null,
+    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Label3, { className: "text-sm font-semibold text-foreground", children: label }),
+    hint ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("p", { className: "m-0 text-xs leading-5 text-muted-foreground", children: hint }) : null,
     children
   ] });
 }
@@ -110243,7 +110243,7 @@ function MorphingDialogContainer({ children }) {
   if (!mounted) return null;
   return (0, import_react_dom4.createPortal)(
     /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(AnimatePresence, { initial: false, mode: "sync", children: isOpen ? /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)(import_jsx_runtime59.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(motion2.div, { className: "fixed inset-0 z-40 h-full w-full bg-black/30 backdrop-blur-[6px]", initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, onClick: () => setIsOpen(false) }, `backdrop-${uniqueId2}`),
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(motion2.div, { className: "fixed inset-0 z-40 h-full w-full bg-foreground/30 backdrop-blur-[6px]", initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, onClick: () => setIsOpen(false) }, `backdrop-${uniqueId2}`),
       /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4", children })
     ] }) : null }),
     document.body
@@ -110277,7 +110277,7 @@ function TextShimmer({ children, as: Component7 = "p", className, duration: dura
     {
       "data-slot": "text-shimmer",
       className: cn(
-        "macaron-text-shimmer relative inline-block bg-[length:250%_100%,auto] bg-clip-text text-transparent [background-repeat:no-repeat,padding-box] [--bg:linear-gradient(90deg,#0000_calc(50%-var(--spread)),var(--base-gradient-color),#0000_calc(50%+var(--spread)))] [--base-color:#a1a1aa] [--base-gradient-color:#000] dark:[--base-color:#71717a] dark:[--base-gradient-color:#ffffff]",
+        "macaron-text-shimmer relative inline-block bg-[length:250%_100%,auto] bg-clip-text text-transparent [background-repeat:no-repeat,padding-box] [--bg:linear-gradient(90deg,#0000_calc(50%-var(--spread)),var(--base-gradient-color),#0000_calc(50%+var(--spread)))] [--base-color:var(--muted-foreground)] [--base-gradient-color:var(--foreground)] dark:[--base-color:#71717a] dark:[--base-gradient-color:#ffffff]",
         className
       ),
       style: {
@@ -110582,7 +110582,7 @@ function ToolbarDynamicButton({ children, onClick, disabled, ariaLabel }) {
       "aria-label": ariaLabel,
       disabled,
       onClick,
-      className: "relative flex h-9 w-9 shrink-0 select-none items-center justify-center rounded-lg text-[#6F655B] transition-[background-color,color,transform] hover:bg-black/[0.05] hover:text-[#171411] active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black/[0.08]",
+      className: "relative flex h-9 w-9 shrink-0 select-none items-center justify-center rounded-lg text-muted-foreground transition-[background-color,color,transform] hover:bg-accent hover:text-foreground active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
       children
     }
   );
@@ -110621,9 +110621,9 @@ function ToolbarDynamic({ className, style: style2, compact, expanded, placehold
   ] });
   const defaultExpanded = /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { className: "flex gap-2", children: [
     /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(ToolbarDynamicButton, { ariaLabel: "Back", onClick: () => setOpen(false), children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(ArrowLeft, { className: "h-5 w-5" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "relative w-full", children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("input", { className: "h-9 w-full rounded-lg border border-black/[0.08] bg-transparent px-3 py-2 text-sm text-[#171411] placeholder:text-[#8A7E72] focus:outline-none focus:ring-2 focus:ring-black/[0.08]", "aria-label": placeholder, placeholder }) })
+    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "relative w-full", children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("input", { className: "h-9 w-full rounded-lg border border-border bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring", "aria-label": placeholder, placeholder }) })
   ] });
-  return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(MotionConfig, { transition: { type: "spring", bounce: 0.1, duration: 0.2 }, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { ref, "data-slot": "toolbar-dynamic", className: cn("w-fit rounded-xl border border-black/[0.08] bg-white/92 shadow-[0_12px_34px_rgba(22,22,21,0.08),inset_0_1px_0_rgba(255,255,255,0.84)] backdrop-blur-[18px]", className), style: style2, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(motion2.div, { animate: { width: resolveToolbarWidth(isOpen ? expandedWidth : collapsedWidth) }, initial: false, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "overflow-hidden transition-[height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]", style: { height: contentHeight }, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { ref: innerRef, className: "p-2", children: isOpen ? expanded ?? defaultExpanded : compact ?? defaultCompact }) }) }) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(MotionConfig, { transition: { type: "spring", bounce: 0.1, duration: 0.2 }, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { ref, "data-slot": "toolbar-dynamic", className: cn("w-fit rounded-xl border border-border bg-popover shadow-[var(--shadow-l)]", className), style: style2, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(motion2.div, { animate: { width: resolveToolbarWidth(isOpen ? expandedWidth : collapsedWidth) }, initial: false, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "overflow-hidden transition-[height] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]", style: { height: contentHeight }, children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { ref: innerRef, className: "p-2", children: isOpen ? expanded ?? defaultExpanded : compact ?? defaultCompact }) }) }) }) });
 }
 function GlowEffect({ className, style: style2, colors: colors2 = ["#FF5733", "#33FF57", "#3357FF", "#F1C40F"], mode = "rotate", blur: blur2 = "medium", transition, scale: scale2 = 1, duration: duration3 = 5 }) {
   const animationDuration = transition?.duration ?? duration3;
@@ -110647,10 +110647,10 @@ function GlowEffect({ className, style: style2, colors: colors2 = ["#FF5733", "#
   );
 }
 function FeatureCard({ title, description, badges, actionLabel }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)(Card, { className: "bg-white/76", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)(Card, { className: "bg-card", children: [
     /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)(CardHeader, { className: description ? "space-y-2" : "space-y-0", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardTitle, { className: "text-xl leading-6 text-[#161615]", children: title }),
-      description ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardDescription, { className: "text-[#595856]", children: description }) : null
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardTitle, { className: "text-xl leading-6 text-foreground", children: title }),
+      description ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardDescription, { className: "text-muted-foreground", children: description }) : null
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardContent, { className: "space-y-4 pt-0", children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(PillRow, { items: badges }) }),
     actionLabel ? /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(CardFooter, { className: "pt-0", children: /* @__PURE__ */ (0, import_jsx_runtime59.jsx)(Button, { variant: "tertiary", size: "sm", children: actionLabel }) }) : null
@@ -110660,10 +110660,10 @@ function StatGrid({ children }) {
   return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "grid gap-3 md:grid-cols-3", children });
 }
 function Stat({ label, value, tone = "default" }) {
-  const toneClass = tone === "accent" ? "border-[#FBC1B6]/70 bg-[#FFF1EC]" : tone === "muted" ? "border-black/[0.06] bg-[#F1EFE9]" : "border-black/[0.06] bg-white/76";
+  const toneClass = tone === "accent" ? "border-primary/30 bg-primary/5" : tone === "muted" ? "border-border bg-muted" : "border-border bg-card";
   return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { className: `rounded-[16px] border p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-[14px] ${toneClass}`, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "text-xs uppercase tracking-[0.18em] text-[#ABAAA6]", children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "mt-2 text-xl font-semibold text-[#161615]", children: value })
+    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "text-xs uppercase tracking-[0.18em] text-muted-foreground", children: label }),
+    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "mt-2 text-xl font-semibold text-foreground", children: value })
   ] });
 }
 var clampTickSliderValue = (value, min4, max4) => Math.max(min4, Math.min(max4, value));
@@ -110674,15 +110674,15 @@ function TickSlider({ value = 0, min: min4 = 0, max: max4 = 100, step = 1 }) {
   }, [value, min4, max4]);
   return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("div", { className: "flex w-full items-center gap-2", children: [
     /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("input", { type: "range", "aria-label": "Slider value", min: min4, max: max4, step, value: currentValue, className: "w-full", onChange: (event) => setCurrentValue(Number(event.target.value)) }),
-    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("span", { className: "w-10 text-right text-xs text-[#667085]", children: currentValue })
+    /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("span", { className: "w-10 text-right text-xs text-muted-foreground", children: currentValue })
   ] });
 }
 function SelectionGrid({ items, columns: columns2 = 2, defaultValue: defaultValue2 }) {
   const [selectedValue, setSelectedValue] = (0, import_react114.useState)(defaultValue2 ?? items[0]?.value ?? "");
   return /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("div", { className: "grid gap-2", style: { gridTemplateColumns: `repeat(${Math.min(3, Math.max(1, columns2))}, minmax(0, 1fr))` }, children: items.map((item, index2) => {
     const active = item.value === selectedValue;
-    return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("button", { type: "button", className: `relative rounded-lg border px-3 py-2 text-sm ${active ? "border-[#8CA62A] bg-[#F6FAE8]" : "border-[#D0D5DD] bg-white"}`, onClick: () => setSelectedValue(item.value), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("span", { className: "absolute right-2 top-1 text-xs text-[#667085]", children: active ? "\u2713" : "" }),
+    return /* @__PURE__ */ (0, import_jsx_runtime59.jsxs)("button", { type: "button", className: `relative rounded-lg border px-3 py-2 text-sm ${active ? "border-primary bg-primary/10" : "border-border bg-card"}`, onClick: () => setSelectedValue(item.value), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime59.jsx)("span", { className: "absolute right-2 top-1 text-xs text-muted-foreground", children: active ? "\u2713" : "" }),
       item.label
     ] }, `${item.value}-${index2}`);
   }) });
@@ -140410,7 +140410,7 @@ function ChartTooltipContent({ active, payload, className, indicator = "dot", hi
   }, [label, labelFormatter, payload, hideLabel, labelClassName, config2, labelKey]);
   if (!active || !payload?.length) return null;
   const nestLabel = payload.length === 1 && indicator !== "dot";
-  return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { className: cn("grid min-w-32 items-start rounded-xl border border-black/[0.08] bg-white/95 px-3 py-2 text-xs text-[#3d352f] shadow-[0_12px_36px_rgba(61,53,47,0.12)] backdrop-blur-md", className), children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime60.jsxs)("div", { className: cn("grid min-w-32 items-start rounded-xl border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-[var(--shadow-l)]", className), children: [
     !nestLabel ? tooltipLabel : null,
     /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { className: "grid gap-1.5", children: payload.filter((item) => item.type !== "none").map((item, index2) => {
       const key2 = `${nameKey ?? item.name ?? item.dataKey ?? "value"}`;
@@ -140445,7 +140445,7 @@ var ChartLegend = Legend;
 function ChartLegendContent({ className, hideIcon = false, payload, verticalAlign = "bottom", nameKey }) {
   const { config: config2 } = useChart();
   if (!payload?.length) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { className: cn("flex items-center justify-center gap-4 text-xs text-[#8a7e72]", verticalAlign === "top" ? "pb-3" : "pt-3", className), children: payload.filter((item) => item.type !== "none").map((item, index2) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime60.jsx)("div", { className: cn("flex items-center justify-center gap-4 text-xs text-muted-foreground", verticalAlign === "top" ? "pb-3" : "pt-3", className), children: payload.filter((item) => item.type !== "none").map((item, index2) => {
     const key2 = `${nameKey ?? item.dataKey ?? "value"}`;
     const itemConfig = getPayloadConfigFromPayload(config2, item, key2);
     const itemKey = `${item.dataKey ?? item.value ?? index2}`;
@@ -148974,15 +148974,15 @@ var presetAnimations = definePreset((options = {}) => {
 });
 
 // src/vendor/lib/standalone-uno.ts
-var hsl2 = (name) => `hsl(var(--${name}))`;
-var withForeground = (name) => ({ DEFAULT: hsl2(name), foreground: hsl2(`${name}-foreground`) });
+var tok = (name) => `color-mix(in srgb, var(--${name}) calc(<alpha-value> * 100%), transparent)`;
+var withForeground = (name) => ({ DEFAULT: tok(name), foreground: tok(`${name}-foreground`) });
 var unoTheme = {
   colors: {
-    border: hsl2("border"),
-    input: hsl2("input"),
-    ring: hsl2("ring"),
-    background: hsl2("background"),
-    foreground: hsl2("foreground"),
+    border: tok("border"),
+    input: tok("input"),
+    ring: tok("ring"),
+    background: tok("background"),
+    foreground: tok("foreground"),
     primary: withForeground("primary"),
     secondary: withForeground("secondary"),
     destructive: withForeground("destructive"),
@@ -148993,8 +148993,8 @@ var unoTheme = {
   },
   borderRadius: { lg: "var(--radius)", md: "calc(var(--radius) - 2px)", sm: "calc(var(--radius) - 4px)" },
   fontFamily: {
-    sans: '"Geist Variable", "Noto Sans SC", system-ui, sans-serif',
-    mono: '"Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    sans: "var(--font-interface)",
+    mono: "var(--font-monospace)"
   },
   // wind3 stores animation data under { keyframes, durations, timingFns }, not Tailwind's animation/keyframes split.
   animation: {
@@ -149006,10 +149006,7 @@ var unoTheme = {
     timingFns: { "accordion-down": "ease-out", "accordion-up": "ease-out" }
   }
 };
-var unoShortcuts = {
-  "bg-macaron-gradient": "bg-[linear-gradient(97.87deg,#FFC400_0.21%,#FF5A70_50.21%,#F63B3B_100.21%)]",
-  "bg-macaron-gradient-new": "bg-[linear-gradient(98deg,#FFC300_0.21%,#FF5A70_50.21%,#F63B3B_100.21%)]"
-};
+var unoShortcuts = {};
 var unoRules = [[/^transition-\[padding-left\]$/, () => ({ "transition-property": "padding-left" })]];
 
 // src/styling.ts

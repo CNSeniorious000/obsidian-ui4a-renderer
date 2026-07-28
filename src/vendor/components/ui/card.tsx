@@ -15,7 +15,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(({ className, padding, 
   <div
     ref={ref}
     data-slot="card"
-    className={cn("min-w-0 overflow-hidden rounded-[16px] border border-black/[0.08] bg-white/82 text-card-foreground shadow-[0_10px_30px_rgba(22,22,21,0.04),inset_0_1px_0_rgba(255,255,255,0.72)] backdrop-blur-[18px]", typeof padding === "number" ? CARD_PADDING_CLASS[padding] : "", className)}
+    className={cn("min-w-0 overflow-hidden rounded-[16px] border border-border bg-card text-card-foreground shadow-[var(--shadow-s)]", typeof padding === "number" ? CARD_PADDING_CLASS[padding] : "", className)}
     {...props}
   />
 ));
