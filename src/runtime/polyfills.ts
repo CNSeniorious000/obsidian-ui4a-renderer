@@ -1,7 +1,7 @@
 /**
- * Runtime polyfills for vendor modules that only the streaming/scoped web
- * harness needs. In Obsidian we render complete (non-streaming) modules into a
- * single UnoCSS-scoped root, so these hooks return inert defaults.
+ * Runtime polyfill for `partial-react/render-context`, the one vendor
+ * dependency that only the streaming web harness needs. In Obsidian we render
+ * complete (non-streaming) modules, so the hook returns an inert default.
  */
 
 // `partial-react/render-context` — used by genui/charts.tsx to replay partial
@@ -16,16 +16,4 @@ export function useGenUIRenderContext(): {
   nextStreamingRenderKey: (() => string) | undefined;
 } {
   return { rendererScope: "", streamingPartialFrame: false, nextStreamingRenderKey: undefined };
-}
-
-// `@genui/unocss` — createStyleScope/useStyleScope build a scoped UnoCSS engine.
-// We handle styling globally via our own UnoCSS runtime (see styling.ts), so a
-// null scope is correct: components render unscoped and the global engine
-// already covers their classes.
-export function createStyleScope(): null {
-  return null;
-}
-
-export function useStyleScope(): null {
-  return null;
 }

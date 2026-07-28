@@ -24,9 +24,8 @@ const options = {
     "$macaron/ui": "./src/runtime/macaron-ui",
     "$macaron/ui/charts": "./src/vendor/genui/charts",
     "$macaron/chat": "./src/runtime/macaron-chat",
-    // Vendor modules that only the streaming/scoped web harness needs.
+    // The one vendor module that only the streaming web harness needs.
     "partial-react/render-context": "./src/runtime/polyfills",
-    "@genui/unocss": "./src/runtime/polyfills",
   },
   // recharts / motion / embla are CJS-friendly; let esbuild handle them.
   mainFields: ["module", "main"],

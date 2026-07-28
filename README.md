@@ -67,7 +67,7 @@ src/
     macaron-ui.ts         $macaron/ui adapter (re-exports vendored source + LinkText)
     macaron-chat.ts        $macaron/chat adapter (sendUserMessage)
     wikilink.tsx          <LinkText> — UI-internal [[wikilinks]]
-    polyfills.ts          no-op stubs for partial-react/render-context & @genui/unocss
+    polyfills.ts          no-op stub for partial-react/render-context
   vendor/                 macaron component library (vendored, see NOTICE)
 ```
 
