@@ -20,6 +20,17 @@ adapted to Obsidian's note-graph paradigm.
 | Components | 118-export registry | same (vendored verbatim) |
 | Styling | `@unocss/runtime` global | `@unocss/core` engine, scoped to `.genui-root` |
 
+> [!CAUTION]
+> **A `​```ui4a` block is executable code, not data.** The plugin compiles the
+> block's TSX and runs it with `new Function` inside Obsidian's Electron
+> renderer. The `require()` shim only whitelists which *modules* a widget may
+> import — it does **not** sandbox the code, which still reaches `window`,
+> `require`, `process` and your `app` instance. Opening a note therefore means
+> running whatever that note contains, with your full local privileges.
+> Only enable this plugin on vaults whose notes you trust; treat a shared or
+> downloaded vault containing `​```ui4a` blocks exactly as you would treat an
+> untrusted executable. Real isolation (iframe/worker) is not implemented.
+
 ## Install
 
 1. Copy `main.js`, `manifest.json`, `styles.css` into
