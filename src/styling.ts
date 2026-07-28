@@ -13,9 +13,11 @@ import presetWind3 from "@unocss/preset-wind3";
 import presetAnimations from "unocss-preset-animations";
 import { unoTheme, unoShortcuts, unoRules } from "./vendor/lib/standalone-uno";
 
-let enginePromise: Promise<ReturnType<typeof createGenerator>> | null = null;
+type UnoEngine = Awaited<ReturnType<typeof createGenerator>>;
 
-function getEngine(): Promise<ReturnType<typeof createGenerator>> {
+let enginePromise: Promise<UnoEngine> | null = null;
+
+function getEngine(): Promise<UnoEngine> {
   if (enginePromise) return enginePromise;
   enginePromise = createGenerator({
     presets: [presetWind3({ dark: "class" }), presetAnimations()],

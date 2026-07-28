@@ -140466,7 +140466,7 @@ function getPayloadConfigFromPayload(config2, payload, key2) {
 
 // src/runtime/polyfills.ts
 function useGenUIRenderContext() {
-  return { rendererScope: void 0, streamingPartialFrame: false, nextStreamingRenderKey: void 0 };
+  return { rendererScope: "", streamingPartialFrame: false, nextStreamingRenderKey: void 0 };
 }
 
 // src/vendor/genui/charts.tsx
@@ -149187,7 +149187,7 @@ function appendIntentCallout(plugin, prompt) {
       const insertion = lastLineText.trim() === "" ? body.slice(2) : body;
       editor.replaceRange(insertion, { line: lastLine, ch: lastLineText.length });
     } else {
-      void plugin.app.vault.process(file.path, (data) => {
+      void plugin.app.vault.process(file, (data) => {
         return data.endsWith("\n") ? data + body.slice(2) : data + body;
       });
     }

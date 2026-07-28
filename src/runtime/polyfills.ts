@@ -7,12 +7,15 @@
 // `partial-react/render-context` — used by genui/charts.tsx to replay partial
 // streaming frames so charts don't blank-and-regrow mid-stream. Obsidian never
 // streams, so we report a stable, complete frame.
+// The empty scope string is deliberate: charts.tsx builds registry keys as
+// `${rendererScope}:${id}`, and with a single non-streaming renderer there is
+// nothing to disambiguate.
 export function useGenUIRenderContext(): {
-  rendererScope: string | undefined;
+  rendererScope: string;
   streamingPartialFrame: boolean;
-  nextStreamingRenderKey: undefined;
+  nextStreamingRenderKey: (() => string) | undefined;
 } {
-  return { rendererScope: undefined, streamingPartialFrame: false, nextStreamingRenderKey: undefined };
+  return { rendererScope: "", streamingPartialFrame: false, nextStreamingRenderKey: undefined };
 }
 
 // `@genui/unocss` — createStyleScope/useStyleScope build a scoped UnoCSS engine.

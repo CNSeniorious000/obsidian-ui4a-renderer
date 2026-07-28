@@ -18,7 +18,8 @@
       "@/*": ["src/vendor/*"],
       "$macaron/ui": ["src/runtime/macaron-ui"],
       "$macaron/ui/charts": ["src/vendor/genui/charts"],
-      "$macaron/chat": ["src/runtime/macaron-chat"]
+      "$macaron/chat": ["src/runtime/macaron-chat"],
+      "partial-react/render-context": ["src/runtime/polyfills"]
     }
   },
   "include": ["src"]

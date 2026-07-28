@@ -69,7 +69,7 @@ function appendIntentCallout(plugin: UI4APluginLike, prompt: string) {
       editor.replaceRange(insertion, { line: lastLine, ch: lastLineText.length });
     } else {
       // Fallback: write the file directly (reading view / no active editor).
-      void plugin.app.vault.process(file.path, (data: string) => {
+      void plugin.app.vault.process(file, (data: string) => {
         return data.endsWith("\n") ? data + body.slice(2) : data + body;
       });
     }
