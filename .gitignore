@@ -19,3 +19,4 @@ verify.mjs
 .DS_Store
 Thumbs.db
 *.log
+demo/harness.js
