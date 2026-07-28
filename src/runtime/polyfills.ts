@@ -8,11 +8,11 @@
 // streaming frames so charts don't blank-and-regrow mid-stream. Obsidian never
 // streams, so we report a stable, complete frame.
 export function useGenUIRenderContext(): {
-  rendererScope: string | undefined;
+  rendererScope: string;
   streamingPartialFrame: boolean;
-  nextStreamingRenderKey: undefined;
+  nextStreamingRenderKey: (() => string) | undefined;
 } {
-  return { rendererScope: undefined, streamingPartialFrame: false, nextStreamingRenderKey: undefined };
+  return { rendererScope: "obsidian", streamingPartialFrame: false, nextStreamingRenderKey: undefined };
 }
 
 // `@genui/unocss` — createStyleScope/useStyleScope build a scoped UnoCSS engine.

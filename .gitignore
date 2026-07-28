@@ -14,6 +14,7 @@ test-*.mjs
 test-*.cjs
 *-widget.tsx
 verify.mjs
+verification/dist/
 
 # OS / editor
 .DS_Store

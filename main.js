@@ -23484,10 +23484,10 @@ __export(main_exports, {
   default: () => UI4ARendererPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian2 = require("obsidian");
+var import_obsidian3 = require("obsidian");
 
 // src/codeblock-processor.ts
-var import_obsidian = require("obsidian");
+var import_obsidian2 = require("obsidian");
 
 // src/runtime/WidgetHost.tsx
 var import_react192 = __toESM(require_react(), 1);
@@ -140466,7 +140466,7 @@ function getPayloadConfigFromPayload(config2, payload, key2) {
 
 // src/runtime/polyfills.ts
 function useGenUIRenderContext() {
-  return { rendererScope: void 0, streamingPartialFrame: false, nextStreamingRenderKey: void 0 };
+  return { rendererScope: "obsidian", streamingPartialFrame: false, nextStreamingRenderKey: void 0 };
 }
 
 // src/vendor/genui/charts.tsx
@@ -149149,61 +149149,118 @@ function mountWidget(el, code, onUserIntent, app) {
   return root;
 }
 
-// src/codeblock-processor.ts
-function registerCodeblockProcessor(plugin) {
-  plugin.registerMarkdownCodeBlockProcessor("ui4a", (source, el, _ctx) => {
-    mountWidget2(el, source, plugin);
-  });
-}
-function mountWidget2(el, code, plugin) {
-  el.empty();
-  el.addClass("ui4a-host");
-  el.addClass("genui-root");
-  const onUserIntent = (prompt) => appendIntentCallout(plugin, prompt);
-  mountWidget(el, code, onUserIntent, plugin.app);
-}
-function appendIntentCallout(plugin, prompt) {
+// src/intent-recorder.ts
+var import_obsidian = require("obsidian");
+async function appendIntentCallout(plugin, sourcePath, sourceSection, prompt) {
   if (!plugin.settings.appendCallout) {
     new import_obsidian.Notice(prompt);
     return;
   }
-  const body = `
-
-> [!user-intent]
+  const file = plugin.app.vault.getFileByPath(sourcePath);
+  if (!file) {
+    console.error(`[ui4a] source note not found: ${sourcePath}`);
+    new import_obsidian.Notice(`UI4A \u610F\u56FE\u5199\u5165\u5931\u8D25\uFF1A${prompt}`);
+    return;
+  }
+  const body = `> [!user-intent]
 > ${prompt.replace(/\n/g, "\n> ")}
 `;
-  let editor = null;
-  const leaf = plugin.app.workspace.activeEditor;
-  if (leaf?.editor) editor = leaf.editor;
-  const file = leaf?.file ?? plugin.app.workspace.getActiveFile();
-  if (!file) {
-    new import_obsidian.Notice(`UI4A \u610F\u56FE\uFF1A${prompt}`);
-    return;
-  }
   try {
-    if (editor) {
-      const lastLine = editor.lastLine();
-      const lastLineText = editor.getLine(lastLine);
-      const insertion = lastLineText.trim() === "" ? body.slice(2) : body;
-      editor.replaceRange(insertion, { line: lastLine, ch: lastLineText.length });
-    } else {
-      void plugin.app.vault.process(file.path, (data) => {
-        return data.endsWith("\n") ? data + body.slice(2) : data + body;
-      });
-    }
+    await plugin.app.vault.process(file, (data) => {
+      return insertIntent(data, body, sourceSection);
+    });
+    new import_obsidian.Notice("\u5DF2\u8BB0\u5F55 UI4A \u610F\u56FE\u5230\u7B14\u8BB0");
   } catch (err) {
     console.error("[ui4a] appendIntentCallout failed", err);
-    new import_obsidian.Notice(`UI4A \u610F\u56FE\uFF08\u5199\u5165\u5931\u8D25\uFF0C\u5DF2\u590D\u5236\uFF09\uFF1A${prompt}`);
-    return;
+    new import_obsidian.Notice(`UI4A \u610F\u56FE\u5199\u5165\u5931\u8D25\uFF1A${prompt}`);
   }
-  new import_obsidian.Notice("\u5DF2\u8BB0\u5F55 UI4A \u610F\u56FE\u5230\u7B14\u8BB0");
+}
+function insertIntent(note, body, sourceSection) {
+  const insertion = `
+
+${body}`;
+  if (!sourceSection?.text) return appendAtEnd(note, insertion);
+  const lines = note.split("\n");
+  const expectedLines = sourceSection.text.split("\n");
+  if (matchesAt(lines, expectedLines, sourceSection.lineStart)) {
+    return insertAfterLine(note, sourceSection.lineStart + expectedLines.length - 1, insertion);
+  }
+  const matches3 = [];
+  for (let index2 = 0; index2 <= lines.length - expectedLines.length; index2 += 1) {
+    if (matchesAt(lines, expectedLines, index2)) matches3.push(index2);
+    if (matches3.length > 1) break;
+  }
+  if (matches3.length === 1) {
+    return insertAfterLine(note, matches3[0] + expectedLines.length - 1, insertion);
+  }
+  return appendAtEnd(note, insertion);
+}
+function matchesAt(lines, expectedLines, start2) {
+  if (start2 < 0 || start2 + expectedLines.length > lines.length) return false;
+  return expectedLines.every((line, offset4) => lines[start2 + offset4] === line);
+}
+function insertAfterLine(note, line, insertion) {
+  const lines = note.split("\n");
+  const before = lines.slice(0, line + 1).join("\n");
+  const after = lines.slice(line + 1).join("\n");
+  return after ? `${before}${insertion}
+${after}` : `${before}${insertion}`;
+}
+function appendAtEnd(note, insertion) {
+  return note.endsWith("\n") ? note + insertion.slice(1) : note + insertion;
+}
+
+// src/codeblock-processor.ts
+function registerCodeblockProcessor(plugin) {
+  plugin.registerMarkdownCodeBlockProcessor("ui4a", (source, el, ctx) => {
+    ctx.addChild(new UI4AWidgetRenderChild(el, source, ctx, plugin));
+  });
+}
+var UI4AWidgetRenderChild = class extends import_obsidian2.MarkdownRenderChild {
+  constructor(containerEl, code, context, plugin) {
+    super(containerEl);
+    this.code = code;
+    this.context = context;
+    this.plugin = plugin;
+  }
+  root = null;
+  onload() {
+    this.containerEl.empty();
+    this.containerEl.addClass("ui4a-host");
+    this.containerEl.addClass("genui-root");
+    const onUserIntent = (prompt) => {
+      void appendIntentCallout(
+        this.plugin,
+        this.context.sourcePath,
+        getSourceSection(this.context, this.containerEl),
+        prompt
+      );
+    };
+    this.root = mountWidget(this.containerEl, this.code, onUserIntent, this.plugin.app);
+  }
+  onunload() {
+    this.root?.unmount();
+    this.root = null;
+  }
+};
+function getSourceSection(ctx, el) {
+  const section = ctx.getSectionInfo(el);
+  if (!section) return null;
+  const lines = section.text.split("\n");
+  const lineCount = section.lineEnd - section.lineStart + 1;
+  const start2 = lines.length > section.lineEnd ? section.lineStart : 0;
+  return {
+    lineStart: section.lineStart,
+    lineEnd: section.lineEnd,
+    text: lines.slice(start2, start2 + lineCount).join("\n")
+  };
 }
 
 // src/main.ts
 var DEFAULT_SETTINGS = {
   appendCallout: true
 };
-var UI4ARendererPlugin = class extends import_obsidian2.Plugin {
+var UI4ARendererPlugin = class extends import_obsidian3.Plugin {
   settings = DEFAULT_SETTINGS;
   styleObserver = null;
   async onload() {
