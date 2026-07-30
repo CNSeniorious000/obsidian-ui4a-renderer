@@ -1,4 +1,4 @@
-import { useEffect, useState, createElement } from "react";
+import { useEffect, useRef, useState, createElement } from "react";
 import * as ReactDOMClient from "react-dom/client";
 import { compileWidget, type CompiledWidget } from "./compiler";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -19,7 +19,6 @@ export type WidgetHostProps = {
  * injected per instance at compile time, so concurrent widgets stay isolated.
  */
 export function WidgetHost({ code, onUserIntent, app }: WidgetHostProps & { app?: App }) {
-  const [status, setStatus] = useState<"idle" | "ready" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [widget, setWidget] = useState<CompiledWidget | null>(null);
   // Bumped per successful compile; used as the ErrorBoundary key so a
@@ -27,48 +26,54 @@ export function WidgetHost({ code, onUserIntent, app }: WidgetHostProps & { app?
   // for free from the fresh root per compile).
   const [compileId, setCompileId] = useState(0);
 
-  // (Re)compile whenever the code or bridges change. compileWidget is
-  // synchronous (sucrase transpiles in-process), so no loading state is needed.
-  // The bridge closures are baked into the compiled module's imports, keeping
-  // this widget's sendUserMessage / wikilink opener isolated from others.
+  // The injected bridges read the host props through a ref, so a caller that
+  // passes an inline onUserIntent doesn't recompile (and thus remount, losing
+  // widget state) on every render. Only `code` and whether a bridge exists at
+  // all drive recompilation — an absent bridge must stay absent so
+  // sendUserMessage keeps its clipboard fallback.
+  const hostRef = useRef({ onUserIntent, app });
+  hostRef.current = { onUserIntent, app };
+  const hasIntent = Boolean(onUserIntent);
+  const hasApp = Boolean(app);
+
+  // (Re)compile whenever the code changes. compileWidget is synchronous
+  // (sucrase transpiles in-process), so no loading state is needed. The bridge
+  // closures are baked into the compiled module's imports, keeping this
+  // widget's sendUserMessage / wikilink opener isolated from others.
   useEffect(() => {
     try {
       setWidget(
         compileWidget(code, {
-          sendUserMessage: onUserIntent ? (prompt) => onUserIntent(prompt) : undefined,
-          openNote: app ? (target) => void app.workspace.openLinkText(target, "", false) : undefined,
+          sendUserMessage: hasIntent ? (prompt) => hostRef.current.onUserIntent?.(prompt) : undefined,
+          openNote: hasApp ? (target) => void hostRef.current.app?.workspace.openLinkText(target, "", false) : undefined,
         })
       );
-      setStatus("ready");
       setError(null);
       setCompileId((n) => n + 1);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
-      setStatus("error");
     }
-  }, [code, onUserIntent, app]);
+  }, [code, hasIntent, hasApp]);
 
   // Safety net for widgets that call bare sendUserMessage without importing it:
   // register this widget's dispatcher while mounted. Stack-based, so unmounting
   // a sibling widget never severs this one's fallback.
   useEffect(() => {
-    if (!onUserIntent) return;
-    return pushChatBridge(onUserIntent);
-  }, [onUserIntent]);
+    if (!hasIntent) return;
+    return pushChatBridge((prompt) => hostRef.current.onUserIntent?.(prompt));
+  }, [hasIntent]);
 
   // Scan the just-mounted DOM for utility classes and inject UnoCSS rules.
   // Two passes: once after mount to catch the first paint, once after the
   // microtask queue (catches async child renders / charts).
   useEffect(() => {
-    if (status !== "ready" || !widget) return;
+    if (!widget) return;
     void refreshStyles();
     const id = setTimeout(() => void refreshStyles(), 0);
     return () => clearTimeout(id);
-  }, [status, widget]);
+  }, [widget]);
 
-  if (status === "error") {
-    return <pre className="ui4a-error">{error}</pre>;
-  }
+  if (error !== null) return <pre className="ui4a-error">{error}</pre>;
   return (
     <div className="ui4a-widget">
       {/* key resets the boundary when a recompile yields a new widget module,

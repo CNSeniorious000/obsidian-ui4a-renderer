@@ -149106,39 +149106,38 @@ function scopeAtRuleBody(body) {
 // src/runtime/WidgetHost.tsx
 var import_jsx_runtime63 = __toESM(require_jsx_runtime(), 1);
 function WidgetHost({ code, onUserIntent, app }) {
-  const [status, setStatus] = (0, import_react192.useState)("idle");
   const [error, setError] = (0, import_react192.useState)(null);
   const [widget, setWidget] = (0, import_react192.useState)(null);
   const [compileId, setCompileId] = (0, import_react192.useState)(0);
+  const hostRef = (0, import_react192.useRef)({ onUserIntent, app });
+  hostRef.current = { onUserIntent, app };
+  const hasIntent = Boolean(onUserIntent);
+  const hasApp = Boolean(app);
   (0, import_react192.useEffect)(() => {
     try {
       setWidget(
         compileWidget(code, {
-          sendUserMessage: onUserIntent ? (prompt) => onUserIntent(prompt) : void 0,
-          openNote: app ? (target) => void app.workspace.openLinkText(target, "", false) : void 0
+          sendUserMessage: hasIntent ? (prompt) => hostRef.current.onUserIntent?.(prompt) : void 0,
+          openNote: hasApp ? (target) => void hostRef.current.app?.workspace.openLinkText(target, "", false) : void 0
         })
       );
-      setStatus("ready");
       setError(null);
       setCompileId((n4) => n4 + 1);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
-      setStatus("error");
     }
-  }, [code, onUserIntent, app]);
+  }, [code, hasIntent, hasApp]);
   (0, import_react192.useEffect)(() => {
-    if (!onUserIntent) return;
-    return pushChatBridge(onUserIntent);
-  }, [onUserIntent]);
+    if (!hasIntent) return;
+    return pushChatBridge((prompt) => hostRef.current.onUserIntent?.(prompt));
+  }, [hasIntent]);
   (0, import_react192.useEffect)(() => {
-    if (status !== "ready" || !widget) return;
+    if (!widget) return;
     void refreshStyles();
     const id4 = setTimeout(() => void refreshStyles(), 0);
     return () => clearTimeout(id4);
-  }, [status, widget]);
-  if (status === "error") {
-    return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)("pre", { className: "ui4a-error", children: error });
-  }
+  }, [widget]);
+  if (error !== null) return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)("pre", { className: "ui4a-error", children: error });
   return /* @__PURE__ */ (0, import_jsx_runtime63.jsx)("div", { className: "ui4a-widget", children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(ErrorBoundary, { children: widget ? /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(widget.App, {}) : null }, compileId) });
 }
 function mountWidget(el, code, onUserIntent, app) {
