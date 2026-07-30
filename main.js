@@ -149124,9 +149124,10 @@ function scopeCss(css2) {
     const m4 = rule.match(/^([^{}]*)(\{[\s\S]*\})\s*$/);
     if (!m4) return rule;
     let [, selector, body] = m4;
-    selector = selector.trim();
+    const comments = selector.match(/\/\*[\s\S]*?\*\//g)?.join("") ?? "";
+    selector = selector.replace(/\/\*[\s\S]*?\*\//g, "").trim();
     if (selector.startsWith("@")) {
-      return `${selector}${scopeAtRuleBody(body)}`;
+      return `${comments}${selector}${scopeAtRuleBody(body)}`;
     }
     const scoped = selector.split(",").map((s3) => {
       const sel = s3.trim();
@@ -149136,7 +149137,7 @@ function scopeCss(css2) {
       if (themed) return `${themed[1]} .genui-root ${themed[2].trim()}`;
       return `.genui-root ${sel}`;
     }).join(", ");
-    return `${scoped}${body}`;
+    return `${comments}${scoped}${body}`;
   }).join("\n");
 }
 function scopeAtRuleBody(body) {

@@ -173,10 +173,15 @@ function scopeCss(css: string): string {
       const m = rule.match(/^([^{}]*)(\{[\s\S]*\})\s*$/);
       if (!m) return rule;
       let [, selector, body] = m;
-      selector = selector.trim();
+      // UnoCSS prefixes each layer's first rule with a `/* layer: … */` comment.
+      // Left in place it becomes part of the selector text, so `.flex` would be
+      // scoped as `/* layer: default */ .flex` — a selector that never matches
+      // and therefore leaks the utility to all of Obsidian.
+      const comments = selector.match(/\/\*[\s\S]*?\*\//g)?.join("") ?? "";
+      selector = selector.replace(/\/\*[\s\S]*?\*\//g, "").trim();
       // Pass through @media/@keyframes/@font-face blocks by recursing their body.
       if (selector.startsWith("@")) {
-        return `${selector}${scopeAtRuleBody(body)}`;
+        return `${comments}${selector}${scopeAtRuleBody(body)}`;
       }
       const scoped = selector
         .split(",")
@@ -193,7 +198,7 @@ function scopeCss(css: string): string {
           return `.genui-root ${sel}`;
         })
         .join(", ");
-      return `${scoped}${body}`;
+      return `${comments}${scoped}${body}`;
     })
     .join("\n");
 }
