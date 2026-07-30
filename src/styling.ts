@@ -13,9 +13,11 @@ import presetWind3 from "@unocss/preset-wind3";
 import presetAnimations from "unocss-preset-animations";
 import { unoTheme, unoShortcuts, unoRules } from "./vendor/lib/standalone-uno";
 
-let enginePromise: Promise<ReturnType<typeof createGenerator>> | null = null;
+type UnoEngine = Awaited<ReturnType<typeof createGenerator>>;
 
-function getEngine(): Promise<ReturnType<typeof createGenerator>> {
+let enginePromise: Promise<UnoEngine> | null = null;
+
+function getEngine(): Promise<UnoEngine> {
   if (enginePromise) return enginePromise;
   enginePromise = createGenerator({
     // Map `dark:`/`light:` onto Obsidian's own body classes. Nobody ever adds a
@@ -30,11 +32,14 @@ function getEngine(): Promise<ReturnType<typeof createGenerator>> {
   return enginePromise;
 }
 
-/** Element classes observed last time we injected — used to diff and avoid
- * redundant re-injections on mutation. */
-let injectedClassSet = new Set<string>();
+/** Class tokens already handed to UnoCSS, including tokens that produced no
+ * rules. Keeping negative results avoids retrying them on every mutation.
+ * Marked eagerly (before `generate` resolves) so concurrent refreshes never
+ * request the same token twice. */
+const processedClassSet = new Set<string>();
 let preflightInjected = false;
 let styleEl: HTMLStyleElement | null = null;
+let lifecycle = 0;
 
 function ensureStyleEl(): HTMLStyleElement {
   if (styleEl && document.head.contains(styleEl)) return styleEl;
@@ -45,39 +50,96 @@ function ensureStyleEl(): HTMLStyleElement {
 }
 
 /**
- * Scan all `.genui-root` subtrees for class tokens, generate CSS for any new
- * ones, and inject under the `.genui-root` scope. Call after each render and
- * on DOM mutations within widget containers.
+ * Scan the supplied widget subtree for class tokens, generate CSS for any new
+ * ones, and inject under the `.genui-root` scope. Passing `document` scans all
+ * widgets and is reserved for infrequent lifecycle/layout refreshes.
  */
 export async function refreshStyles(scope: ParentNode = document): Promise<void> {
-  const roots = scope.querySelectorAll<HTMLElement>(".genui-root");
-  if (!roots.length) return;
+  const tokenSet = collectClassTokens(scope);
+  if (!tokenSet) return;
 
-  const tokenSet = new Set<string>();
-  roots.forEach((root) => {
-    root.querySelectorAll("*").forEach((el) => {
-      const cls = el.getAttribute("class");
-      if (!cls) return;
-      for (const t of cls.split(/\s+/)) if (t) tokenSet.add(t);
-    });
-  });
+  const fresh = [...tokenSet].filter((token) => !processedClassSet.has(token));
+  const includePreflight = !preflightInjected;
+  if (fresh.length === 0 && !includePreflight) return;
 
-  // Only generate for tokens we haven't already injected.
-  const fresh = [...tokenSet].filter((t) => !injectedClassSet.has(t));
-  if (fresh.length === 0 && preflightInjected) return;
+  fresh.forEach((token) => processedClassSet.add(token));
+  preflightInjected = true;
+  const refreshLifecycle = lifecycle;
 
   const engine = await getEngine();
-  const { css } = await engine.generate(fresh.join(" "), { preflights: true });
+  const { css } = await engine.generate(fresh.join(" "), { preflights: includePreflight });
+
+  // Plugin unload invalidates in-flight work so it cannot recreate styles.
+  if (refreshLifecycle !== lifecycle) return;
   if (!css.trim()) return;
 
   // Re-scope every rule under `.genui-root` so utilities never bleed into
   // Obsidian's own UI. This also scopes the preflight variable defaults.
-  const scoped = scopeCss(css);
-
   const el = ensureStyleEl();
-  el.textContent = (el.textContent ?? "") + "\n" + scoped;
-  fresh.forEach((t) => injectedClassSet.add(t));
-  preflightInjected = true;
+  el.textContent = (el.textContent ?? "") + "\n" + scopeCss(css);
+}
+
+/**
+ * Observe one widget only and collapse all mutations in the current frame into
+ * a single refresh. Returns a disposer for the widget's React lifecycle.
+ */
+export function observeWidgetStyles(widgetRoot: HTMLElement): () => void {
+  let animationFrame: number | null = null;
+
+  const scheduleRefresh = () => {
+    if (animationFrame !== null) return;
+    animationFrame = requestAnimationFrame(() => {
+      animationFrame = null;
+      void refreshStyles(widgetRoot);
+    });
+  };
+
+  const observer = new MutationObserver(scheduleRefresh);
+  observer.observe(widgetRoot, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class"],
+    childList: true,
+  });
+  scheduleRefresh();
+
+  return () => {
+    observer.disconnect();
+    if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+  };
+}
+
+/** Remove generated CSS and reset caches so a later plugin reload regenerates it. */
+export function removeRuntimeStyles(): void {
+  lifecycle++;
+  styleEl?.remove();
+  styleEl = null;
+  processedClassSet.clear();
+  preflightInjected = false;
+}
+
+/** Collect tokens from a widget subtree, or from every widget for document scans. */
+function collectClassTokens(scope: ParentNode): Set<string> | null {
+  const containers: Element[] = [];
+
+  if (scope instanceof Element && scope.closest(".genui-root")) {
+    containers.push(scope);
+  } else {
+    containers.push(...scope.querySelectorAll(".genui-root"));
+  }
+  if (containers.length === 0) return null;
+
+  const tokens = new Set<string>();
+  const addElementClasses = (element: Element) => {
+    for (const token of element.classList) tokens.add(token);
+  };
+
+  containers.forEach((container) => {
+    addElementClasses(container);
+    container.querySelectorAll("*").forEach(addElementClasses);
+  });
+  return tokens;
 }
 
 /**

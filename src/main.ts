@@ -1,6 +1,6 @@
 import { Plugin } from "obsidian";
 import { registerCodeblockProcessor } from "./codeblock-processor";
-import { refreshStyles } from "./styling";
+import { refreshStyles, removeRuntimeStyles } from "./styling";
 import { syncTheme, initThemeBridge } from "./theme";
 
 const DEFAULT_SETTINGS = {
@@ -9,7 +9,6 @@ const DEFAULT_SETTINGS = {
 
 export default class UI4ARendererPlugin extends Plugin {
   settings = DEFAULT_SETTINGS;
-  private styleObserver: MutationObserver | null = null;
 
   async onload() {
     // Load settings.
@@ -17,25 +16,15 @@ export default class UI4ARendererPlugin extends Plugin {
     this.settings = { ...DEFAULT_SETTINGS, ...saved };
 
     // Inject styles.
-    const styleLink = document.createElement("link");
-    styleLink.rel = "stylesheet";
-    styleLink.href = this.app.vault.adapter.getResourcePath(`${this.manifest.dir}/styles.css`);
-    document.head.appendChild(styleLink);
+    const stylesheetLink = document.createElement("link");
+    stylesheetLink.rel = "stylesheet";
+    stylesheetLink.href = this.app.vault.adapter.getResourcePath(`${this.manifest.dir}/styles.css`);
+    document.head.appendChild(stylesheetLink);
+    this.register(() => stylesheetLink.remove());
+    this.register(removeRuntimeStyles);
 
     // Register the ```ui4a codeblock processor.
     registerCodeblockProcessor(this);
-
-    // Refresh UnoCSS styles whenever a widget's DOM changes (React re-renders
-    // can emit new utility classes after the initial paint).
-    this.styleObserver = new MutationObserver(() => {
-      void refreshStyles();
-    });
-    this.styleObserver.observe(document.body, {
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class"],
-      childList: true,
-    });
 
     // Bidirectional theme bridge: widgets read globalThis.__ui4a_theme and
     // subscribe via __ui4a_on_theme(cb) (host → widget), and can request a
@@ -60,12 +49,8 @@ export default class UI4ARendererPlugin extends Plugin {
     this.registerEvent(
       this.app.workspace.on("layout-change", () => void refreshStyles())
     );
-    setTimeout(() => void refreshStyles(), 500);
-  }
-
-  onunload() {
-    this.styleObserver?.disconnect();
-    this.styleObserver = null;
+    const initialStyleRefresh = window.setTimeout(() => void refreshStyles(), 500);
+    this.register(() => window.clearTimeout(initialStyleRefresh));
   }
 
   async saveSettings() {

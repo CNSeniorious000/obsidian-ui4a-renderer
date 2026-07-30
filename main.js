@@ -54653,12 +54653,12 @@ var drag = {
 };
 
 // node_modules/framer-motion/dist/es/gestures/hover.mjs
-function handleHoverEvent(node, event, lifecycle) {
+function handleHoverEvent(node, event, lifecycle2) {
   const { props } = node;
   if (node.animationState && props.whileHover) {
-    node.animationState.setActive("whileHover", lifecycle === "Start");
+    node.animationState.setActive("whileHover", lifecycle2 === "Start");
   }
-  const eventName = "onHover" + lifecycle;
+  const eventName = "onHover" + lifecycle2;
   const callback = props[eventName];
   if (callback) {
     frame.postRender(() => callback(event, extractEventInfo(event)));
@@ -54710,15 +54710,15 @@ var FocusGesture = class extends Feature {
 };
 
 // node_modules/framer-motion/dist/es/gestures/press.mjs
-function handlePressEvent(node, event, lifecycle) {
+function handlePressEvent(node, event, lifecycle2) {
   const { props } = node;
   if (node.current instanceof HTMLButtonElement && node.current.disabled) {
     return;
   }
   if (node.animationState && props.whileTap) {
-    node.animationState.setActive("whileTap", lifecycle === "Start");
+    node.animationState.setActive("whileTap", lifecycle2 === "Start");
   }
-  const eventName = "onTap" + (lifecycle === "End" ? "" : lifecycle);
+  const eventName = "onTap" + (lifecycle2 === "End" ? "" : lifecycle2);
   const callback = props[eventName];
   if (callback) {
     frame.postRender(() => callback(event, extractEventInfo(event)));
@@ -140466,7 +140466,11 @@ function getPayloadConfigFromPayload(config2, payload, key2) {
 
 // src/runtime/polyfills.ts
 function useGenUIRenderContext() {
-  return { rendererScope: void 0, streamingPartialFrame: false, nextStreamingRenderKey: void 0 };
+  return {
+    rendererScope: "obsidian",
+    streamingPartialFrame: false,
+    nextStreamingRenderKey: void 0
+  };
 }
 
 // src/vendor/genui/charts.tsx
@@ -149025,9 +149029,10 @@ function getEngine() {
   });
   return enginePromise;
 }
-var injectedClassSet = /* @__PURE__ */ new Set();
+var processedClassSet = /* @__PURE__ */ new Set();
 var preflightInjected = false;
 var styleEl = null;
+var lifecycle = 0;
 function ensureStyleEl() {
   if (styleEl && document.head.contains(styleEl)) return styleEl;
   styleEl = document.createElement("style");
@@ -149036,26 +149041,68 @@ function ensureStyleEl() {
   return styleEl;
 }
 async function refreshStyles(scope = document) {
-  const roots = scope.querySelectorAll(".genui-root");
-  if (!roots.length) return;
-  const tokenSet = /* @__PURE__ */ new Set();
-  roots.forEach((root) => {
-    root.querySelectorAll("*").forEach((el2) => {
-      const cls = el2.getAttribute("class");
-      if (!cls) return;
-      for (const t3 of cls.split(/\s+/)) if (t3) tokenSet.add(t3);
-    });
-  });
-  const fresh = [...tokenSet].filter((t3) => !injectedClassSet.has(t3));
-  if (fresh.length === 0 && preflightInjected) return;
-  const engine = await getEngine();
-  const { css: css2 } = await engine.generate(fresh.join(" "), { preflights: true });
-  if (!css2.trim()) return;
-  const scoped = scopeCss(css2);
-  const el = ensureStyleEl();
-  el.textContent = (el.textContent ?? "") + "\n" + scoped;
-  fresh.forEach((t3) => injectedClassSet.add(t3));
+  const tokenSet = collectClassTokens(scope);
+  if (!tokenSet) return;
+  const fresh = [...tokenSet].filter((token) => !processedClassSet.has(token));
+  const includePreflight = !preflightInjected;
+  if (fresh.length === 0 && !includePreflight) return;
+  fresh.forEach((token) => processedClassSet.add(token));
   preflightInjected = true;
+  const refreshLifecycle = lifecycle;
+  const engine = await getEngine();
+  const { css: css2 } = await engine.generate(fresh.join(" "), { preflights: includePreflight });
+  if (refreshLifecycle !== lifecycle) return;
+  if (!css2.trim()) return;
+  const el = ensureStyleEl();
+  el.textContent = (el.textContent ?? "") + "\n" + scopeCss(css2);
+}
+function observeWidgetStyles(widgetRoot) {
+  let animationFrame = null;
+  const scheduleRefresh = () => {
+    if (animationFrame !== null) return;
+    animationFrame = requestAnimationFrame(() => {
+      animationFrame = null;
+      void refreshStyles(widgetRoot);
+    });
+  };
+  const observer2 = new MutationObserver(scheduleRefresh);
+  observer2.observe(widgetRoot, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class"],
+    childList: true
+  });
+  scheduleRefresh();
+  return () => {
+    observer2.disconnect();
+    if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+  };
+}
+function removeRuntimeStyles() {
+  lifecycle++;
+  styleEl?.remove();
+  styleEl = null;
+  processedClassSet.clear();
+  preflightInjected = false;
+}
+function collectClassTokens(scope) {
+  const containers2 = [];
+  if (scope instanceof Element && scope.closest(".genui-root")) {
+    containers2.push(scope);
+  } else {
+    containers2.push(...scope.querySelectorAll(".genui-root"));
+  }
+  if (containers2.length === 0) return null;
+  const tokens = /* @__PURE__ */ new Set();
+  const addElementClasses = (element) => {
+    for (const token of element.classList) tokens.add(token);
+  };
+  containers2.forEach((container2) => {
+    addElementClasses(container2);
+    container2.querySelectorAll("*").forEach(addElementClasses);
+  });
+  return tokens;
 }
 function scopeCss(css2) {
   const rules4 = [];
@@ -149128,15 +149175,15 @@ function WidgetHost({ code, onUserIntent, app }) {
   }, [onUserIntent, app]);
   (0, import_react192.useEffect)(() => {
     if (status !== "ready" || !widget || !containerRef.current) return;
-    const root = ReactDOMClient2.createRoot(containerRef.current);
+    const container2 = containerRef.current;
+    const stopObservingStyles = observeWidgetStyles(container2);
+    const root = ReactDOMClient2.createRoot(container2);
     rootRef.current = root;
     root.render(
       /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(ErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime63.jsx)(widget.App, {}) })
     );
-    void refreshStyles();
-    const id4 = setTimeout(() => void refreshStyles(), 0);
     return () => {
-      clearTimeout(id4);
+      stopObservingStyles();
       root.unmount();
       rootRef.current = null;
     };
@@ -149190,7 +149237,7 @@ function appendIntentCallout(plugin, prompt) {
       const insertion = lastLineText.trim() === "" ? body.slice(2) : body;
       editor.replaceRange(insertion, { line: lastLine, ch: lastLineText.length });
     } else {
-      void plugin.app.vault.process(file.path, (data) => {
+      void plugin.app.vault.process(file, (data) => {
         return data.endsWith("\n") ? data + body.slice(2) : data + body;
       });
     }
@@ -149240,24 +149287,16 @@ var DEFAULT_SETTINGS = {
 };
 var UI4ARendererPlugin = class extends import_obsidian2.Plugin {
   settings = DEFAULT_SETTINGS;
-  styleObserver = null;
   async onload() {
     const saved = await this.loadData();
     this.settings = { ...DEFAULT_SETTINGS, ...saved };
-    const styleLink = document.createElement("link");
-    styleLink.rel = "stylesheet";
-    styleLink.href = this.app.vault.adapter.getResourcePath(`${this.manifest.dir}/styles.css`);
-    document.head.appendChild(styleLink);
+    const stylesheetLink = document.createElement("link");
+    stylesheetLink.rel = "stylesheet";
+    stylesheetLink.href = this.app.vault.adapter.getResourcePath(`${this.manifest.dir}/styles.css`);
+    document.head.appendChild(stylesheetLink);
+    this.register(() => stylesheetLink.remove());
+    this.register(removeRuntimeStyles);
     registerCodeblockProcessor(this);
-    this.styleObserver = new MutationObserver(() => {
-      void refreshStyles();
-    });
-    this.styleObserver.observe(document.body, {
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["class"],
-      childList: true
-    });
     initThemeBridge((pref) => {
       this.app.vault.setConfig("theme", pref === "dark" ? "obsidian" : pref === "light" ? "moonstone" : "system");
     });
@@ -149269,11 +149308,8 @@ var UI4ARendererPlugin = class extends import_obsidian2.Plugin {
     this.registerEvent(
       this.app.workspace.on("layout-change", () => void refreshStyles())
     );
-    setTimeout(() => void refreshStyles(), 500);
-  }
-  onunload() {
-    this.styleObserver?.disconnect();
-    this.styleObserver = null;
+    const initialStyleRefresh = window.setTimeout(() => void refreshStyles(), 500);
+    this.register(() => window.clearTimeout(initialStyleRefresh));
   }
   async saveSettings() {
     await this.saveData(this.settings);

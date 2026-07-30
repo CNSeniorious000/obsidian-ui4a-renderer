@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node esbuild.config.mjs",
+    "check": "tsc --noEmit",
     "dev": "node esbuild.config.mjs --watch"
   },
   "dependencies": {
@@ -50,6 +51,7 @@
     "@types/react-dom": "^19.1.0",
     "esbuild": "^0.25.0",
     "jsdom": "^29.1.1",
+    "obsidian": "^1.13.1",
     "typescript": "^5.7.0"
   }
 }

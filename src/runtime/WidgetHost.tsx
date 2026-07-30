@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, createElement } from "react";
 import * as ReactDOMClient from "react-dom/client";
 import { compileWidget, type CompiledWidget } from "./compiler";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { refreshStyles } from "../styling";
+import { observeWidgetStyles } from "../styling";
 import type { App } from "obsidian";
 
 export type WidgetHostProps = {
@@ -52,20 +52,17 @@ export function WidgetHost({ code, onUserIntent, app }: WidgetHostProps & { app?
   // Mount/unmount the widget root.
   useEffect(() => {
     if (status !== "ready" || !widget || !containerRef.current) return;
-    const root = ReactDOMClient.createRoot(containerRef.current);
+    const container = containerRef.current;
+    const stopObservingStyles = observeWidgetStyles(container);
+    const root = ReactDOMClient.createRoot(container);
     rootRef.current = root;
     root.render(
       <ErrorBoundary>
         <widget.App />
       </ErrorBoundary>
     );
-    // Scan the just-mounted DOM for utility classes and inject UnoCSS rules.
-    // Two passes: once synchronously to catch the first paint, once after the
-    // microtask queue (catches async child renders / charts).
-    void refreshStyles();
-    const id = setTimeout(() => void refreshStyles(), 0);
     return () => {
-      clearTimeout(id);
+      stopObservingStyles();
       root.unmount();
       rootRef.current = null;
     };
@@ -94,4 +91,3 @@ export function mountWidget(
   root.render(createElement(WidgetHost, { code, onUserIntent, app }));
   return root;
 }
-
